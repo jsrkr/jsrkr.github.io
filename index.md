@@ -6,13 +6,14 @@ layout: homepage
 
 ## About Me
 
-I am a Ph.D. student in Economics at American University, Washington, DC. I study topics at the intersection of Environmental Economics, Labor and Development Economics.  with a focus on climate change, labor markets and inequality.
+I am a Ph.D. student in Economics at American University, Washington, DC. I study topics at the intersection of Environmental Economics, Labor and Development Economics, with focus on climate change, labor markets and inequality.
  
 ## Work in Progress
-- *[Climate Shocks and Women’s Time Poverty in India](https://www.cambridge.org/engage/coe/article-details/670ef249cec5d6c142430f63)*
-    - Featured as Guest Blog in *[Revaluing Care Economy Working Paper Series](https://www.revaluingcare.org/time-poverty-and-climate-shocks-how-married-women-bear-the-brunt/)* 
 - *Impact of Flood on Labor Market through Gender Lens: A Case from India*  
 - *Targeting Early Female Marriages: What Works Better—Cash or In-Kind Transfers?*
+- *[Climate Shocks and Women’s Time Poverty in India](https://www.cambridge.org/engage/coe/article-details/670ef249cec5d6c142430f63)*
+    - Featured as Guest Blog in *[Revaluing Care Economy Working Paper Series](https://www.revaluingcare.org/time-poverty-and-climate-shocks-how-married-women-bear-the-brunt/)* 
+
 
 ## Working Papers
 
