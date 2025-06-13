@@ -76,8 +76,8 @@ I am a Ph.D. student in Economics at American University, Washington, DC. My res
 
 ## Working Papers
 
-- Sarkar, J. (2024). *Climate Shocks and Women’s Time Poverty in India*. Cambridge Open Engage  
-- Sarkar, J. (2024). *Linking Climate Change with Economic Inequality: A Review Essay*  
+- Sarkar, J. (2024). *Climate Shocks and Women’s Time Poverty in India*. [Cambridge Open Engage](https://www.cambridge.org/engage/coe/article-details/670ef249cec5d6c142430f63) 
+- Sarkar, J. (2024). *Linking Climate Change with Economic Inequality: A Review Essay*
 - Bhattacharya, G., Mehra, M.K., & Sarkar, J. (2024). *Welfare Effects of Catastrophic Climate Events on Mountain Communities*  
 
 ## Work in Progress
