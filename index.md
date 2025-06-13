@@ -35,6 +35,12 @@ I am a Ph.D. student in Economics at American University, Washington, DC. My res
 
 ## Research Experience
 
+**Impact of Flood on Labor Market through Gender Lens: A Case from India**  
+*Third Year Project with Dr. Kelly M. Jones, American University, Washington, DC, USA*  
+May 2024— Aug 2024
+- Utilize quasi-experimental design to study labor market effects of catastrophic flood.
+- Develop flood exposure measure using information from google earth engine and census data.
+
 **Government Housing and Entrepreneurship in Indian Slums**  
 *With Dr. Garima Sharma, American University, Washington, DC, USA*  
 May 2024— Aug 2024
@@ -43,7 +49,7 @@ May 2024— Aug 2024
 
 **Pew Research Center Dataset Analysis on Religion and Cultural Trends**  
 *With Prof. Boris Gershman, American University, Washington, DC, USA*  
-May 2024 — Aug 2024  
+June 2024 — July 2024  
 - Extracted and cleaned a multi-country, multi-wave dataset on religious pluralism in South and Southeast Asia.
 - Studied inter-temporal trends in cultural beliefs, attitudes, and values, including variations by religion, educational attainment, socioeconomic background, and gender.
 
