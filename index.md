@@ -37,7 +37,7 @@ I am a Ph.D. student in Economics at American University, Washington, DC. My res
 
 **Impact of Flood on Labor Market through Gender Lens: A Case from India**  
 *Third Year Project with Dr. Kelly M. Jones, American University, Washington, DC, USA*  
-May 2024— Aug 2024
+Aug 2024— May 2025
 - Utilize quasi-experimental design to study labor market effects of catastrophic flood.
 - Develop flood exposure measure using information from google earth engine and census data.
 
