@@ -37,6 +37,7 @@ I am a Ph.D. student in Economics at American University, Washington, DC. My res
 
 **Government Housing and Entrepreneurship in Indian Slums**  
 *With Dr. Garima Sharma, American University, Washington, DC, USA*  
+May 2024— Aug 2024
 - Analyzed qualitative data using ATLAS.ti from primary surveys of slum dwellers in Orissa, India.
 - Demonstrated relationship between dignity of dwelling and social entrepreneurship.
 
@@ -122,9 +123,4 @@ Dec 2020 — Feb 2021
 - **Programing**: STATA, R, ArcGIS, Google Earth Engine, LaTeX  
 - **Languages**: English(fluent), Bengali(native), Hindi(fluent)  
 
-## Contact
 
-📍 Washington, DC, USA  
-📧 js8622a@american.edu  
-🔗 [LinkedIn](https://www.linkedin.com/in/jheelum-sarkar-39578517b/)  
-🔗 [Google Scholar](https://scholar.google.com/citations?user=NuKgL3EAAAAJ&hl=en&oi=ao)
