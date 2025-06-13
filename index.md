@@ -96,7 +96,7 @@ Dec 2020 — Feb 2021
 
 ## Publications
 
-- Sultana, N., Sarkar, J., & Meurs, M. (2024). *Climate Change-Induced Migration: A Gendered Conceptual Framework*. *Migration and Diversity*, 3(2), 215–233.
+- Sultana, N., Sarkar, J., & Meurs, M. (2024). *[Climate Change-Induced Migration: A Gendered Conceptual Framework](https://journals.tplondon.com/md/article/view/3177)*. *Migration and Diversity*, 3(2), 215–233. 
 
 ## Working Papers
 
