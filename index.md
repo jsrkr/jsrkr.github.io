@@ -6,7 +6,7 @@ layout: homepage
 
 ## About Me
 
-I am a Ph.D. student in Economics at American University, Washington, DC. My research centers around Environmental Economics, Labor and Development Economics, with a focus on climate change, gender inequality and labor markets.
+I am a Ph.D. student in Economics at American University, Washington, DC. My research centers around Environmental Economics, Labor and Development Economics, with a focus on climate change, labor markets and inequality.
 
 ## Education
 
@@ -93,8 +93,8 @@ Dec 2020 — Feb 2021
 
 ## Working Papers
 
-- Sarkar, J. (2024). *Climate Shocks and Women’s Time Poverty in India*. [Cambridge Open Engage](https://www.cambridge.org/engage/coe/article-details/670ef249cec5d6c142430f63) 
-- Sarkar, J. (2024). *Linking Climate Change with Economic Inequality: A Review Essay*
+- Sarkar, J. (2024). *[Climate Shocks and Women’s Time Poverty in India](https://www.cambridge.org/engage/coe/article-details/670ef249cec5d6c142430f63)*
+- Sarkar, J. (2024). *[Linking Climate Change with Economic Inequality: A Review Essay](https://dx.doi.org/10.2139/ssrn.4814257)*
 - Bhattacharya, G., Mehra, M.K., & Sarkar, J. (2024). *Welfare Effects of Catastrophic Climate Events on Mountain Communities*  
 
 ## Work in Progress
@@ -119,8 +119,8 @@ Dec 2020 — Feb 2021
 
 ## Skills
 
-- **Technical**: Stata, R, ArcGIS, Python, MATLAB, MS Excel, LaTeX  
-- **Languages**: English, Bengali, Hindi  
+- **Programing**: STATA, R, ArcGIS, Google Earth Engine, LaTeX  
+- **Languages**: English(fluent), Bengali(native), Hindi(fluent)  
 
 ## Contact
 
