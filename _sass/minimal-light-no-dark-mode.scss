@@ -498,6 +498,12 @@ footer {
   }
 }
 
+/* Increase font size for paragraphs and list items */
+p,
+li {
+  font-size: 1.2em; /* Adjust the value as needed */
+}
+
 .biblink {
   text-decoration:none;
   display: inline;
