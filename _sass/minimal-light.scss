@@ -270,13 +270,13 @@ ul, ol, li {
   font-size: 1.1em; // or your preferred size
 }
 
-ul ul, ol ul, ul ol, ol ol {
+ol ul, ul ol, ol ol {
   font-size: inherit; // Ensures nested lists use the same size as parent
 }
 
 /* Decrease font size for nested ul */
 ul ul {
-  font-size: 0.9em;
+  font-size: 0.7em;
 }
 
 h1, h2, h3 {
