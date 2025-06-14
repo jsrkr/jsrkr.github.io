@@ -203,6 +203,23 @@ h2 {
 p, ul, ol, table, pre, dl {
   margin:0 0 20px;
 }
+p,
+li {
+  font-size: 1.15em; // Adjust this value as needed (e.g., 18px, 1.2em, etc.)
+}
+
+ul, ol, li {
+  font-size: 1.1em; // or your preferred size
+}
+
+ol ul, ul ol, ol ol {
+  font-size: inherit; // Ensures nested lists use the same size as parent
+}
+
+/* Decrease font size for nested ul */
+ul ul {
+  font-size: 0.7em;
+}
 
 h1, h2, h3 {
   line-height:1.1;
