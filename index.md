@@ -6,7 +6,7 @@ layout: homepage
 
 ## About Me
 
-I am a Ph.D. student in Economics at American University, Washington, DC. I study topics at the intersection of Environmental Economics, Labor and Development Economics, with focus on climate change, labor markets and inequality.
+I am a Ph.D. student in Economics at American University, Washington, DC. I study Labor, Development and Environmental Economics, with focus on labor markets, gender and environment.
  
 
 ## Working Papers
