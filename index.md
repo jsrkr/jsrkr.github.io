@@ -15,7 +15,7 @@ I am a Ph.D. student in Economics at American University, Washington, DC. I stud
 - Sarkar, J. (2025). *Impact of Flood on Labor Market through Gender Lens: A Case from India.[Link](assets/work_in_progress/Flood-Labor-Gender.pdf)*  
 - Sarkar, J. (2024) *Climate Shocks and Women’s Time Poverty in India.[Cambridge Engage: 10.33774](https://www.cambridge.org/engage/coe/article-details/670ef249cec5d6c142430f63)*
     - Featured as Guest Blog in *[Revaluing Care Economy Working Paper Series](https://www.revaluingcare.org/time-poverty-and-climate-shocks-how-married-women-bear-the-brunt/)* 
-- Sarkar, J. (2024). *[Linking Climate Change with Economic Inequality: A Review Essay](https://dx.doi.org/10.2139/ssrn.4814257). SSRN: 4814257*
+- Sarkar, J. (2024). *Linking Climate Change with Economic Inequality: A Review Essay.[SSRN: 4814257](https://dx.doi.org/10.2139/ssrn.4814257)*
 - Bhattacharya, G., Mehra, M.K., & Sarkar, J. (2024). *Welfare Effects of Catastrophic Climate Events on Mountain Communities* 
 
 
