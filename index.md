@@ -8,7 +8,7 @@ layout: homepage
 
 I am a Ph.D. student in Economics at American University, Washington, DC. I study topics at the intersection of Environmental Economics, Labor and Development Economics, with focus on climate change, labor markets and inequality.
  
-        
+ 
 ## Working Papers
 
 - Sarkar, J. (2025). *[Do STEM graduates fare better at times of crises? Evidence from COVID 19 pandemic in India.] (https://arxiv.org/abs/2508.12471)*
