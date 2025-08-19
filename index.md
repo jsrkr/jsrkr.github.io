@@ -21,7 +21,7 @@ I am a Ph.D. student in Economics at American University, Washington, DC. I stud
 
 ## Publication
 
-- Sultana, N., Sarkar, J., & Meurs, M. (2024). *[Climate Change-Induced Migration: A Gendered Conceptual Framework](https://journals.tplondon.com/md/article/view/3177)*. *Migration and Diversity*, 3*(2)*, 215–233. 
+- Sultana, N., Sarkar, J., & Meurs, M. (2024). *Climate Change-Induced Migration: A Gendered Conceptual Framework. Migration and Diversity, 3(2), 215–233. [https://doi.org/10.33182/md.v3i2.3177](https://journals.tplondon.com/md/article/view/3177)* 
 
 
 ## Work in Progress
