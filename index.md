@@ -44,9 +44,9 @@ I am a fourth-year PhD student in Economics at American University, Washington, 
 ## Teaching Experience
 
 - Teaching Assistant, American University  
-  Courses include:  
-  - Applied Econometrics  
+  Courses include:   
   - Advanced Econometrics 
+  - Applied Econometrics 
   - Labor Economics 
   - Microeconomic Analysis  
   - Intermediate Microeconomics  
