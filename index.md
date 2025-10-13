@@ -11,9 +11,9 @@ I am a fourth-year PhD student in Economics at American University, Washington, 
 
 ## Working Papers
 
-- Sarkar, J. (2025). *Do STEM graduates fare better at times of crises? Evidence from COVID 19 pandemic in India.[arXiv:2508.12471](https://arxiv.org/abs/2508.12471)*
-- Sarkar, J. (2025). *Who gets hit first and who recovers last? Evidence from Indian Coastal Flood Shock.[arxiv: 2510.08856](https://arxiv.org/abs/2510.08856)*  
-- Sarkar, J. (2024) *Climate Shocks and Women’s Time Poverty in India.[Cambridge Engage: 10.33774](https://www.cambridge.org/engage/coe/article-details/670ef249cec5d6c142430f63)*
+- Sarkar, J. (2025). *Do STEM graduates fare better at times of crises? Evidence from COVID 19 pandemic in India. [arXiv:2508.12471](https://arxiv.org/abs/2508.12471)*
+- Sarkar, J. (2025). *Who gets hit first and who recovers last? Evidence from Indian Coastal Flood Shock. [arxiv: 2510.08856](https://arxiv.org/abs/2510.08856)*  
+- Sarkar, J. (2024) *Climate Shocks and Women’s Time Poverty in India. [Cambridge Engage: 10.33774](https://www.cambridge.org/engage/coe/article-details/670ef249cec5d6c142430f63)*
     - Featured in *Revaluing Care Economy Working Paper Series (2024)* 
 - Sarkar, J. (2024). *Linking Climate Change with Economic Inequality: A Review Essay.[SSRN: 4814257](https://dx.doi.org/10.2139/ssrn.4814257)*
 
@@ -31,7 +31,7 @@ I am a fourth-year PhD student in Economics at American University, Washington, 
 
 - **[Rethinking climate migration through a gender lens](https://pgaeblog.wordpress.com/2025/07/19/rethinking-climate-migration-through-gender-lens/ "PGAE Blog — July 19, 2025")** — *PGAE Blog, July 19, 2025*  
 
-- **[Coal plant retirements dominate the U.S. power sector shift](https://aeclinic.org/aec-blog/2025/coal-plant-retirements-dominate-us-power-sector-shift "AEC Blog — August 13, 2025")** — *AEC Blog, August 13,2025*  
+- **[Coal plant retirements dominate the U.S. power sector shift](https://aeclinic.org/aec-blog/2025/coal-plant-retirements-dominate-us-power-sector-shift "AEC Blog — August 13, 2025")** — *AEC Blog, August 13, 2025*  
 
 - **[Time poverty and climate shocks: how married women bear the brunt](https://www.revaluingcare.org/time-poverty-and-climate-shocks-how-married-women-bear-the-brunt/ "Revaluing Care Economy — October 21, 2024")** — *Revaluing Care Economy, October 21, 2024*  
 
