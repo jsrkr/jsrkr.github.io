@@ -15,7 +15,7 @@ I am a fourth-year PhD student in Economics at American University, Washington, 
 - Sarkar, J. (2025). *Who gets hit first and who recovers last? Evidence from Indian Coastal Flood Shock. [arxiv: 2510.08856](https://arxiv.org/abs/2510.08856)*  
 - Sarkar, J. (2024) *Climate Shocks and Women’s Time Poverty in India. [Cambridge Engage: 10.33774](https://www.cambridge.org/engage/coe/article-details/670ef249cec5d6c142430f63)*
     - Featured in *Revaluing Care Economy Working Paper Series (2024)* 
-- Sarkar, J. (2024). *Linking Climate Change with Economic Inequality: A Review Essay.[SSRN: 4814257](https://dx.doi.org/10.2139/ssrn.4814257)*
+- Sarkar, J. (2024). *Linking Climate Change with Economic Inequality: A Review Essay. [SSRN: 4814257](https://dx.doi.org/10.2139/ssrn.4814257)*
 
 ## Work in Progress
 
