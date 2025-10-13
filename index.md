@@ -30,13 +30,10 @@ I am a fourth-year PhD student in Economics at American University, Washington, 
 ## Guest Blogs & Commentaries
 
 - **[Rethinking climate migration through a gender lens](https://pgaeblog.wordpress.com/2025/07/19/rethinking-climate-migration-through-gender-lens/ "PGAE Blog — July 19, 2025")** — *PGAE Blog, July 19, 2025*  
-  _Why gendered caregiving roles reshape who moves, who stays, and who bears hidden costs of climate displacement._
 
 - **[Coal plant retirements dominate the U.S. power sector shift](https://aeclinic.org/aec-blog/2025/coal-plant-retirements-dominate-us-power-sector-shift "AEC Blog — 2025")** — *AEC Blog, 2025*  
-  _Tracking how retirements, not just renewables buildout, are driving decarbonization metrics._
 
 - **[Time poverty and climate shocks: how married women bear the brunt](https://www.revaluingcare.org/time-poverty-and-climate-shocks-how-married-women-bear-the-brunt/ "Revaluing Care — 2025")** — *Revaluing Care, 2025*  
-  _Evidence on unpaid care burdens that surge when floods and heatwaves hit._
 
 ## Research Interests
  
