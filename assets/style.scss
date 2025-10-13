@@ -2,3 +2,17 @@
 ---
 
 @import "minimal-light";
+
+/* Make Guest Blogs & Commentaries section font size match other sections */
+h2, h3, h4, h5, h6 {
+  font-size: 1.5em; /* or your preferred size */
+}
+
+ul {
+  font-size: 1em; /* default for all lists */
+}
+
+/* If you want to specifically target the Guest Blogs section: */
+#guest-blogs, .guest-blogs {
+  font-size: 1em;
+}
