@@ -21,7 +21,7 @@ I am a fourth-year PhD student in Economics at American University, Washington, 
 
 - *Can teleworkability reduce gender gap in emerging economies? Evidence from Indian Labor Market*
 - *Impact of AI boom on job-to-job mobility in United States*
-- *Environmental Justice and Enforcement of Pollution Standards* *(with [Phuong Ho](https://phuongmho.github.io/)**[Bianca Cecato](https://www.biancacecato.com/)* *and [Almira Salimgarieva]).*
+- *Environmental Justice and Enforcement of Pollution Standards* *(with [Phuong Ho](https://phuongmho.github.io/), [Bianca Cecato](https://www.biancacecato.com/) and Almira Salimgarieva).*
 
 ## Publication
 
