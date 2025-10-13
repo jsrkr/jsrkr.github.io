@@ -8,11 +8,12 @@ h2, h3, h4, h5, h6 {
   font-size: 1.5em; /* or your preferred size */
 }
 
+/* Ensure all list items have the same font size */
 ul {
-  font-size: 1em; /* default for all lists */
+  font-size: 1em;
 }
 
-/* If you want to specifically target the Guest Blogs section: */
-#guest-blogs, .guest-blogs {
+/* Optional: If you want to specifically target the Guest Blogs section */
+#guest-blogs ul {
   font-size: 1em;
 }
