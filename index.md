@@ -6,21 +6,20 @@ layout: homepage
 
 ## About Me
 
-I am a fourth-year PhD student in Economics at American University, Washington, DC. I work in applied microeconomics. My current research examines how the changing nature of work, innovation, and education shape labor markets. I also study effects of extreme weather events in developing countries.
+I am a fourth-year PhD student in Economics at American University, Washington, DC. I work in applied microeconomics. My current research examines how the changing nature of work, and education shape labor markets. I also study effects of extreme weather events in developing countries.
  
 
 ## Working Papers
 
 - Sarkar, J. (2025). *Do STEM graduates fare better at times of crises? Evidence from COVID 19 pandemic in India. [arXiv:2508.12471](https://arxiv.org/abs/2508.12471)*
 - Sarkar, J. (2025). *Who gets hit first and who recovers last? Evidence from Indian Coastal Flood Shock. [arxiv: 2510.08856](https://arxiv.org/abs/2510.08856)*  
-- Sarkar, J. (2024) *Climate Shocks and Women’s Time Poverty in India. [Cambridge Engage: 10.33774](https://www.cambridge.org/engage/coe/article-details/670ef249cec5d6c142430f63)*
-    - Featured in *Revaluing Care Economy Working Paper Series (2024)* 
 - Sarkar, J. (2024). *Linking Climate Change with Economic Inequality: A Review Essay. [SSRN: 4814257](https://dx.doi.org/10.2139/ssrn.4814257)*
 
 ## Work in Progress
 
 - *Can teleworkability reduce gender gap in emerging economies? Evidence from Indian Labor Market*
-- *Impact of AI boom on job-to-job mobility in United States*
+- *Does his or her telework influence fertility? Evidence from working couples in United States*
+- *Do STEM graduates fare better at times of crises? Evidence from COVID 19 pandemic in India. [arXiv:2508.12471](https://arxiv.org/abs/2508.12471)(Updated Draft on the way)*
 - *Environmental Justice and Enforcement of Pollution Standards* *(with [Phuong Ho](https://phuongmho.github.io/), [Bianca Cecato](https://www.biancacecato.com/) and Almira Salimgarieva).*
 
 ## Publication
