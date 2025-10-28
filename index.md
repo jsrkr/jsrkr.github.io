@@ -10,8 +10,6 @@ I am a fourth-year PhD student in Economics at American University, Washington, 
  
 
 ## Working Papers
-
-- Sarkar, J. (2025). *Do STEM graduates fare better at times of crises? Evidence from COVID 19 pandemic in India. [arXiv:2508.12471](https://arxiv.org/abs/2508.12471)*
 - Sarkar, J. (2025). *Who gets hit first and who recovers last? Evidence from Indian Coastal Flood Shock. [arxiv: 2510.08856](https://arxiv.org/abs/2510.08856)*  
 - Sarkar, J. (2024). *Linking Climate Change with Economic Inequality: A Review Essay. [SSRN: 4814257](https://dx.doi.org/10.2139/ssrn.4814257)*
 
@@ -19,7 +17,7 @@ I am a fourth-year PhD student in Economics at American University, Washington, 
 
 - *Can teleworkability reduce gender gap in emerging economies? Evidence from Indian Labor Market*
 - *Does his or her telework influence fertility? Evidence from working couples in United States*
-- *Do STEM graduates fare better at times of crises? Evidence from COVID 19 pandemic in India. [arXiv:2508.12471](https://arxiv.org/abs/2508.12471)(Updated Draft on the way)*
+- *Do STEM graduates fare better at times of crises? Evidence from COVID 19 pandemic in India. [arXiv:2508.12471](https://arxiv.org/abs/2508.12471)(Updated version is currently being prepared)*
 - *Environmental Justice and Enforcement of Pollution Standards* *(with [Phuong Ho](https://phuongmho.github.io/), [Bianca Cecato](https://www.biancacecato.com/) and Almira Salimgarieva).*
 
 ## Publication
