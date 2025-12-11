@@ -6,7 +6,7 @@ layout: homepage
 
 ## About Me
 
-I am a fourth-year PhD student in Economics at American University, Washington, DC. I work in applied microeconomics. My current research examines how the changing nature of work, and education shape labor markets. I also study effects of extreme weather events in developing countries.
+I am PhD candidate in Economics at American University, Washington, DC. My research interests lie in applied economics, with a focus on labor economics, development economics and public policy. In my research, I use econometric methods to analyze how telework exposure, digital infrastructure impact women empowerment. I also study how armed conflicts and extreme weather events influence labor market outcomes.
  
 
 ## Working Papers
@@ -15,10 +15,12 @@ I am a fourth-year PhD student in Economics at American University, Washington, 
 
 ## Work in Progress
 
-- *Can teleworkability reduce gender gap in emerging economies? Evidence from Indian Labor Market*
-- *Does his or her telework influence fertility? Evidence from working couples in United States*
+- *Does Telework Exposure increase Female Labor Supply in Emerging Economies? Evidence from Indian Labor Market*
+- *Can Telework be Anti-Dote to Declining U.S. Fertility Rates?*
+- *Digital Empowerment: Affordable Internet and Women in India*
+- *Impact of Early Life Exposure to Armed Conflicts on Occupational Sorting: Evidence from World War II*
+- *Environmental Justice and Enforcement of Pollution Standards in United States* *(with [Phuong Ho](https://phuongmho.github.io/), [Bianca Cecato](https://www.biancacecato.com/) and Almira Salimgarieva).*
 - *Do STEM graduates fare better at times of crises? Evidence from COVID 19 pandemic in India. [arXiv:2508.12471](https://arxiv.org/abs/2508.12471)(Updated version is currently being prepared)*
-- *Environmental Justice and Enforcement of Pollution Standards* *(with [Phuong Ho](https://phuongmho.github.io/), [Bianca Cecato](https://www.biancacecato.com/) and Almira Salimgarieva).*
 
 ## Publication
 
