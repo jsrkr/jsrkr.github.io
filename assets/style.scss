@@ -1,3 +1,4 @@
+/* style.css */
 ---
 ---
 
@@ -12,6 +13,19 @@ h2, h3, h4, h5, h6 {
 ul {
   font-size: 1em;
 }
+
+/* * CORRECTION: Normalize the styling of links (titles) within list items
+ * to match the less prominent font size of the "Publication" citation.
+ */
+li a {
+  /* Set font size smaller relative to the parent <ul> (which is 1em) */
+  font-size: 0.9em; 
+  /* Remove inherited italics that were visually increasing prominence */
+  font-style: normal;
+  /* Ensure titles are not overly bold */
+  font-weight: normal; 
+}
+
 
 // /* Optional: If you want to specifically target the Guest Blogs section */
 // #guest-blogs ul {
