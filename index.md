@@ -27,12 +27,10 @@ I am a PhD candidate in Economics at American University, Washington, DC. My res
 
 - Sultana, N., Sarkar, J., & Meurs, M. (2024). *Climate Change-Induced Migration: A Gendered Conceptual Framework. Migration and Diversity, 3(2), 215–233. [https://doi.org/10.33182/md.v3i2.3177](https://journals.tplondon.com/md/article/view/3177)* 
 
-## Guest Blogs & Commentaries
+## Guest Blogs & Commentaries {#guest-blogs}
 
 - *[Rethinking climate migration through a gender lens](https://pgaeblog.wordpress.com/2025/07/19/rethinking-climate-migration-through-gender-lens/ "PGAE Blog — July 19, 2025")* — *Program for Gender Analysis in Economics Blog, July 19, 2025*  
-
 - *[Coal plant retirements dominate the U.S. power sector shift](https://aeclinic.org/aec-blog/2025/coal-plant-retirements-dominate-us-power-sector-shift "AEC Blog — August 13, 2025")* — *Applied Economics Clinic, August 13, 2025*  
-
 - *[Time poverty and climate shocks: how married women bear the brunt](https://www.revaluingcare.org/time-poverty-and-climate-shocks-how-married-women-bear-the-brunt/ "Revaluing Care Economy — October 21, 2024")* — *Revaluing Care Economy, October 21, 2024*  
 
 ## Research Interests

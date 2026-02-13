@@ -279,6 +279,18 @@ ul ul {
   font-size: 0.9em;
 }
 
+/* Normalize Guest Blogs & Commentaries list size to match other sections */
+#guest-blogs ul,
+#guest-blogs ul li {
+  font-size: 1em; /* same baseline as paragraphs */
+}
+
+#guest-blogs ul li a {
+  font-size: 1em;
+  font-style: normal;
+  font-weight: normal;
+}
+
 h1, h2, h3 {
   line-height:1.1;
 }
