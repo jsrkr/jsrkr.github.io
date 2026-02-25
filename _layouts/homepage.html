@@ -39,6 +39,16 @@
     <div class="wrapper">
       <header>
         
+av class="main-nav">
+          <ul>
+            <li><a href="{{ '/' | relative_url }}">Home</a></li>
+            <li><a href="{{ '/research' | relative_url }}">Research</a></li>
+            <li><a href="{{ '/teaching' | relative_url }}">Teaching</a></li>
+            <li><a href="{{ site.cv_link }}">CV</a></li>
+            <li><a href="{{ '/contact' | relative_url }}">Contact</a></li>
+          </ul>
+        </nav>
+        
         {% if site.avatar %}
         <a class="image avatar"><img src="{{ site.avatar }}" alt="avatar" /></a>
         {% endif %}
