@@ -33,10 +33,13 @@ I am a PhD candidate in Economics at American University, Washington, DC. My res
 - *[Rethinking climate migration through a gender lens](https://pgaeblog.wordpress.com/2025/07/19/rethinking-climate-migration-through-gender-lens/)* — *Program for Gender Analysis in Economics Blog, July 19, 2025 (with [Prof. Mieke Meurs](https://www.american.edu/cas/faculty/mmeurs.cfm))*
 - *[Coal plant retirements dominate the U.S. power sector shift](https://aeclinic.org/aec-blog/2025/coal-plant-retirements-dominate-us-power-sector-shift)* — *Applied Economics Clinic, August 13, 2025*
 - *[Time poverty and climate shocks: how married women bear the brunt](https://www.revaluingcare.org/time-poverty-and-climate-shocks-how-married-women-bear-the-brunt/)* — *Revaluing Care Economy, October 21, 2024*
-
-### Research Interests
  
-- Labor Economics 
-- Development Economics  
-- Environmental Economics  
+### Teaching Experience
 
+Teaching Assistant, American University. Courses include:
+- Advanced Econometrics
+- Applied Econometrics
+- Labor Economics
+- Microeconomic Analysis
+- Intermediate Microeconomics
+- Macroeconomics
