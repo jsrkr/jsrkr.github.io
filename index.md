@@ -7,8 +7,8 @@ I am a PhD candidate in Economics at American University, Washington, DC. My res
 
 ### Working Papers
 
-- Sarkar J. (2025). *Can Telework be Anti-Dote to Declining U.S. Fertility Rates? Manuscript in Preparation.*
-- Sarkar J. (2025). *Droughts and Deluges: Effects of Climate Extremes on the Gender Gap in Labor Supply. [arxiv: 2602.07808](https://arxiv.org/abs/2602.07808)*
+- Sarkar, J. (2025). *Can Telework be Anti-Dote to Declining U.S. Fertility Rates? Manuscript in Preparation.*
+- Sarkar, J. (2025). *Droughts and Deluges: Effects of Climate Extremes on the Gender Gap in Labor Supply. [arxiv: 2602.07808](https://arxiv.org/abs/2602.07808)*
 - Sarkar, J. (2025). *Who gets hit first and who recovers last? Evidence from Indian Coastal Flood Shock. [arxiv: 2510.08856](https://arxiv.org/abs/2510.08856)*  
 - Sarkar, J. (2024). *Linking Climate Change with Economic Inequality: A Review Essay. [SSRN: 4814257](https://dx.doi.org/10.2139/ssrn.4814257)*
 
