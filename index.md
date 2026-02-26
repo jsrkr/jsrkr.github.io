@@ -1,6 +1,3 @@
----
-layout: homepage
----
 
 # Jheelum Sarkar
 
@@ -40,4 +37,3 @@ I am a PhD candidate in Economics at American University, Washington, DC. My res
 - Development Economics  
 - Environmental Economics  
 
-Please use the navigation links above to explore my teaching and other professional information.
