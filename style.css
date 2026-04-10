@@ -178,7 +178,11 @@ ul li {
 }
 
 .research-list li {
-    margin-bottom: 16px;
+    margin-bottom: 10px;
+}
+
+.citation-link {
+    white-space: nowrap;
 }
 
 /* Links */
@@ -319,7 +323,7 @@ footer {
 
     ul li {
         font-size: 15px;
-        margin-bottom: 6px;
+        margin-bottom: 5px;
     }
 
     .social-links {
