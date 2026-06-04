@@ -181,6 +181,23 @@ ul li {
     margin-bottom: 10px;
 }
 
+.job-market-paper {
+    margin-bottom: 18px;
+    padding: 14px 16px;
+    background-color: #f3f6fa;
+    border-left: 3px solid #0066cc;
+    border-radius: 6px;
+}
+
+.job-market-paper p:last-child {
+    margin-bottom: 0;
+}
+
+.paper-abstract {
+    margin-top: 6px;
+    text-align: justify;
+}
+
 .citation-link {
     white-space: nowrap;
 }
