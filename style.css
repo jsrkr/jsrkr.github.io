@@ -182,21 +182,125 @@ ul li {
     margin-bottom: 10px;
 }
 
-.job-market-paper {
-    margin-bottom: 18px;
-    padding: 14px 16px;
-    background-color: #f3f6fa;
-    border-left: 3px solid #0066cc;
-    border-radius: 6px;
-}
-
-.job-market-paper p:last-child {
-    margin-bottom: 0;
-}
-
 .paper-abstract {
     margin-top: 6px;
     text-align: justify;
+}
+
+.featured-paper {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.95fr) minmax(320px, 1fr);
+    gap: 28px;
+    align-items: start;
+    margin-bottom: 34px;
+}
+
+.featured-paper-media {
+    position: sticky;
+    top: 18px;
+}
+
+.featured-paper-image {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+.featured-paper-title {
+    font-size: 24px;
+    line-height: 1.3;
+    margin-top: 0;
+    margin-bottom: 14px;
+}
+
+.featured-paper-title a,
+.paper-card-title a {
+    color: #111;
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+}
+
+.featured-paper-title a:hover,
+.paper-card-title a:hover {
+    color: #0052a3;
+}
+
+.featured-paper-summary,
+.paper-card-summary {
+    color: #444;
+    margin-bottom: 12px;
+    text-align: justify;
+}
+
+.paper-list {
+    display: grid;
+    gap: 22px;
+}
+
+.paper-card {
+    padding: 18px 20px;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    background-color: #fcfcfc;
+}
+
+.paper-card-with-media {
+    display: grid;
+    grid-template-columns: minmax(250px, 0.9fr) minmax(280px, 1fr);
+    gap: 20px;
+    align-items: start;
+}
+
+.paper-card-media {
+    align-self: start;
+}
+
+.paper-card-image {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.paper-card-title {
+    font-size: 22px;
+    line-height: 1.35;
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #111;
+}
+
+.paper-card-note {
+    margin-bottom: 10px;
+}
+
+.paper-toggle {
+    margin-top: 10px;
+}
+
+.paper-toggle summary {
+    cursor: pointer;
+    color: #0066cc;
+    font-weight: 600;
+    list-style: none;
+}
+
+.paper-toggle summary::-webkit-details-marker {
+    display: none;
+}
+
+.paper-toggle summary::before {
+    content: "+ ";
+}
+
+.paper-toggle[open] summary::before {
+    content: "- ";
+}
+
+.paper-toggle[open] .paper-abstract {
+    margin-top: 10px;
 }
 
 .bio-text {
@@ -231,6 +335,21 @@ ul li {
 
 .teaching-meta {
     color: #444;
+}
+
+@media (max-width: 900px) {
+    .featured-paper {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .featured-paper-media {
+        position: static;
+    }
+
+    .paper-card-with-media {
+        grid-template-columns: 1fr;
+    }
 }
 
 .citation-link {
