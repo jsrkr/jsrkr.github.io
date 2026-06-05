@@ -198,6 +198,40 @@ ul li {
     text-align: justify;
 }
 
+.bio-text {
+    text-align: justify;
+}
+
+.teaching-group {
+    margin-bottom: 26px;
+}
+
+.teaching-role {
+    font-size: 18px;
+    margin-bottom: 6px;
+    color: #1b7ea8;
+}
+
+.teaching-affiliation {
+    font-style: italic;
+    color: #1b7ea8;
+    font-size: 18px;
+    margin-bottom: 18px;
+}
+
+.teaching-entry {
+    margin-bottom: 22px;
+}
+
+.teaching-course {
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.teaching-meta {
+    color: #444;
+}
+
 .citation-link {
     white-space: nowrap;
 }
