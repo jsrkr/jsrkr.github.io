@@ -68,6 +68,66 @@ main {
     margin-bottom: 25px;
 }
 
+.home-intro {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.95fr) minmax(320px, 1fr);
+    gap: 34px;
+    align-items: start;
+    margin-bottom: 38px;
+}
+
+.home-photo-wrap {
+    align-self: start;
+}
+
+.home-photo {
+    width: 100%;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08);
+}
+
+.home-copy h2 {
+    margin-top: 0;
+    margin-bottom: 14px;
+}
+
+.home-bio p {
+    color: #444;
+    text-align: justify;
+    margin-bottom: 14px;
+}
+
+.home-meta {
+    margin-top: 26px;
+    padding-top: 18px;
+    border-top: 1px solid #e4e4e4;
+}
+
+.home-meta p {
+    margin-bottom: 4px;
+    color: #555;
+}
+
+.home-meta strong {
+    color: #222;
+}
+
+.home-interests {
+    margin-top: 10px;
+}
+
+.interest-line {
+    color: #444;
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+.interest-sep {
+    color: #9a9a9a;
+    margin: 0 10px;
+}
+
 /* Profile Section */
 .profile-section {
     display: flex;
@@ -257,6 +317,10 @@ ul li {
     align-self: start;
 }
 
+.paper-card-media-centered {
+    align-self: center;
+}
+
 .paper-card-image {
     width: 100%;
     display: block;
@@ -338,6 +402,15 @@ ul li {
 }
 
 @media (max-width: 900px) {
+    .home-intro {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+
+    .home-photo-wrap {
+        max-width: 460px;
+    }
+
     .featured-paper {
         grid-template-columns: 1fr;
         gap: 18px;
@@ -396,6 +469,20 @@ footer {
         font-size: 15px;
     }
 
+    .home-intro {
+        gap: 18px;
+        margin-bottom: 28px;
+    }
+
+    .home-meta {
+        margin-top: 20px;
+        padding-top: 16px;
+    }
+
+    .interest-line {
+        font-size: 16px;
+    }
+
     .profile-section {
         flex-direction: column;
         gap: 20px;
@@ -452,6 +539,22 @@ footer {
 
     nav a {
         font-size: 15px;
+    }
+
+    .home-copy h2 {
+        margin-bottom: 12px;
+    }
+
+    .home-bio p {
+        margin-bottom: 12px;
+    }
+
+    .interest-line {
+        font-size: 15px;
+    }
+
+    .interest-sep {
+        margin: 0 6px;
     }
 
     .profile-section {
