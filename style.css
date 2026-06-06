@@ -294,6 +294,32 @@ ul li {
     text-align: justify;
 }
 
+.paper-card-summary {
+    order: 4;
+}
+
+.featured-paper-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.featured-paper-actions .paper-toggle {
+    margin-top: 0;
+}
+
+.featured-paper-link {
+    color: #0066cc;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.featured-paper-link:hover {
+    text-decoration: underline;
+}
+
 .paper-list {
     display: grid;
     gap: 22px;
@@ -328,16 +354,47 @@ ul li {
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
 }
 
+.paper-card-body {
+    display: flex;
+    flex-direction: column;
+}
+
 .paper-card-title {
     font-size: 22px;
     line-height: 1.35;
     margin-top: 0;
     margin-bottom: 10px;
     color: #111;
+    order: 1;
 }
 
 .paper-card-note {
     margin-bottom: 10px;
+    order: 3;
+}
+
+.paper-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+    order: 2;
+}
+
+.paper-card-actions .paper-toggle {
+    margin-top: 0;
+}
+
+.paper-card-link {
+    color: #0066cc;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: auto;
+}
+
+.paper-card-link:hover {
+    text-decoration: underline;
 }
 
 .paper-toggle {
