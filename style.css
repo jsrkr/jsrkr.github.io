@@ -343,6 +343,11 @@ ul li {
     align-self: start;
 }
 
+.paper-card-stack {
+    display: grid;
+    gap: 14px;
+}
+
 .paper-card-media-centered {
     align-self: center;
 }
