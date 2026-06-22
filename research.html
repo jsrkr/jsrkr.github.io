@@ -167,5 +167,26 @@
             <p>&copy; 2026-27 Jheelum Sarkar. All rights reserved.</p>
         </footer>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var paperBodies = document.querySelectorAll('.featured-paper-body, .paper-card-body');
+
+            paperBodies.forEach(function (paperBody) {
+                var toggle = paperBody.querySelector('.paper-toggle');
+                var summary = paperBody.querySelector('.featured-paper-summary, .paper-card-summary');
+
+                if (!toggle || !summary) {
+                    return;
+                }
+
+                function syncSummaryVisibility() {
+                    summary.hidden = toggle.open;
+                }
+
+                toggle.addEventListener('toggle', syncSummaryVisibility);
+                syncSummaryVisibility();
+            });
+        });
+    </script>
 </body>
 </html>
