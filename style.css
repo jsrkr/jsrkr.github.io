@@ -136,18 +136,22 @@ main {
 }
 
 .home-featured-project {
-    margin-top: 6px;
-    padding: 24px 26px;
+    width: 100%;
+    margin-top: 22px;
+    padding: 24px;
     background: linear-gradient(135deg, #fffdf9 0%, #f7f2ea 55%, #eef4f1 100%);
 }
 
 .home-featured-copy {
-    max-width: 920px;
+    width: 100%;
 }
 
-.home-featured-project h2 {
+.home-featured-project h3 {
     margin-top: 0;
     margin-bottom: 12px;
+    font-size: 22px;
+    line-height: 1.3;
+    color: #222;
 }
 
 .home-featured-copy p {
@@ -165,10 +169,11 @@ main {
     align-items: center;
     gap: 8px;
     margin-top: 6px;
-    padding: 12px 18px;
+    padding: 10px 16px;
     border-radius: 999px;
     background: #1b7ea8;
     color: #ffffff;
+    font-size: 15px;
     font-weight: 700;
     text-decoration: none;
     box-shadow: 0 10px 22px rgba(27, 126, 168, 0.18);
@@ -537,6 +542,10 @@ ul li {
 
     .home-photo {
         height: auto;
+    }
+
+    .home-featured-project {
+        margin-top: 20px;
     }
 
     .featured-paper {
@@ -1739,6 +1748,10 @@ footer {
         padding-top: 16px;
     }
 
+    .home-featured-project {
+        padding: 22px;
+    }
+
     .interest-line {
         font-size: 16px;
     }
@@ -1807,6 +1820,20 @@ footer {
 
     .home-bio p {
         margin-bottom: 12px;
+    }
+
+    .home-featured-project {
+        margin-top: 18px;
+        padding: 20px;
+    }
+
+    .home-featured-project h3 {
+        font-size: 20px;
+    }
+
+    .home-featured-link {
+        width: 100%;
+        justify-content: center;
     }
 
     .interest-line {
