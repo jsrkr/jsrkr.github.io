@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Data Sources</title>
+    <link rel="stylesheet" href="style.css?v=20260624">
+</head>
+<body>
+    <div class="container">
+        <main>
+            <section class="dashboard-card dashboard-hero">
+                <div>
+                    <p class="dashboard-eyebrow">Dashboard Notes</p>
+                    <h2>Data Sources</h2>
+                    <p class="dashboard-intro">Historical inputs combine fertility, population, ACS, ATUS, and Google Trends-based search-attention measures. Future values are scenario paths, not causal forecasts.</p>
+                </div>
+            </section>
+
+            <section class="paper-list">
+                <article class="dashboard-card">
+                    <h3>IPUMS ACS 2014-2024</h3>
+                    <p>Used for observed state-level remote-work shares and related work-pattern measures in the current build. The dashboard uses the 2014-2024 ACS window.</p>
+                </article>
+                <article class="dashboard-card">
+                    <h3>CDC fertility tables</h3>
+                    <p>General fertility rate for women ages 15-44 and total fertility rate by state and year, 2016-2023.</p>
+                    <p><a href="https://www.cdc.gov/nchs/state-stats/births/fertility-rate.html" target="_blank" rel="noopener noreferrer">Open CDC fertility source</a></p>
+                </article>
+                <article class="dashboard-card">
+                    <h3>FRED state population series</h3>
+                    <p>Used to build state population totals and annual population growth.</p>
+                    <p><a href="https://fred.stlouisfed.org/release?rid=118&t=state&ob=pv&od=desc" target="_blank" rel="noopener noreferrer">Open FRED population release</a></p>
+                </article>
+                <article class="dashboard-card">
+                    <h3>ATUS 2016-2023</h3>
+                    <p>Used as the time-use benchmark for national digital distraction, face-to-face social time, work at home, and work away from home.</p>
+                </article>
+                <article class="dashboard-card">
+                    <h3>Google Trends</h3>
+                    <p>Used only for state-by-year search-attention proxies for GenAI and online dating. Relative search attention, not direct dating-app usage.</p>
+                </article>
+                <article class="dashboard-card">
+                    <h3>Hansen remote-job-posting workbook</h3>
+                    <p>Used in the broader pipeline only as an auxiliary signal and fallback reference outside the ACS-backed 2014-2024 window.</p>
+                    <p><a href="https://wfhmap.com/" target="_blank" rel="noopener noreferrer">WFH Map reference</a></p>
+                </article>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jheelum Sarkar - Digital Life &amp; Fertility Futures</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css?v=20260624">
+    <script src="assets/vendor/plotly-2.35.2.min.js"></script>
+    <script src="assets/vendor/plotly-topojson/usa_110m.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Jheelum Sarkar</h1>
+            <nav>
+                <a href="index.html">About</a>
+                <a href="research.html">Research</a>
+                <a href="teaching.html">Teaching</a>
+                <a href="other-writings.html">Policy &amp; Public Writings</a>
+                <a href="ai-work-fertility-dashboard.html" class="active">Digital Life &amp; Fertility</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="dashboard-v1-hero-compact dashboard-card">
+                <div class="dashboard-v1-hero-compact-copy">
+                    <p class="dashboard-eyebrow">Interactive Project</p>
+                    <h2>Digital Life &amp; Fertility Futures</h2>
+                    <p class="dashboard-intro" id="v1-scope-note">How today&rsquo;s time allocation between digital life and in-person life may shape future GFR &mdash; live births per 1,000 women ages 15&ndash;44.</p>
+                    <div class="dashboard-v1-badge-row">
+                        <span class="dashboard-state-badge badge-observed">Observed</span>
+                        <span class="dashboard-state-badge badge-modeled">Modeled</span>
+                        <span class="dashboard-state-badge badge-scenario">Scenario</span>
+                        <span class="dashboard-state-badge badge-user">User-controlled</span>
+                    </div>
+                </div>
+                <div class="dashboard-status-card dashboard-v1-status-compact">
+                    <div class="dashboard-status-row">
+                        <span class="dashboard-badge dashboard-badge-warm">Version 1</span>
+                        <span class="dashboard-badge dashboard-badge-cool">Measured + Scenario</span>
+                    </div>
+                    <p class="dashboard-status-meta"><strong>Updated:</strong> <span id="v1-last-updated">Loading...</span></p>
+                    <p class="dashboard-status-note" id="v1-relationship-note">Loading relationship note...</p>
+                </div>
+            </section>
+
+            <section class="dashboard-card dashboard-v1-control-shell">
+                <div class="dashboard-v1-controls dashboard-v1-controls-global">
+                    <label class="dashboard-v1-control">
+                        <span>State</span>
+                        <select id="v1-state-select"></select>
+                    </label>
+                    <label class="dashboard-v1-control">
+                        <span>Scenario</span>
+                        <select id="v1-scenario-select"></select>
+                    </label>
+                    <label class="dashboard-v1-control">
+                        <span>Horizon</span>
+                        <div class="dashboard-metric-buttons dashboard-inline-button-group" id="v1-horizon-buttons"></div>
+                    </label>
+                    <label class="dashboard-v1-control">
+                        <span>Scenario intensity</span>
+                        <div class="dashboard-metric-buttons dashboard-inline-button-group" id="v1-intensity-buttons"></div>
+                    </label>
+                    <label class="dashboard-v1-control">
+                        <span>Model</span>
+                        <select id="v1-model-select"></select>
+                    </label>
+                </div>
+            </section>
+
+            <section class="dashboard-v1-tabbar" aria-label="Dashboard sections">
+                <button class="dashboard-v1-tab is-active" type="button" data-dashboard-tab="overview">Overview</button>
+                <button class="dashboard-v1-tab" type="button" data-dashboard-tab="data-methods">Data &amp; Methods</button>
+            </section>
+
+            <section class="dashboard-v1-tabpanel is-active" id="v1-tab-overview" data-dashboard-panel="overview">
+                <div class="dashboard-v1-kpi-grid dashboard-v1-kpi-grid-compact" id="v1-kpi-grid"></div>
+
+                <div class="dashboard-v1-focus-grid">
+                    <article class="dashboard-card">
+                        <div class="dashboard-card-head">
+                            <div>
+                                <p class="dashboard-section-kicker">Projected U.S. Map</p>
+                                <h3 id="v1-overview-map-title">Loading map...</h3>
+                            </div>
+                            <span class="dashboard-state-badge badge-modeled" id="v1-map-badge">Modeled</span>
+                        </div>
+                        <div id="v1-overview-map" class="dashboard-v1-plot dashboard-v1-plot-map-compact"></div>
+                    </article>
+
+                    <article class="dashboard-card">
+                        <div class="dashboard-card-head">
+                            <div>
+                                <p class="dashboard-section-kicker">Selected-State Forecast</p>
+                                <h3 id="v1-forecast-title">Loading forecast...</h3>
+                            </div>
+                            <span class="dashboard-score-pill score-neutral" id="v1-direction-pill">Mixed</span>
+                        </div>
+                        <div class="dashboard-v1-chart-toolbar">
+                            <div class="dashboard-metric-buttons dashboard-inline-button-group" id="v1-chart-mode-buttons"></div>
+                        </div>
+                        <div id="v1-forecast-chart" class="dashboard-v1-plot dashboard-v1-plot-forecast"></div>
+                    </article>
+                </div>
+
+                <article class="dashboard-card dashboard-v1-takeaway-card">
+                    <div class="dashboard-v1-badge-row">
+                        <span class="dashboard-state-badge badge-scenario">Scenario</span>
+                        <span class="dashboard-state-badge badge-modeled">Modeled</span>
+                    </div>
+                    <p class="dashboard-outcome-takeaway" id="v1-overview-takeaway">Loading takeaway...</p>
+                </article>
+
+                <details class="dashboard-card dashboard-v1-expander">
+                    <summary>
+                        <span>Model comparison panel</span>
+                        <span class="dashboard-v1-expander-badges">
+                            <span class="dashboard-state-badge badge-modeled">Modeled</span>
+                            <span class="dashboard-state-badge badge-scenario">Scenario</span>
+                        </span>
+                    </summary>
+                    <div class="dashboard-v1-expander-body">
+                        <div class="dashboard-v1-component-list" id="v1-model-comparison-panel"></div>
+                    </div>
+                </details>
+
+                <details class="dashboard-card dashboard-v1-expander">
+                    <summary>
+                        <span>Advanced assumptions</span>
+                        <span class="dashboard-v1-expander-badges">
+                            <span class="dashboard-state-badge badge-scenario">Scenario</span>
+                            <span class="dashboard-state-badge badge-user">User-controlled</span>
+                        </span>
+                    </summary>
+                    <div class="dashboard-v1-expander-body">
+                        <p class="dashboard-panel-note">Manual sliders let you override the default scenario assumptions. The contribution chart shows which assumptions move the scenario path up or down.</p>
+                        <div class="dashboard-v1-slider-grid" id="v1-slider-grid"></div>
+                        <div class="dashboard-v1-inline-chart-panel">
+                            <div class="dashboard-v1-chart-meta">
+                                <p class="dashboard-section-kicker">Scenario Mechanics</p>
+                                <h4>Why the model moved the forecast</h4>
+                            </div>
+                            <div id="v1-scenario-balance-chart" class="dashboard-v1-plot dashboard-v1-plot-balance"></div>
+                        </div>
+                    </div>
+                </details>
+
+                <details class="dashboard-card dashboard-v1-expander">
+                    <summary>
+                        <span>View measured components</span>
+                        <span class="dashboard-v1-expander-badges">
+                            <span class="dashboard-state-badge badge-observed">Observed</span>
+                            <span class="dashboard-state-badge badge-proxy">Proxy</span>
+                        </span>
+                    </summary>
+                    <div class="dashboard-v1-expander-body">
+                        <div class="dashboard-v1-component-list" id="v1-measured-components"></div>
+                    </div>
+                </details>
+            </section>
+
+            <section class="dashboard-v1-tabpanel" id="v1-tab-data-methods" data-dashboard-panel="data-methods">
+                <article class="dashboard-card">
+                    <div class="dashboard-card-head">
+                        <div>
+                            <p class="dashboard-section-kicker">Status Legend</p>
+                            <h3>How to read the compact badges</h3>
+                        </div>
+                    </div>
+                    <div class="dashboard-v1-badge-row">
+                        <span class="dashboard-state-badge badge-observed">Observed</span>
+                        <span class="dashboard-state-badge badge-modeled">Modeled</span>
+                        <span class="dashboard-state-badge badge-imputed">Imputed</span>
+                        <span class="dashboard-state-badge badge-proxy">Proxy</span>
+                        <span class="dashboard-state-badge badge-scenario">Scenario</span>
+                        <span class="dashboard-state-badge badge-user">User-controlled</span>
+                    </div>
+                </article>
+
+                <section class="dashboard-v1-doc-strip dashboard-card">
+                    <a class="dashboard-doc-link" href="dashboard-data-sources.html" target="_blank" rel="noopener noreferrer">Data Sources</a>
+                    <a class="dashboard-doc-link" href="dashboard-proxies.html" target="_blank" rel="noopener noreferrer">Proxies</a>
+                    <a class="dashboard-doc-link" href="dashboard-assumptions.html" target="_blank" rel="noopener noreferrer">Assumptions</a>
+                    <a class="dashboard-doc-link" href="dashboard-methodology.html" target="_blank" rel="noopener noreferrer">Methodology</a>
+                    <a class="dashboard-doc-link" href="outputs/measurement_blueprint.md" target="_blank" rel="noopener noreferrer">Coding Blueprint</a>
+                </section>
+
+                <div class="dashboard-v1-method-grid">
+                    <article class="dashboard-card">
+                        <div class="dashboard-card-head">
+                            <div>
+                                <p class="dashboard-section-kicker">Methodology</p>
+                                <h3>What the overview is doing</h3>
+                            </div>
+                        </div>
+                        <p class="dashboard-panel-note">Historical inputs combine fertility, population, ACS, ATUS, and Google Trends-based search-attention measures. Future values are scenario paths, not causal forecasts.</p>
+                    </article>
+
+                    <article class="dashboard-card">
+                        <div class="dashboard-card-head">
+                            <div>
+                                <p class="dashboard-section-kicker">Coverage</p>
+                                <h3>What is measured directly</h3>
+                            </div>
+                        </div>
+                        <p class="dashboard-panel-note">Note: I measure digital dating using google trends data by state-year. Direct relationship-status fertility pathways are a future extension</p>
+                    </article>
+                </div>
+
+                <article class="dashboard-card">
+                    <div class="dashboard-card-head">
+                        <div>
+                            <p class="dashboard-section-kicker">Warnings</p>
+                            <h3>Source quality and caveats</h3>
+                        </div>
+                    </div>
+                    <div class="dashboard-v1-quality-list" id="v1-quality-list"></div>
+                </article>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2026-27 Jheelum Sarkar. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="ai-work-fertility-dashboard-data.js?v=20260624"></script>
+    <script src="ai-work-fertility-dashboard.js?v=20260624"></script>
+</body>
+</html>
