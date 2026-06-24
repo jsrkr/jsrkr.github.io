@@ -1,0 +1,517 @@
+{
+  "metadata": {
+    "last_updated": "June 22, 2026",
+    "status": "Generated U.S. dashboard data",
+    "notes": "Observed inputs update from Google Trends, the World Bank API, and the Hansen-style remote-work workbook or its exported snapshot. Right-side fertility, mental-health, and productivity panels are model-implied pressure scores rather than causal estimates.",
+    "status_note": "Google Trends nowcasts were refreshed on June 22, 2026; World Bank fertility and population-growth baselines are 2024 and 2024; the remote-work anchor uses 10.1% remote postings in March 2026."
+  },
+  "default_metric": "genai_weekly",
+  "default_region": "northeast",
+  "global_summary": {
+    "dating_monthly": 0.10165413533834586,
+    "genai_weekly": 0.16553374820488273,
+    "in_person_work": 0.899,
+    "physical_mobility": 0.6200976612695964
+  },
+  "live_panel": {
+    "refresh_label": "Generated from live U.S. inputs",
+    "note": "Observed cards mix two kinds of measures: direct anchors from the remote-work workbook and official fertility/population series, plus Google Trends-based nowcasts for digital and in-person attention. Estimated adult shares are calibration-based, not direct census counts.",
+    "current_stats": [
+      {
+        "title": "Adults with high non-work screen time daily",
+        "value": 0.5690886546569266,
+        "note": "Estimated share built from social, GenAI, and in-person attention mix."
+      },
+      {
+        "title": "Adults using GenAI at home weekly",
+        "value": 0.16553374820488273,
+        "note": "Nowcast from Google Trends for ChatGPT."
+      },
+      {
+        "title": "Adults using dating apps monthly",
+        "value": 0.10165413533834586,
+        "note": "Nowcast from Google Trends for Tinder."
+      },
+      {
+        "title": "Adults using social media daily",
+        "value": 0.6999052132701422,
+        "note": "Nowcast from Google Trends for Instagram."
+      },
+      {
+        "title": "Adults with weekly in-person social routines",
+        "value": 0.6200976612695964,
+        "note": "Nowcast from Google Trends for restaurants near me."
+      },
+      {
+        "title": "Workers in primarily in-person jobs",
+        "value": 0.899,
+        "note": "1 minus the 10.1% remote-postings anchor."
+      }
+    ],
+    "relationship_split": [
+      {
+        "label": "Single adults",
+        "household_context": "Not married or not cohabiting",
+        "genai_weekly": 0.18539779798946868,
+        "dating_monthly": 0.17789473684210524,
+        "social_media_daily": 0.7558976303317536,
+        "in_person_interactions": 0.5456859419172448,
+        "note": "Modeled split: singles are weighted toward app-based matching and solitary digital time, so the mental-health and fertility margins are more exposed when in-person routines thin out."
+      },
+      {
+        "label": "Married or cohabiting adults",
+        "household_context": "Living with a partner",
+        "genai_weekly": 0.15725706079463858,
+        "dating_monthly": 0.028463157894736843,
+        "social_media_daily": 0.6509118483412323,
+        "in_person_interactions": 0.6697054741711642,
+        "note": "Modeled split: partnered adults have less exposure to the matching margin, but fertility timing can still fall if screen-heavy home life crowds out energy, local routines, or community support."
+      }
+    ],
+    "balance": {
+      "home_digital": 0.3932,
+      "home_digital_note": "Weighted average of GenAI, dating, and social-media nowcasts.",
+      "in_person": 0.5763,
+      "in_person_note": "Weighted average of on-site work and in-person social nowcasts.",
+      "summary": "The core margin is simple: when home-based digital intensity rises above in-person anchors, the model tilts toward later partnering, more isolation pressure, and a wider productivity gap between AI-complementary and less-complementary work."
+    }
+  },
+  "metrics": [
+    {
+      "id": "dating_monthly",
+      "label": "Dating",
+      "unit": "estimated share"
+    },
+    {
+      "id": "genai_weekly",
+      "label": "GenAI",
+      "unit": "estimated share"
+    },
+    {
+      "id": "social_media_daily",
+      "label": "Social",
+      "unit": "estimated share"
+    },
+    {
+      "id": "in_person_work",
+      "label": "On-site work",
+      "unit": "share of workers"
+    },
+    {
+      "id": "physical_mobility",
+      "label": "Going out",
+      "unit": "estimated share"
+    }
+  ],
+  "regions": [
+    {
+      "id": "northeast",
+      "name": "Northeast",
+      "income_tier": "Dense metro corridor",
+      "state_count": 9,
+      "summary": "Northeast is below the U.S. GenAI nowcast and below the U.S. in-person activity proxy. That leaves a weaker home-shift gap than the national balance.",
+      "shares": {
+        "dating_monthly": 0.10349195021451935,
+        "genai_weekly": 0.16386432953930685,
+        "social_media_daily": 0.733359802080539,
+        "physical_mobility": 0.6135690208152285,
+        "in_person_work": 0.9166911142158576
+      },
+      "women_segments": {
+        "ai_complementary": 0.2162,
+        "ai_substitutable": 0.2323,
+        "not_working": 0.3092
+      },
+      "fertility": {
+        "score": 64,
+        "baseline_tfr": "1.63 births/woman (2024)",
+        "population_growth": "0.98% (2024)",
+        "projected_direction": "Model midpoint 1.68",
+        "summary": "If this home-shift mix persisted, the dashboard model moves the region toward a 1.68 fertility midpoint and about 1.19% population growth.",
+        "takeaway": "The sign can still reverse: remote flexibility can help partnered households, but heavy digital-at-home substitution usually lowers the meeting, matching, and coordination margin."
+      },
+      "mental_health": {
+        "digital_home": 43,
+        "in_person": 61,
+        "days_alone_trend": "-7.1 pts",
+        "sadness_trend": "-5.7 pts",
+        "care_use_trend": "-3.9 pts",
+        "takeaway": "This panel follows the Emma Harrington-style margin: days spent alone, sadness or depression, and mental-health care use rise when home-based digital time outpaces face-to-face routines."
+      },
+      "productivity": {
+        "skilled": 73,
+        "unskilled": 55,
+        "skilled_trend": "+23.3 pts",
+        "unskilled_trend": "+4.5 pts",
+        "productivity_gap": "+18.7 pts",
+        "takeaway": "GenAI looks more complementary in already-remote-capable work, while on-site service and manual jobs benefit less from the home shift and can lose coordination or routine."
+      },
+      "debug": {
+        "pressure_gap": -0.195,
+        "work_anchor": 0.5835,
+        "regional_attention": {
+          "genai": 73.77777777777777,
+          "dating": 53.0,
+          "social": 38.111111111111114
+        }
+      }
+    },
+    {
+      "id": "midwest",
+      "name": "Great Lakes",
+      "income_tier": "Manufacturing and services",
+      "state_count": 5,
+      "summary": "Great Lakes is below the U.S. GenAI nowcast and above the U.S. in-person activity proxy. That leaves a weaker home-shift gap than the national balance.",
+      "shares": {
+        "dating_monthly": 0.09685284397434263,
+        "genai_weekly": 0.15325263349986382,
+        "social_media_daily": 0.5772803106756429,
+        "physical_mobility": 0.67471651367463,
+        "in_person_work": 0.9132320209570381
+      },
+      "women_segments": {
+        "ai_complementary": 0.2139,
+        "ai_substitutable": 0.2329,
+        "not_working": 0.29
+      },
+      "fertility": {
+        "score": 64,
+        "baseline_tfr": "1.63 births/woman (2024)",
+        "population_growth": "0.98% (2024)",
+        "projected_direction": "Model midpoint 1.68",
+        "summary": "If this home-shift mix persisted, the dashboard model moves the region toward a 1.68 fertility midpoint and about 1.19% population growth.",
+        "takeaway": "The sign can still reverse: remote flexibility can help partnered households, but heavy digital-at-home substitution usually lowers the meeting, matching, and coordination margin."
+      },
+      "mental_health": {
+        "digital_home": 35,
+        "in_person": 68,
+        "days_alone_trend": "-15.2 pts",
+        "sadness_trend": "-12.2 pts",
+        "care_use_trend": "-8.4 pts",
+        "takeaway": "This panel follows the Emma Harrington-style margin: days spent alone, sadness or depression, and mental-health care use rise when home-based digital time outpaces face-to-face routines."
+      },
+      "productivity": {
+        "skilled": 73,
+        "unskilled": 56,
+        "skilled_trend": "+23.0 pts",
+        "unskilled_trend": "+5.6 pts",
+        "productivity_gap": "+17.3 pts",
+        "takeaway": "GenAI looks more complementary in already-remote-capable work, while on-site service and manual jobs benefit less from the home shift and can lose coordination or routine."
+      },
+      "debug": {
+        "pressure_gap": -0.3039,
+        "work_anchor": 0.5662,
+        "regional_attention": {
+          "genai": 69.0,
+          "dating": 49.6,
+          "social": 30.0
+        }
+      }
+    },
+    {
+      "id": "west",
+      "name": "Plains",
+      "income_tier": "Lower-density interior",
+      "state_count": 7,
+      "summary": "Plains is below the U.S. GenAI nowcast and below the U.S. in-person activity proxy. That leaves a weaker home-shift gap than the national balance.",
+      "shares": {
+        "dating_monthly": 0.1087920770449125,
+        "genai_weekly": 0.1542045132110431,
+        "social_media_daily": 0.5552886797927612,
+        "physical_mobility": 0.5479042718786401,
+        "in_person_work": 0.9179265046654359
+      },
+      "women_segments": {
+        "ai_complementary": 0.2137,
+        "ai_substitutable": 0.2334,
+        "not_working": 0.2912
+      },
+      "fertility": {
+        "score": 64,
+        "baseline_tfr": "1.63 births/woman (2024)",
+        "population_growth": "0.98% (2024)",
+        "projected_direction": "Model midpoint 1.68",
+        "summary": "If this home-shift mix persisted, the dashboard model moves the region toward a 1.68 fertility midpoint and about 1.19% population growth.",
+        "takeaway": "The sign can still reverse: remote flexibility can help partnered households, but heavy digital-at-home substitution usually lowers the meeting, matching, and coordination margin."
+      },
+      "mental_health": {
+        "digital_home": 39,
+        "in_person": 64,
+        "days_alone_trend": "-11.0 pts",
+        "sadness_trend": "-8.9 pts",
+        "care_use_trend": "-6.0 pts",
+        "takeaway": "This panel follows the Emma Harrington-style margin: days spent alone, sadness or depression, and mental-health care use rise when home-based digital time outpaces face-to-face routines."
+      },
+      "productivity": {
+        "skilled": 73,
+        "unskilled": 53,
+        "skilled_trend": "+23.0 pts",
+        "unskilled_trend": "+3.4 pts",
+        "productivity_gap": "+19.6 pts",
+        "takeaway": "GenAI looks more complementary in already-remote-capable work, while on-site service and manual jobs benefit less from the home shift and can lose coordination or routine."
+      },
+      "debug": {
+        "pressure_gap": -0.2369,
+        "work_anchor": 0.5896,
+        "regional_attention": {
+          "genai": 69.42857142857143,
+          "dating": 55.714285714285715,
+          "social": 28.857142857142858
+        }
+      }
+    },
+    {
+      "id": "south-atlantic",
+      "name": "South Atlantic",
+      "income_tier": "Large urban-growth belt",
+      "state_count": 9,
+      "summary": "South Atlantic is above the U.S. GenAI nowcast and above the U.S. in-person activity proxy. That leaves a weaker home-shift gap than the national balance.",
+      "shares": {
+        "dating_monthly": 0.09069105909783874,
+        "genai_weekly": 0.18113918355700487,
+        "social_media_daily": 0.7183932755074667,
+        "physical_mobility": 0.7130384013228167,
+        "in_person_work": 0.8692887251135174
+      },
+      "women_segments": {
+        "ai_complementary": 0.2244,
+        "ai_substitutable": 0.2249,
+        "not_working": 0.2909
+      },
+      "fertility": {
+        "score": 64,
+        "baseline_tfr": "1.63 births/woman (2024)",
+        "population_growth": "0.98% (2024)",
+        "projected_direction": "Model midpoint 1.68",
+        "summary": "If this home-shift mix persisted, the dashboard model moves the region toward a 1.68 fertility midpoint and about 1.18% population growth.",
+        "takeaway": "The sign can still reverse: remote flexibility can help partnered households, but heavy digital-at-home substitution usually lowers the meeting, matching, and coordination margin."
+      },
+      "mental_health": {
+        "digital_home": 42,
+        "in_person": 63,
+        "days_alone_trend": "-8.3 pts",
+        "sadness_trend": "-6.5 pts",
+        "care_use_trend": "-4.6 pts",
+        "takeaway": "This panel follows the Emma Harrington-style margin: days spent alone, sadness or depression, and mental-health care use rise when home-based digital time outpaces face-to-face routines."
+      },
+      "productivity": {
+        "skilled": 74,
+        "unskilled": 56,
+        "skilled_trend": "+23.8 pts",
+        "unskilled_trend": "+6.3 pts",
+        "productivity_gap": "+17.5 pts",
+        "takeaway": "GenAI looks more complementary in already-remote-capable work, while on-site service and manual jobs benefit less from the home shift and can lose coordination or routine."
+      },
+      "debug": {
+        "pressure_gap": -0.1799,
+        "work_anchor": 0.3464,
+        "regional_attention": {
+          "genai": 81.55555555555556,
+          "dating": 46.44444444444444,
+          "social": 37.333333333333336
+        }
+      }
+    },
+    {
+      "id": "south-central",
+      "name": "South Central",
+      "income_tier": "More on-site labor mix",
+      "state_count": 8,
+      "summary": "South Central is below the U.S. GenAI nowcast and above the U.S. in-person activity proxy. That leaves a weaker home-shift gap than the national balance.",
+      "shares": {
+        "dating_monthly": 0.08762643897880293,
+        "genai_weekly": 0.1640802652145281,
+        "social_media_daily": 0.6157656647206857,
+        "physical_mobility": 0.6678845378029246,
+        "in_person_work": 0.8846224371288859
+      },
+      "women_segments": {
+        "ai_complementary": 0.2189,
+        "ai_substitutable": 0.2284,
+        "not_working": 0.29
+      },
+      "fertility": {
+        "score": 64,
+        "baseline_tfr": "1.63 births/woman (2024)",
+        "population_growth": "0.98% (2024)",
+        "projected_direction": "Model midpoint 1.68",
+        "summary": "If this home-shift mix persisted, the dashboard model moves the region toward a 1.68 fertility midpoint and about 1.19% population growth.",
+        "takeaway": "The sign can still reverse: remote flexibility can help partnered households, but heavy digital-at-home substitution usually lowers the meeting, matching, and coordination margin."
+      },
+      "mental_health": {
+        "digital_home": 38,
+        "in_person": 65,
+        "days_alone_trend": "-11.6 pts",
+        "sadness_trend": "-9.3 pts",
+        "care_use_trend": "-6.4 pts",
+        "takeaway": "This panel follows the Emma Harrington-style margin: days spent alone, sadness or depression, and mental-health care use rise when home-based digital time outpaces face-to-face routines."
+      },
+      "productivity": {
+        "skilled": 73,
+        "unskilled": 56,
+        "skilled_trend": "+23.3 pts",
+        "unskilled_trend": "+5.5 pts",
+        "productivity_gap": "+17.8 pts",
+        "takeaway": "GenAI looks more complementary in already-remote-capable work, while on-site service and manual jobs benefit less from the home shift and can lose coordination or routine."
+      },
+      "debug": {
+        "pressure_gap": -0.2302,
+        "work_anchor": 0.4231,
+        "regional_attention": {
+          "genai": 73.875,
+          "dating": 44.875,
+          "social": 32.0
+        }
+      }
+    },
+    {
+      "id": "mountain",
+      "name": "Mountain",
+      "income_tier": "Long-distance commute mix",
+      "state_count": 8,
+      "summary": "Mountain is above the U.S. GenAI nowcast and below the U.S. in-person activity proxy. That leaves a weaker home-shift gap than the national balance.",
+      "shares": {
+        "dating_monthly": 0.1176488679325432,
+        "genai_weekly": 0.16935526528064662,
+        "social_media_daily": 0.8779471391525401,
+        "physical_mobility": 0.5712945340995035,
+        "in_person_work": 0.8846224371288859
+      },
+      "women_segments": {
+        "ai_complementary": 0.2202,
+        "ai_substitutable": 0.2279,
+        "not_working": 0.3391
+      },
+      "fertility": {
+        "score": 52,
+        "baseline_tfr": "1.63 births/woman (2024)",
+        "population_growth": "0.98% (2024)",
+        "projected_direction": "Model midpoint 1.63",
+        "summary": "If this home-shift mix persisted, the dashboard model moves the region toward a 1.63 fertility midpoint and about 1.00% population growth.",
+        "takeaway": "The sign can still reverse: remote flexibility can help partnered households, but heavy digital-at-home substitution usually lowers the meeting, matching, and coordination margin."
+      },
+      "mental_health": {
+        "digital_home": 52,
+        "in_person": 53,
+        "days_alone_trend": "+2.4 pts",
+        "sadness_trend": "+2.0 pts",
+        "care_use_trend": "+1.3 pts",
+        "takeaway": "This panel follows the Emma Harrington-style margin: days spent alone, sadness or depression, and mental-health care use rise when home-based digital time outpaces face-to-face routines."
+      },
+      "productivity": {
+        "skilled": 73,
+        "unskilled": 54,
+        "skilled_trend": "+23.4 pts",
+        "unskilled_trend": "+3.8 pts",
+        "productivity_gap": "+19.7 pts",
+        "takeaway": "GenAI looks more complementary in already-remote-capable work, while on-site service and manual jobs benefit less from the home shift and can lose coordination or routine."
+      },
+      "debug": {
+        "pressure_gap": -0.0416,
+        "work_anchor": 0.4231,
+        "regional_attention": {
+          "genai": 76.25,
+          "dating": 60.25,
+          "social": 45.625
+        }
+      }
+    },
+    {
+      "id": "pacific",
+      "name": "Pacific",
+      "income_tier": "High digital adoption",
+      "state_count": 5,
+      "summary": "Pacific is below the U.S. GenAI nowcast and below the U.S. in-person activity proxy. That leaves a weaker home-shift gap than the national balance.",
+      "shares": {
+        "dating_monthly": 0.10974052079350918,
+        "genai_weekly": 0.16480210732883904,
+        "social_media_daily": 0.78125268711437,
+        "physical_mobility": 0.5126337757527916,
+        "in_person_work": 0.9259153629060426
+      },
+      "women_segments": {
+        "ai_complementary": 0.2157,
+        "ai_substitutable": 0.2333,
+        "not_working": 0.333
+      },
+      "fertility": {
+        "score": 58,
+        "baseline_tfr": "1.63 births/woman (2024)",
+        "population_growth": "0.98% (2024)",
+        "projected_direction": "Model midpoint 1.66",
+        "summary": "If this home-shift mix persisted, the dashboard model moves the region toward a 1.66 fertility midpoint and about 1.10% population growth.",
+        "takeaway": "The sign can still reverse: remote flexibility can help partnered households, but heavy digital-at-home substitution usually lowers the meeting, matching, and coordination margin."
+      },
+      "mental_health": {
+        "digital_home": 48,
+        "in_person": 56,
+        "days_alone_trend": "-1.8 pts",
+        "sadness_trend": "-1.5 pts",
+        "care_use_trend": "-1.0 pts",
+        "takeaway": "This panel follows the Emma Harrington-style margin: days spent alone, sadness or depression, and mental-health care use rise when home-based digital time outpaces face-to-face routines."
+      },
+      "productivity": {
+        "skilled": 73,
+        "unskilled": 53,
+        "skilled_trend": "+23.3 pts",
+        "unskilled_trend": "+2.7 pts",
+        "productivity_gap": "+20.6 pts",
+        "takeaway": "GenAI looks more complementary in already-remote-capable work, while on-site service and manual jobs benefit less from the home shift and can lose coordination or routine."
+      },
+      "debug": {
+        "pressure_gap": -0.1224,
+        "work_anchor": 0.6296,
+        "regional_attention": {
+          "genai": 74.2,
+          "dating": 56.2,
+          "social": 40.6
+        }
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "title": "Digital life outruns local routines",
+      "trigger": "Home digital share exceeds in-person anchors by 0.0%",
+      "summary": "This is the downside path: more life shifts onto screens without enough local work or social routines to offset it.",
+      "fertility": "Model midpoint slips toward about 1.63 births per woman.",
+      "mental_health": "Days alone and sadness or depression tilt upward fastest for adults living alone.",
+      "productivity": "Skilled workers still gain from GenAI, but the skilled-unskilled productivity gap widens."
+    },
+    {
+      "title": "Flexibility supports coordination",
+      "trigger": "Remote posting anchor stays near 10.1% while in-person social routines hold up",
+      "summary": "This is the upside path: remote flexibility saves time, but workers still keep face-to-face anchors and community contact.",
+      "fertility": "Model midpoint can edge back toward about 1.63 births per woman.",
+      "mental_health": "The isolation margin softens because digital work does not fully replace coworkers, friends, and outside routines.",
+      "productivity": "GenAI complementarity remains positive without as much mental-health drag on the rest of the labor market."
+    }
+  ],
+  "method_snapshot": [
+    {
+      "title": "Google Trends nowcast",
+      "value": "12-month U.S. search attention",
+      "text": "Representative terms are ChatGPT, Tinder, Instagram, restaurants near me, and remote jobs. Each proxy is normalized by its own U.S. 12-month mean."
+    },
+    {
+      "title": "Remote work anchor",
+      "value": "10.1% remote postings",
+      "text": "Pulled from the Hansen-style workbook in March 2026; the dashboard uses 1 minus this share as the national on-site work anchor."
+    },
+    {
+      "title": "Fertility baseline",
+      "value": "1.63 TFR, 0.98% growth",
+      "text": "Official World Bank U.S. baselines for 2024 fertility and 2024 population growth."
+    },
+    {
+      "title": "Mental-health outcomes",
+      "value": "Days alone, sadness, care use",
+      "text": "The projection layer follows the remote-work mental-health margin emphasized in the Emma Harrington coauthored Science paper."
+    },
+    {
+      "title": "Productivity split",
+      "value": "21.1% vs 2.4%",
+      "text": "Skilled and unskilled productivity indices are anchored to occupation-level remote-capability differences in the workbook, then tilted by regional GenAI and in-person proxies."
+    }
+  ]
+}
