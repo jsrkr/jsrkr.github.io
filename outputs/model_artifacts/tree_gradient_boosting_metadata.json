@@ -1,0 +1,62 @@
+{
+  "train_years": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022
+  ],
+  "validation_years": [
+    2023
+  ],
+  "test_years": [
+    2024
+  ],
+  "feature_count": 42,
+  "sequence_length": 3,
+  "description": "Tree-based ML model using histogram gradient boosting.",
+  "feature_columns": [
+    "remote_work_exposure_index",
+    "in_person_work_exposure_index",
+    "digital_distraction_index",
+    "digital_social_index",
+    "in_person_social_index",
+    "commute_burden_index",
+    "work_family_compatibility_proxy",
+    "gendered_care_risk_proxy",
+    "remote_work_exposure_index_lag1",
+    "remote_work_exposure_index_lag2",
+    "in_person_work_exposure_index_lag1",
+    "in_person_work_exposure_index_lag2",
+    "digital_distraction_index_lag1",
+    "digital_distraction_index_lag2",
+    "digital_social_index_lag1",
+    "digital_social_index_lag2",
+    "in_person_social_index_lag1",
+    "in_person_social_index_lag2",
+    "commute_burden_index_lag1",
+    "commute_burden_index_lag2",
+    "work_family_compatibility_proxy_lag1",
+    "work_family_compatibility_proxy_lag2",
+    "gendered_care_risk_proxy_lag1",
+    "gendered_care_risk_proxy_lag2",
+    "fertility_rate_lag1",
+    "fertility_rate_lag2",
+    "fertility_rate_rolling3",
+    "total_population",
+    "population_growth_rate",
+    "labor_force_participation_rate",
+    "female_employment_rate",
+    "married_or_partnered_share_state_year",
+    "state_history_mean_fertility",
+    "state_history_mean_remote_work",
+    "state_log_population_baseline",
+    "year_index",
+    "year_index_sq",
+    "post_2020",
+    "post_2020_trend",
+    "region_id"
+  ]
+}

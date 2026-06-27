@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jheelum Sarkar - Digital Life &amp; Fertility Trends</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=20260624b">
+    <link rel="stylesheet" href="style.css?v=20260626b">
     <script src="assets/vendor/plotly-2.35.2.min.js"></script>
 </head>
 <body>
@@ -23,55 +23,106 @@
 
         <main class="scenario-dashboard">
             <section class="scenario-dashboard-header">
-                <div class="scenario-dashboard-copy">
-                    <h2>Digital Life &amp; Fertility Trends</h2>
-                    <p class="scenario-dashboard-subtitle">
-                        As more of life moves online, what happens to fertility? Explore how different mixes of remote work, screen time, online social life, and in-person interaction could shift projected fertility trends across U.S. states.
-                    </p>
-                    <p class="scenario-dashboard-definition">
-                        This atlas helps users compare how fertility paths shift across states under different assumptions about how people allocate time across digital life, care work, and in-person interaction. Use it to identify which states are most sensitive to each scenario, compare mechanisms, and download scenario outputs.
-                    </p>
-                </div>
-                <div class="scenario-dashboard-meta">
-                    <span class="dashboard-state-badge badge-scenario">Scenario exercise &mdash; not a causal estimate</span>
-                    <div class="scenario-summary-line" id="hero-stat-grid" aria-label="Dashboard summary"></div>
-                </div>
-            </section>
+                <div class="scenario-dashboard-hero">
+                    <div class="scenario-dashboard-copy">
+                        <h2>Digital Life &amp; Fertility Trends</h2>
+                        <p class="scenario-dashboard-subtitle">
+                            Explore how remote-work share, commute time saved, screen leisure, online social life, and in-person interaction could shift projected fertility trends across U.S. states.
+                        </p>
+                        <p class="scenario-dashboard-subnote">
+                            Compare model-based reference paths with scenario paths, inspect state rankings, and download state-year outputs.
+                        </p>
+                        <div class="scenario-dashboard-meta">
+                            <div class="scenario-summary-line" id="hero-stat-grid" aria-label="Dashboard summary"></div>
+                            <a href="#state-map" class="scenario-dashboard-jump-link">Jump to map &darr;</a>
+                        </div>
+                    </div>
 
-            <section class="dashboard-card scenario-use-strip" aria-label="What can I use this for?">
-                <div class="scenario-use-strip-head">
-                    <p class="scenario-use-strip-kicker">What can I use this for?</p>
-                </div>
-                <div class="scenario-use-grid">
-                    <article class="scenario-use-item">
-                        <i class="fa-solid fa-code-compare" aria-hidden="true"></i>
-                        <span>Compare digital-life scenarios with a reference path</span>
-                    </article>
-                    <article class="scenario-use-item">
-                        <i class="fa-solid fa-list-ol" aria-hidden="true"></i>
-                        <span>Find which states show the largest scenario differences</span>
-                    </article>
-                    <article class="scenario-use-item">
-                        <i class="fa-solid fa-sliders" aria-hidden="true"></i>
-                        <span>Compare remote-work time-saving versus digital-distraction assumptions</span>
-                    </article>
-                    <article class="scenario-use-item">
-                        <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i>
-                        <span>Download state-year outputs or copy a state summary</span>
-                    </article>
-                </div>
-            </section>
+                    <nav class="scenario-utility-nav" aria-label="Dashboard information and downloads">
+                        <details class="scenario-utility-item" data-utility-panel>
+                            <summary class="scenario-utility-trigger" aria-expanded="false">About</summary>
+                            <div class="scenario-utility-panel scenario-utility-panel-about">
+                                <p class="scenario-utility-panel-title">About this dashboard</p>
+                                <p>
+                                    This dashboard explores how projected fertility trends across U.S. states may shift under different digital-life scenarios, including remote-work time saved, screen leisure, online social life, and in-person interaction.
+                                </p>
+                                <p>
+                                    Users can compare a model-based reference path with alternative scenario paths and see whether each scenario places fertility above or below the reference path.
+                                </p>
+                                <p>
+                                    The dashboard covers all 50 states plus DC and provides state-year outputs for multiple predictive models.
+                                </p>
+                                <div class="scenario-utility-definition-list">
+                                    <div class="scenario-utility-definition">
+                                        <p class="scenario-utility-definition-label">Reference path</p>
+                                        <p>What the selected model projects for fertility if no extra digital-life scenario is added.</p>
+                                    </div>
+                                    <div class="scenario-utility-definition">
+                                        <p class="scenario-utility-definition-label">Scenario path</p>
+                                        <p>What fertility looks like after adding the selected scenario.</p>
+                                    </div>
+                                    <div class="scenario-utility-definition">
+                                        <p class="scenario-utility-definition-label">Scenario difference</p>
+                                        <p>Scenario path minus reference path. Positive values mean the scenario is above the reference path; negative values mean it is below.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
 
-            <section class="dashboard-card scenario-toolbar-card" aria-label="Dashboard utility actions">
-                <div class="scenario-toolbar-copy">
-                    <p class="scenario-toolbar-title">Export state-year scenario outputs, download rankings, and share plain-language summaries or current-view links.</p>
-                </div>
-                <div class="scenario-toolbar-actions">
-                    <button type="button" class="scenario-action-button" id="download-current-view-button">Download current view</button>
-                    <button type="button" class="scenario-action-button" id="download-all-data-button">Download all state-year scenario data</button>
-                    <button type="button" class="scenario-action-button" id="download-rankings-button">Download rankings</button>
-                    <button type="button" class="scenario-action-button" id="copy-summary-button">Copy summary</button>
-                    <button type="button" class="scenario-action-button" id="copy-link-button">Copy link to current view</button>
+                        <details class="scenario-utility-item scenario-utility-item-wide" data-utility-panel>
+                            <summary class="scenario-utility-trigger" aria-expanded="false">Data &amp; Methods</summary>
+                            <div class="scenario-utility-panel scenario-utility-panel-methods">
+                                <p class="scenario-utility-panel-title">Data &amp; Methods</p>
+                                <div class="scenario-utility-section">
+                                    <p class="scenario-utility-section-label">Data</p>
+                                    <p>The outcome is the General Fertility Rate: live births per 1,000 women aged 15&ndash;44. The dashboard uses state-year information to project fertility paths and compare how those paths change under different digital-life assumptions.</p>
+                                </div>
+                                <div class="scenario-utility-section">
+                                    <p class="scenario-utility-section-label">Digital-life proxies</p>
+                                    <p>The scenarios prioritize direct state-year measures where possible: ACS remote-work share, commute minutes, and ATUS-based digital media, screen leisure, in-person social, and care-burden minutes. When a scenario still uses a proxy, the dashboard labels it explicitly.</p>
+                                </div>
+                                <div class="scenario-utility-section">
+                                    <p class="scenario-utility-section-label">Projection models</p>
+                                    <p><strong>Statistical baseline</strong>: Main projection model. It uses observed fertility trends and state-level predictors to create the reference path. This is the default because it is easier to interpret than the machine-learning benchmarks.</p>
+                                    <p><strong>Tree ML benchmark</strong>: Flexible prediction benchmark. It allows nonlinear patterns and interactions across predictors. It is used to check whether the scenario results change when the model is more flexible.</p>
+                                    <p><strong>Neural network benchmark</strong>: Exploratory prediction benchmark. It can capture more complex patterns, but it is less transparent and should be interpreted cautiously.</p>
+                                </div>
+                                <div class="scenario-utility-section">
+                                    <p class="scenario-utility-section-label">Scenario assumptions</p>
+                                    <p>Each scenario changes the projected fertility path by adding a transparent scenario adjustment to the model-based reference path. For example, the remote-work scenario uses the change in remote-work time saved relative to the reference path, while the screen-leisure scenario uses ATUS-based digital leisure minutes.</p>
+                                </div>
+                                <div class="scenario-utility-section">
+                                    <p class="scenario-utility-section-label">Validation</p>
+                                    <p>Model performance is checked using held-out prediction errors. Lower validation error means the model predicts historical fertility patterns more accurately, but good predictive performance does not make the scenario results causal.</p>
+                                </div>
+                                <div class="scenario-utility-section">
+                                    <p class="scenario-utility-section-label">Limitations</p>
+                                    <p>These are projections under assumptions, not causal estimates. The results should be read as scenario comparisons, not as predictions of what will definitely happen. Scenario outputs depend on model choice, proxy measures, and the assumptions selected by the user.</p>
+                                </div>
+                            </div>
+                        </details>
+
+                        <details class="scenario-utility-item scenario-utility-item-download" data-utility-panel>
+                            <summary class="scenario-utility-trigger scenario-utility-trigger-download" aria-expanded="false">Download</summary>
+                            <div class="scenario-utility-panel scenario-utility-panel-download">
+                                <div class="scenario-utility-section">
+                                    <p class="scenario-utility-section-label">Downloads</p>
+                                    <div class="scenario-download-actions">
+                                        <button type="button" class="scenario-action-button" id="download-current-view-button">Download current view</button>
+                                        <button type="button" class="scenario-action-button" id="download-all-data-button">Download all state-year scenario data</button>
+                                        <button type="button" class="scenario-action-button" id="download-rankings-button">Download rankings</button>
+                                    </div>
+                                </div>
+                                <div class="scenario-utility-section">
+                                    <p class="scenario-utility-section-label">Share</p>
+                                    <div class="scenario-download-actions">
+                                        <button type="button" class="scenario-action-button" id="copy-summary-button">Copy summary</button>
+                                        <button type="button" class="scenario-action-button" id="copy-link-button">Copy link to current view</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+                    </nav>
                 </div>
                 <p class="scenario-toolbar-status" id="dashboard-utility-status" aria-live="polite"></p>
             </section>
@@ -96,19 +147,10 @@
             </div>
 
             <section class="scenario-section" id="state-map" data-section-index="0">
-                <div class="scenario-section-head scenario-section-head-compact">
+                <div class="scenario-section-head scenario-section-head-compact scenario-section-head-wide">
                     <p class="scenario-section-kicker">01 State Map</p>
-                    <h3>Figure 1: Scenario differences across U.S. states</h3>
+                    <h3 class="scenario-figure-title-long" id="figure-1-title">Figure 1: Scenario difference across U.S. states</h3>
                 </div>
-
-                <details class="dashboard-card scenario-terms-card" open>
-                    <summary>What do these terms mean?</summary>
-                    <div class="scenario-terms-body">
-                        <p><strong>Reference path:</strong> the selected model&apos;s baseline projection for fertility if recent trends continue without an added digital-life scenario.</p>
-                        <p><strong>Scenario path:</strong> the reference path plus the selected digital-life assumption, such as more remote work, more screen time, or less in-person interaction.</p>
-                        <p><strong>Scenario difference:</strong> scenario path minus reference path, measured in births per 1,000 women aged 15&ndash;44.</p>
-                    </div>
-                </details>
 
                 <div class="scenario-control-grid">
                     <label class="scenario-control">
@@ -139,7 +181,7 @@
                     </div>
                     <div id="state-map-chart" class="scenario-plot scenario-map-plot" role="img" aria-label="U.S. state scenario map"></div>
                     <p class="scenario-figure-note" id="state-map-note">
-                        Scenario difference from reference path, births per 1,000 women aged 15&ndash;44.
+                        Scenario interpretation text updates here based on the selected scenario.
                     </p>
                     <div class="scenario-caption-grid">
                         <div class="scenario-caption-box">
@@ -159,10 +201,7 @@
                     <p class="scenario-section-kicker">02 Rankings</p>
                     <h3>Where are scenario differences largest?</h3>
                     <p class="scenario-section-note">
-                        Rankings are based on scenario differences from the reference path, regardless of the map outcome.
-                    </p>
-                    <p class="scenario-section-note">
-                        Rankings use scenario differences from the reference path, measured in births per 1,000 women aged 15&ndash;44. Very small differences close to zero are treated as no meaningful difference.
+                        Rankings show which states are farthest above, farthest below, or closest to the reference path. Differences are measured in births per 1,000 women aged 15&ndash;44; values close to zero are treated as no meaningful difference.
                     </p>
                 </div>
 
@@ -174,7 +213,7 @@
             <section class="scenario-section" id="us-state" data-section-index="2">
                 <div class="scenario-section-head scenario-section-head-compact">
                     <p class="scenario-section-kicker">03 U.S. State</p>
-                    <h3>Figure 2: Reference and scenario paths for selected U.S. state</h3>
+                    <h3 id="figure-2-title">Figure 2: Reference and scenario paths for the selected state</h3>
                 </div>
 
                 <div class="scenario-control-grid scenario-control-grid-explorer">
@@ -201,16 +240,10 @@
                         <div>
                             <p class="scenario-figure-caption-line" id="state-explorer-title">Loading state explorer</p>
                         </div>
-                        <div class="scenario-inline-legend" aria-label="Chart legend">
-                            <span class="scenario-inline-chip scenario-inline-chip-observed">Observed</span>
-                            <span class="scenario-inline-chip scenario-inline-chip-reference">Reference path</span>
-                            <span class="scenario-inline-chip scenario-inline-chip-scenario">Scenario path</span>
-                        </div>
+                        <div class="scenario-inline-legend" id="state-line-legend" aria-label="Chart legend"></div>
                     </div>
                     <div id="state-line-chart" class="scenario-plot scenario-line-plot" role="img" aria-label="State scenario line chart"></div>
-                    <p class="scenario-figure-note">
-                        Note: The line chart shows General Fertility Rate levels: live births per 1,000 women aged 15&ndash;44.
-                    </p>
+                    <p class="scenario-figure-note" id="state-line-note"></p>
                     <p class="scenario-takeaway-text" id="state-takeaway-text"></p>
                 </article>
             </section>
@@ -228,7 +261,7 @@
                     <p class="scenario-section-kicker">05 Compare</p>
                     <h3>Compare two digital-life scenarios</h3>
                     <p class="scenario-section-note">
-                        Scenario comparison helps show whether digital life looks more fertility-supporting when it saves time, or more fertility-reducing when it crowds out in-person interaction.
+                        Compare two scenarios to see which one places fertility farther above or below the reference path.
                     </p>
                 </div>
 
@@ -258,7 +291,7 @@
                 <article class="dashboard-card scenario-figure-card scenario-compare-card">
                     <div class="scenario-figure-head">
                         <div>
-                            <p class="scenario-headline-strip scenario-headline-strip-muted">Scenario comparison = Scenario A difference - Scenario B difference</p>
+                            <p class="scenario-headline-strip scenario-headline-strip-muted">Scenario comparison = Scenario A difference &#8722; Scenario B difference</p>
                         </div>
                     </div>
                     <div class="scenario-compare-metric-grid" id="scenario-compare-metric-grid"></div>
@@ -285,8 +318,8 @@
                         <div class="scenario-assumption-grid" id="assumption-slider-grid"></div>
                         <div class="scenario-mechanism-panel">
                             <div class="scenario-mechanism-head">
-                                <p class="dashboard-section-kicker">Why did the scenario move?</p>
-                                <h4>Direction relative to the reference path</h4>
+                                <p class="dashboard-section-kicker">Why did the scenario change?</p>
+                                <h4>Direction of the scenario difference</h4>
                             </div>
                             <div id="scenario-mechanism-grid" class="scenario-mechanism-grid"></div>
                         </div>
@@ -299,7 +332,7 @@
                     <p class="scenario-section-kicker">07 Method</p>
                     <h3>Data and method</h3>
                     <p class="scenario-section-note">
-                        The dashboard compares scenario paths with a reference path using state-year data currently loaded in the browser. These are projections under assumptions, not causal estimates.
+                        Use the top Data &amp; Methods panel for the full overview. This section keeps only the key interpretation notes and validation snapshot.
                     </p>
                 </div>
                 <div class="scenario-method-grid" id="method-card-grid"></div>
@@ -311,7 +344,7 @@
         </footer>
     </div>
 
-    <script src="ai-work-fertility-dashboard-data.js?v=20260624b"></script>
-    <script src="ai-work-fertility-dashboard.js?v=20260624b"></script>
+    <script src="ai-work-fertility-dashboard-data.js?v=20260625a"></script>
+    <script src="ai-work-fertility-dashboard.js?v=20260626b"></script>
 </body>
 </html>

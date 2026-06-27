@@ -1,0 +1,6 @@
+source,status,reason
+D:\usa_00010.dta\usa_00010.dta,not used for dashboard panel,Local ACS IPUMS extract appears to be 1980-only and is not suitable for a modern 2010-2025 dashboard panel.
+Google Trends via pytrends,used,Built state-year search-attention proxies for GenAI and online dating in the United States for 2016-2024.
+D:\usa_00010.dta\usa_00010.dta,used,Built direct weighted ACS state-year measures for 2014-2024 from the local IPUMS extract.
+D:\cps_00005.dta\cps_00005_wfh.dta,used,Used CPS telework responses as fallback remote-work evidence outside ACS coverage and retained CPS-specific fallback fields.
+D:\remote_work_in_job_ads_public_data.xlsx,used,Used Hansen national remote-posting shares to scale fallback state remote-work exposure where direct survey coverage is incomplete.

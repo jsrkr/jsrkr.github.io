@@ -1,0 +1,17 @@
+{
+  "model": "statistical_ridge",
+  "scenario": "online_life_helps_matching",
+  "year": 2035,
+  "n_states": 51,
+  "min_scenario_difference": 0.0492544962,
+  "max_scenario_difference": 0.073573353,
+  "mean_scenario_difference": 0.06167826,
+  "std_scenario_difference": 0.005132331607515615,
+  "unique_scenario_difference_values_3dp": 20,
+  "positive_states": 50,
+  "negative_states": 0,
+  "zero_or_near_zero_states": 1,
+  "share_abs_lt_0_05": 0.0196078431372549,
+  "share_abs_lt_0_10": 1.0,
+  "share_abs_lt_0_50": 1.0
+}

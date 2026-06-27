@@ -1,0 +1,417 @@
+state_name,year,general_fertility_rate,total_fertility_rate_approx
+United States,2016,62.0,1.82
+United States,2017,60.3,1.77
+United States,2018,59.1,1.73
+United States,2019,58.3,1.71
+United States,2020,56.0,1.64
+United States,2021,56.3,1.66
+United States,2022,56.0,1.66
+United States,2023,54.5,1.62
+Alabama,2016,60.5,1.82
+Alabama,2017,59.4,1.79
+Alabama,2018,59.1,1.79
+Alabama,2019,59.3,1.81
+Alabama,2020,58.6,1.81
+Alabama,2021,59.8,1.87
+Alabama,2022,58.2,1.83
+Alabama,2023,57.2,1.81
+Alaska,2016,74.7,2.14
+Alaska,2017,71.6,2.02
+Alaska,2018,68.1,1.97
+Alaska,2019,66.0,1.95
+Alaska,2020,63.9,1.89
+Alaska,2021,64.9,1.89
+Alaska,2022,63.1,1.89
+Alaska,2023,60.8,1.80
+Arizona,2016,60.4,1.79
+Arizona,2017,58.7,1.74
+Arizona,2018,57.6,1.72
+Arizona,2019,56.5,1.69
+Arizona,2020,55.3,1.67
+Arizona,2021,55.4,1.68
+Arizona,2022,54.9,1.68
+Arizona,2023,53.2,1.62
+Arkansas,2016,63.7,1.93
+Arkansas,2017,62.9,1.91
+Arkansas,2018,61.3,1.88
+Arkansas,2019,61.1,1.86
+Arkansas,2020,60.6,1.88
+Arkansas,2021,61.3,1.92
+Arkansas,2022,60.1,1.90
+Arkansas,2023,58.8,1.85
+California,2016,59.8,1.68
+California,2017,57.3,1.61
+California,2018,55.6,1.57
+California,2019,54.0,1.53
+California,2020,51.8,1.48
+California,2021,51.7,1.48
+California,2022,50.8,1.47
+California,2023,49.8,1.44
+Colorado,2016,57.5,1.63
+Colorado,2017,55.4,1.57
+Colorado,2018,54.9,1.56
+Colorado,2019,53.9,1.53
+Colorado,2020,52.8,1.51
+Colorado,2021,53.1,1.53
+Colorado,2022,51.9,1.50
+Colorado,2023,50.8,1.48
+Connecticut,2016,52.7,1.54
+Connecticut,2017,51.7,1.51
+Connecticut,2018,50.9,1.49
+Connecticut,2019,50.8,1.48
+Connecticut,2020,49.5,1.46
+Connecticut,2021,51.0,1.52
+Connecticut,2022,49.4,1.48
+Connecticut,2023,48.6,1.45
+Delaware,2016,58.8,1.71
+Delaware,2017,57.4,1.66
+Delaware,2018,55.9,1.62
+Delaware,2019,56.2,1.62
+Delaware,2020,54.1,1.57
+Delaware,2021,55.1,1.60
+Delaware,2022,54.3,1.58
+Delaware,2023,52.9,1.55
+District of Columbia,2016,51.4,1.34
+District of Columbia,2017,49.6,1.42
+District of Columbia,2018,48.2,1.35
+District of Columbia,2019,46.7,1.31
+District of Columbia,2020,44.5,1.24
+District of Columbia,2021,45.1,1.28
+District of Columbia,2022,44.2,1.25
+District of Columbia,2023,42.6,1.19
+Florida,2016,57.1,1.66
+Florida,2017,56.1,1.64
+Florida,2018,55.3,1.62
+Florida,2019,54.8,1.60
+Florida,2020,53.7,1.57
+Florida,2021,54.6,1.62
+Florida,2022,53.4,1.59
+Florida,2023,52.5,1.56
+Georgia,2016,61.7,1.78
+Georgia,2017,60.5,1.75
+Georgia,2018,59.3,1.73
+Georgia,2019,59.1,1.72
+Georgia,2020,58.0,1.70
+Georgia,2021,58.9,1.75
+Georgia,2022,57.8,1.72
+Georgia,2023,56.4,1.68
+Hawaii,2016,64.4,1.86
+Hawaii,2017,62.1,1.79
+Hawaii,2018,61.4,1.78
+Hawaii,2019,59.8,1.76
+Hawaii,2020,57.2,1.69
+Hawaii,2021,57.5,1.72
+Hawaii,2022,56.1,1.69
+Hawaii,2023,54.9,1.64
+Idaho,2016,67.8,1.94
+Idaho,2017,65.9,1.89
+Idaho,2018,64.8,1.87
+Idaho,2019,64.2,1.85
+Idaho,2020,63.1,1.84
+Idaho,2021,64.2,1.91
+Idaho,2022,63.0,1.87
+Idaho,2023,61.2,1.81
+Illinois,2016,58.5,1.71
+Illinois,2017,56.8,1.66
+Illinois,2018,55.3,1.62
+Illinois,2019,54.6,1.60
+Illinois,2020,52.9,1.55
+Illinois,2021,53.0,1.57
+Illinois,2022,52.2,1.55
+Illinois,2023,51.3,1.52
+Indiana,2016,64.1,1.87
+Indiana,2017,62.8,1.84
+Indiana,2018,61.9,1.82
+Indiana,2019,61.2,1.80
+Indiana,2020,59.8,1.77
+Indiana,2021,60.7,1.82
+Indiana,2022,59.9,1.80
+Indiana,2023,58.1,1.74
+Iowa,2016,66.2,1.94
+Iowa,2017,64.5,1.90
+Iowa,2018,63.8,1.90
+Iowa,2019,62.1,1.85
+Iowa,2020,61.2,1.83
+Iowa,2021,61.8,1.85
+Iowa,2022,61.0,1.84
+Iowa,2023,59.7,1.80
+Kansas,2016,66.5,1.92
+Kansas,2017,64.9,1.88
+Kansas,2018,63.2,1.85
+Kansas,2019,62.8,1.87
+Kansas,2020,61.4,1.82
+Kansas,2021,61.9,1.84
+Kansas,2022,61.1,1.83
+Kansas,2023,59.6,1.78
+Kentucky,2016,63.2,1.85
+Kentucky,2017,62.1,1.82
+Kentucky,2018,61.5,1.82
+Kentucky,2019,61.0,1.85
+Kentucky,2020,59.9,1.80
+Kentucky,2021,60.6,1.81
+Kentucky,2022,59.7,1.82
+Kentucky,2023,58.6,1.78
+Louisiana,2016,65.1,1.87
+Louisiana,2017,63.8,1.84
+Louisiana,2018,62.4,1.81
+Louisiana,2019,62.1,1.80
+Louisiana,2020,61.0,1.79
+Louisiana,2021,61.7,1.87
+Louisiana,2022,60.2,1.85
+Louisiana,2023,58.5,1.79
+Maine,2016,52.9,1.50
+Maine,2017,52.0,1.48
+Maine,2018,51.8,1.48
+Maine,2019,51.4,1.47
+Maine,2020,50.2,1.45
+Maine,2021,51.9,1.52
+Maine,2022,50.8,1.48
+Maine,2023,49.1,1.44
+Maryland,2016,58.4,1.70
+Maryland,2017,57.2,1.67
+Maryland,2018,56.1,1.64
+Maryland,2019,55.7,1.63
+Maryland,2020,53.9,1.59
+Maryland,2021,54.2,1.61
+Maryland,2022,53.8,1.60
+Maryland,2023,52.4,1.56
+Massachusetts,2016,51.8,1.46
+Massachusetts,2017,50.7,1.44
+Massachusetts,2018,49.9,1.41
+Massachusetts,2019,49.3,1.39
+Massachusetts,2020,47.2,1.33
+Massachusetts,2021,48.6,1.39
+Massachusetts,2022,47.5,1.36
+Massachusetts,2023,46.1,1.32
+Michigan,2016,58.2,1.71
+Michigan,2017,57.3,1.69
+Michigan,2018,56.8,1.68
+Michigan,2019,55.9,1.65
+Michigan,2020,54.2,1.60
+Michigan,2021,54.9,1.64
+Michigan,2022,53.8,1.61
+Michigan,2023,52.7,1.57
+Minnesota,2016,63.8,1.84
+Minnesota,2017,61.9,1.80
+Minnesota,2018,61.4,1.79
+Minnesota,2019,60.3,1.76
+Minnesota,2020,59.1,1.73
+Minnesota,2021,59.5,1.75
+Minnesota,2022,58.2,1.72
+Minnesota,2023,56.9,1.67
+Mississippi,2016,61.3,1.85
+Mississippi,2017,60.5,1.83
+Mississippi,2018,59.6,1.81
+Mississippi,2019,60.2,1.85
+Mississippi,2020,58.8,1.82
+Mississippi,2021,60.4,1.91
+Mississippi,2022,58.1,1.85
+Mississippi,2023,56.8,1.80
+Missouri,2016,61.8,1.81
+Missouri,2017,60.6,1.78
+Missouri,2018,59.7,1.76
+Missouri,2019,59.4,1.76
+Missouri,2020,58.2,1.73
+Missouri,2021,58.8,1.76
+Missouri,2022,58.0,1.74
+Missouri,2023,56.6,1.70
+Montana,2016,62.5,1.83
+Montana,2017,60.4,1.77
+Montana,2018,59.1,1.74
+Montana,2019,58.7,1.74
+Montana,2020,57.4,1.71
+Montana,2021,59.1,1.79
+Montana,2022,58.0,1.75
+Montana,2023,56.3,1.70
+Nebraska,2016,71.0,2.06
+Nebraska,2017,68.9,2.00
+Nebraska,2018,67.5,1.98
+Nebraska,2019,66.4,1.95
+Nebraska,2020,64.9,1.92
+Nebraska,2021,65.1,1.95
+Nebraska,2022,64.4,1.94
+Nebraska,2023,63.2,1.90
+Nevada,2016,58.9,1.72
+Nevada,2017,57.2,1.67
+Nevada,2018,56.1,1.64
+Nevada,2019,55.4,1.63
+Nevada,2020,53.1,1.57
+Nevada,2021,53.8,1.60
+Nevada,2022,52.9,1.58
+Nevada,2023,51.5,1.53
+New Hampshire,2016,51.2,1.45
+New Hampshire,2017,49.8,1.42
+New Hampshire,2018,49.1,1.40
+New Hampshire,2019,48.8,1.39
+New Hampshire,2020,46.9,1.34
+New Hampshire,2021,48.2,1.41
+New Hampshire,2022,47.1,1.37
+New Hampshire,2023,45.8,1.33
+New Jersey,2016,59.1,1.73
+New Jersey,2017,58.2,1.71
+New Jersey,2018,57.4,1.69
+New Jersey,2019,56.9,1.68
+New Jersey,2020,55.0,1.63
+New Jersey,2021,56.1,1.68
+New Jersey,2022,55.2,1.65
+New Jersey,2023,53.9,1.62
+New Mexico,2016,60.8,1.76
+New Mexico,2017,58.9,1.71
+New Mexico,2018,57.7,1.68
+New Mexico,2019,56.4,1.65
+New Mexico,2020,54.2,1.59
+New Mexico,2021,54.0,1.59
+New Mexico,2022,53.6,1.58
+New Mexico,2023,51.9,1.53
+New York,2016,56.3,1.62
+New York,2017,54.9,1.59
+New York,2018,53.6,1.55
+New York,2019,52.8,1.53
+New York,2020,50.4,1.47
+New York,2021,51.6,1.52
+New York,2022,50.0,1.48
+New York,2023,48.9,1.44
+North Carolina,2016,59.5,1.74
+North Carolina,2017,58.3,1.71
+North Carolina,2018,57.2,1.69
+North Carolina,2019,57.0,1.68
+North Carolina,2020,55.8,1.65
+North Carolina,2021,56.5,1.69
+North Carolina,2022,55.9,1.67
+North Carolina,2023,54.6,1.63
+North Dakota,2016,73.1,2.11
+North Dakota,2017,71.8,2.07
+North Dakota,2018,70.9,2.04
+North Dakota,2019,69.1,2.00
+North Dakota,2020,67.2,1.94
+North Dakota,2021,67.5,1.94
+North Dakota,2022,66.8,1.84
+North Dakota,2023,65.4,1.80
+Ohio,2016,61.9,1.81
+Ohio,2017,60.7,1.79
+Ohio,2018,60.1,1.77
+Ohio,2019,59.5,1.76
+Ohio,2020,58.1,1.73
+Ohio,2021,58.9,1.76
+Ohio,2022,58.0,1.74
+Ohio,2023,56.8,1.70
+Oklahoma,2016,67.4,1.94
+Oklahoma,2017,65.8,1.90
+Oklahoma,2018,64.2,1.86
+Oklahoma,2019,64.1,1.86
+Oklahoma,2020,62.5,1.83
+Oklahoma,2021,63.1,1.87
+Oklahoma,2022,62.4,1.85
+Oklahoma,2023,61.1,1.80
+Oregon,2016,54.6,1.54
+Oregon,2017,52.5,1.49
+Oregon,2018,51.4,1.46
+Oregon,2019,50.7,1.44
+Oregon,2020,49.1,1.40
+Oregon,2021,49.5,1.42
+Oregon,2022,48.3,1.39
+Oregon,2023,47.2,1.35
+Pennsylvania,2016,57.2,1.68
+Pennsylvania,2017,56.1,1.65
+Pennsylvania,2018,55.4,1.63
+Pennsylvania,2019,55.1,1.62
+Pennsylvania,2020,53.7,1.59
+Pennsylvania,2021,54.6,1.63
+Pennsylvania,2022,53.9,1.61
+Pennsylvania,2023,52.6,1.57
+Rhode Island,2016,51.5,1.47
+Rhode Island,2017,50.6,1.45
+Rhode Island,2018,49.9,1.43
+Rhode Island,2019,49.5,1.42
+Rhode Island,2020,48.1,1.38
+Rhode Island,2021,49.2,1.43
+Rhode Island,2022,48.0,1.40
+Rhode Island,2023,46.7,1.36
+South Carolina,2016,59.2,1.73
+South Carolina,2017,57.8,1.70
+South Carolina,2018,56.9,1.68
+South Carolina,2019,57.1,1.70
+South Carolina,2020,56.0,1.67
+South Carolina,2021,57.2,1.73
+South Carolina,2022,56.3,1.70
+South Carolina,2023,55.1,1.67
+South Dakota,2016,76.2,2.22
+South Dakota,2017,74.9,2.23
+South Dakota,2018,73.8,2.15
+South Dakota,2019,71.9,2.08
+South Dakota,2020,70.4,2.04
+South Dakota,2021,71.8,2.07
+South Dakota,2022,70.9,2.01
+South Dakota,2023,69.2,1.95
+Tennessee,2016,60.8,1.78
+Tennessee,2017,59.6,1.74
+Tennessee,2018,59.1,1.74
+Tennessee,2019,59.0,1.74
+Tennessee,2020,57.6,1.70
+Tennessee,2021,58.9,1.76
+Tennessee,2022,58.1,1.74
+Tennessee,2023,56.9,1.70
+Texas,2016,66.2,2.02
+Texas,2017,64.3,1.96
+Texas,2018,63.1,1.92
+Texas,2019,62.4,1.90
+Texas,2020,60.4,1.85
+Texas,2021,60.6,1.86
+Texas,2022,59.9,1.84
+Texas,2023,58.8,1.81
+Utah,2016,73.3,2.25
+Utah,2017,70.4,2.12
+Utah,2018,68.2,2.03
+Utah,2019,66.9,1.99
+Utah,2020,64.8,1.92
+Utah,2021,65.3,1.92
+Utah,2022,64.1,1.85
+Utah,2023,62.5,1.79
+Vermont,2016,49.4,1.40
+Vermont,2017,48.1,1.37
+Vermont,2018,47.5,1.36
+Vermont,2019,46.8,1.34
+Vermont,2020,44.9,1.29
+Vermont,2021,46.2,1.35
+Vermont,2022,45.0,1.31
+Vermont,2023,43.8,1.28
+Virginia,2016,58.9,1.71
+Virginia,2017,57.6,1.69
+Virginia,2018,56.8,1.66
+Virginia,2019,56.5,1.65
+Virginia,2020,55.1,1.62
+Virginia,2021,55.6,1.64
+Virginia,2022,54.9,1.62
+Virginia,2023,53.6,1.58
+Washington,2016,58.7,1.71
+Washington,2017,56.5,1.65
+Washington,2018,55.3,1.61
+Washington,2019,54.4,1.59
+Washington,2020,52.7,1.54
+Washington,2021,52.9,1.56
+Washington,2022,51.6,1.52
+Washington,2023,50.2,1.48
+West Virginia,2016,58.4,1.72
+West Virginia,2017,57.1,1.70
+West Virginia,2018,56.4,1.68
+West Virginia,2019,55.6,1.66
+West Virginia,2020,54.1,1.63
+West Virginia,2021,55.3,1.69
+West Virginia,2022,54.2,1.65
+West Virginia,2023,52.8,1.61
+Wisconsin,2016,60.8,1.77
+Wisconsin,2017,59.3,1.73
+Wisconsin,2018,58.7,1.72
+Wisconsin,2019,57.6,1.69
+Wisconsin,2020,56.3,1.66
+Wisconsin,2021,56.8,1.69
+Wisconsin,2022,55.9,1.66
+Wisconsin,2023,54.4,1.61
+Wyoming,2016,65.5,1.86
+Wyoming,2017,62.8,1.79
+Wyoming,2018,61.7,1.76
+Wyoming,2019,61.2,1.75
+Wyoming,2020,59.4,1.70
+Wyoming,2021,60.3,1.75
+Wyoming,2022,59.2,1.72
+Wyoming,2023,57.3,1.65

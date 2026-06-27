@@ -1,16 +1,16 @@
 const dashboardData = window.AI_WORK_FERTILITY_DASHBOARD_V1 || null;
 
 const sliderDefinitions = [
-    { key: "remote_work_growth", label: "remote-work growth", min: -0.03, max: 0.08, step: 0.005 },
-    { key: "digital_distraction_growth", label: "digital-distraction growth", min: -0.05, max: 0.08, step: 0.005 },
+    { key: "remote_work_growth", label: "remote-work share growth", min: -0.03, max: 0.08, step: 0.005 },
+    { key: "digital_distraction_growth", label: "screen-leisure growth", min: -0.05, max: 0.08, step: 0.005 },
     { key: "digital_social_growth", label: "online-social-life growth", min: -0.03, max: 0.05, step: 0.005 },
-    { key: "face_to_face_change", label: "face-to-face interaction change", min: -0.08, max: 0.05, step: 0.005 },
+    { key: "face_to_face_change", label: "in-person social change", min: -0.08, max: 0.05, step: 0.005 },
     { key: "gendered_care_penalty", label: "gendered-care burden penalty", min: 0.0, max: 0.08, step: 0.005 },
 ];
 
 const mechanismOrder = [
-    { key: "mechanism_remote_work_flexibility", label: "remote work flexibility" },
-    { key: "mechanism_digital_distraction", label: "digital distraction" },
+    { key: "mechanism_remote_work_flexibility", label: "remote-work time saved" },
+    { key: "mechanism_digital_distraction", label: "screen leisure" },
     { key: "mechanism_online_matching", label: "online matching / digital social life" },
     { key: "mechanism_in_person_social", label: "in-person social interaction" },
     { key: "mechanism_care_burden", label: "care burden" },
@@ -22,8 +22,52 @@ const scenarioCompareDefaults = {
 };
 
 const SCENARIO_DIFFERENCE_TOLERANCE = 0.05;
+const RANKING_DISPLAY_DIGITS = 3;
 const DESIRED_HORIZON_YEARS = [2030, 2035, 2040, 2045, 2050, 2055, 2060];
 const DEFAULT_HORIZON_YEAR = 2035;
+const WOMEN_AGE_LABEL = "15\u201344";
+
+const scenarioAdjustmentProfiles = {
+    remote_work_saves_time: {
+        remote: 1.0,
+        distraction: 0.35,
+        online: 0.2,
+        inPerson: 0.25,
+        care: 0.6,
+    },
+    digital_distraction_crowds_out: {
+        remote: 0.1,
+        distraction: 1.0,
+        online: 0.2,
+        inPerson: 0.45,
+        care: 0.15,
+    },
+    online_life_helps_matching: {
+        remote: 0.15,
+        distraction: 0.25,
+        online: 1.0,
+        inPerson: 0.2,
+        care: 0.1,
+    },
+    home_centered_digital_life_increases_care_work: {
+        remote: 0.25,
+        distraction: 0.15,
+        online: 0.05,
+        inPerson: 0.05,
+        care: 1.1,
+    },
+};
+
+// Old dashboard scenario keys that have since been renamed. Bookmarked links and stored
+// downloads that still reference an old key resolve to the current key instead of breaking.
+const SCENARIO_ID_ALIASES = Object.assign(
+    { remote_work_increases_care_burden: "home_centered_digital_life_increases_care_work" },
+    (dashboardData && dashboardData.scenario_id_aliases) || {}
+);
+
+function resolveScenarioId(scenarioId) {
+    return SCENARIO_ID_ALIASES[scenarioId] || scenarioId;
+}
 
 const MSA_UNAVAILABLE_MESSAGE =
     "MSA-level projections require county-to-MSA fertility inputs and precomputed MSA scenario outputs. These data are not available in the current repository.";
@@ -77,6 +121,82 @@ const availability = {
     },
 };
 
+const infoTooltipCopy = {
+    control_model: {
+        label: "Model",
+        description: "Choose which predictive benchmark to display.",
+    },
+    control_scenario: {
+        label: "Scenario",
+        description: "Choose the digital-life scenario to compare with the reference path.",
+    },
+    control_horizon: {
+        label: "Horizon year",
+        description: "Choose the future year for the state map comparison.",
+    },
+    control_outcome: {
+        label: "Outcome",
+        description: "Choose whether to display the scenario difference or projected GFR levels.",
+    },
+    statistical_ridge: {
+        label: "Statistical baseline",
+        description: "A traditional statistical projection based on observed fertility trends and available state-level predictors.",
+    },
+    tree_gradient_boosting: {
+        label: "Tree ML benchmark",
+        description: "A tree-based machine-learning benchmark that captures nonlinear relationships. It is used as a predictive comparison, not a causal estimate.",
+    },
+    temporal_neural_net: {
+        label: "Neural network benchmark",
+        description: "A neural-network predictive benchmark. If performance is weaker than simpler models, interpret it as exploratory.",
+    },
+    reference_path: {
+        label: "Reference path",
+        description: "The projected General Fertility Rate under the model-based reference path before any additional scenario shift.",
+    },
+    reference_path_level: {
+        label: "Reference path (GFR level)",
+        description: "The projected General Fertility Rate under the model-based reference path before any additional scenario shift.",
+    },
+    scenario_path: {
+        label: "Scenario path",
+        description: "The projected General Fertility Rate under the selected scenario, measured as live births per 1,000 women aged " + WOMEN_AGE_LABEL + ".",
+    },
+    scenario_path_level: {
+        label: "Scenario path (GFR level)",
+        description: "The projected General Fertility Rate under the selected scenario, measured as live births per 1,000 women aged " + WOMEN_AGE_LABEL + ".",
+    },
+    scenario_difference: {
+        label: "Scenario difference from reference path",
+        description: "The selected scenario path minus the model-based reference path, measured in births per 1,000 women aged " + WOMEN_AGE_LABEL + ".",
+    },
+    gfr_level: {
+        label: "GFR level",
+        description: "General Fertility Rate, measured as live births per 1,000 women aged " + WOMEN_AGE_LABEL + ".",
+    },
+    remote_work_saves_time: {
+        label: "Remote work saves time",
+        description: "Scenario interpretation: this scenario assumes that remote work saves commuting time and increases flexibility. The adjustment is based on the change in remote-work time saved relative to the reference path.",
+    },
+    digital_distraction_crowds_out: {
+        label: "Screen leisure crowds out in-person life",
+        description: "Scenario interpretation: ATUS-based screen leisure is used as a broad proxy for digital leisure. It captures screen time broadly, not pure social media use.",
+    },
+    online_life_helps_matching: {
+        label: "Online life helps matching",
+        description: "Scenario interpretation: this scenario assumes that online social tools and dating-app search attention make it easier for people to meet partners or maintain relationships. The adjustment is based on the change in an online-dating search-interest proxy relative to the reference path.",
+    },
+    home_centered_digital_life_increases_care_work: {
+        label: "More time at home increases care work",
+        description: "Scenario interpretation: more digital life - remote work, online services and shopping, and digital entertainment - can keep people at home more and raise unpaid care and household burdens. The displayed adjustment uses ATUS-based household-work and unpaid-care minutes.",
+    },
+};
+
+let activeInfoTooltipId = "";
+let infoTooltipSequence = 0;
+let infoTooltipEventsBound = false;
+let utilityPanelEventsBound = false;
+
 document.addEventListener("DOMContentLoaded", function () {
     if (!dashboardData) {
         renderGlobalError("Dashboard data bundle could not be found.");
@@ -96,7 +216,9 @@ document.addEventListener("DOMContentLoaded", function () {
     renderScenarioStories();
     renderAssumptionSliders();
     bindEvents();
+    bindInfoTooltips();
     initializeSectionNavigation();
+    exposeDashboardValidation();
     renderDashboard();
 });
 
@@ -212,7 +334,7 @@ function applyUrlState() {
     const params = new URLSearchParams(window.location.search);
     const place = params.get("place");
     const model = params.get("model");
-    const scenario = params.get("scenario");
+    const scenario = resolveScenarioId(params.get("scenario"));
     const year = Number(params.get("year"));
     const outcome = params.get("outcome");
 
@@ -285,9 +407,8 @@ function populateGlobalControls() {
 
     document.querySelectorAll('[data-setting="model"]').forEach(function (select) {
         select.innerHTML = models.map(function (model) {
-            const label = model.id === "temporal_neural_net" ? model.label + " (exploratory)" : model.label;
             const disabled = model.available ? "" : " disabled";
-            return '<option value="' + model.id + '"' + disabled + ">" + label + "</option>";
+            return '<option value="' + model.id + '"' + disabled + ">" + getModelDisplayLabel(model) + "</option>";
         }).join("");
     });
 
@@ -508,6 +629,175 @@ function bindUtilityActions() {
     bindClick("download-rankings-button", downloadRankings);
     bindClick("copy-summary-button", copySummary);
     bindClick("copy-link-button", copyCurrentViewLink);
+    bindUtilityPanels();
+}
+
+function bindUtilityPanels() {
+    const nav = document.querySelector(".scenario-utility-nav");
+    const detailsNodes = Array.from(document.querySelectorAll("[data-utility-panel]"));
+    if (!nav || !detailsNodes.length || utilityPanelEventsBound) {
+        return;
+    }
+    utilityPanelEventsBound = true;
+
+    function syncSummaryState(detailsNode) {
+        const summary = detailsNode.querySelector("summary");
+        if (summary) {
+            summary.setAttribute("aria-expanded", detailsNode.open ? "true" : "false");
+        }
+    }
+
+    function closePanels(exceptNode) {
+        detailsNodes.forEach(function (detailsNode) {
+            if (exceptNode && detailsNode === exceptNode) {
+                syncSummaryState(detailsNode);
+                return;
+            }
+            detailsNode.open = false;
+            syncSummaryState(detailsNode);
+        });
+    }
+
+    detailsNodes.forEach(function (detailsNode) {
+        syncSummaryState(detailsNode);
+        detailsNode.addEventListener("toggle", function () {
+            if (detailsNode.open) {
+                closePanels(detailsNode);
+            } else {
+                syncSummaryState(detailsNode);
+            }
+        });
+        detailsNode.addEventListener("click", function (event) {
+            if (event.target.closest("button")) {
+                detailsNode.open = false;
+                syncSummaryState(detailsNode);
+            }
+        });
+    });
+
+    document.addEventListener("click", function (event) {
+        if (!nav.contains(event.target)) {
+            closePanels(null);
+        }
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            closePanels(null);
+        }
+    });
+}
+
+function bindInfoTooltips() {
+    if (infoTooltipEventsBound) {
+        return;
+    }
+
+    document.addEventListener("click", function (event) {
+        const button = event.target.closest("[data-tooltip-button]");
+        if (button) {
+            event.preventDefault();
+            toggleInfoTooltip(button);
+            return;
+        }
+
+        if (!activeInfoTooltipId) {
+            return;
+        }
+        const activePopover = document.getElementById(activeInfoTooltipId);
+        const activeButton = document.querySelector('[data-tooltip-id="' + activeInfoTooltipId + '"]');
+        if (!activePopover || !activeButton) {
+            closeAllInfoTooltips();
+            return;
+        }
+        if (activePopover.contains(event.target) || activeButton.contains(event.target)) {
+            return;
+        }
+        closeAllInfoTooltips();
+    });
+
+    document.addEventListener("keydown", function (event) {
+        const button = event.target.closest ? event.target.closest("[data-tooltip-button]") : null;
+        if (button && (event.key === "Enter" || event.key === " ")) {
+            event.preventDefault();
+            toggleInfoTooltip(button);
+            return;
+        }
+        if (event.key === "Escape" && activeInfoTooltipId) {
+            closeAllInfoTooltips();
+        }
+    });
+
+    window.addEventListener("resize", repositionActiveInfoTooltip);
+    window.addEventListener("scroll", repositionActiveInfoTooltip, { passive: true });
+    infoTooltipEventsBound = true;
+}
+
+function toggleInfoTooltip(button) {
+    const tooltipId = button.getAttribute("data-tooltip-id");
+    if (!tooltipId) {
+        return;
+    }
+    if (activeInfoTooltipId === tooltipId) {
+        closeAllInfoTooltips();
+        return;
+    }
+    closeAllInfoTooltips();
+    openInfoTooltip(button, tooltipId);
+}
+
+function openInfoTooltip(button, tooltipId) {
+    const popover = document.getElementById(tooltipId);
+    if (!popover) {
+        return;
+    }
+    activeInfoTooltipId = tooltipId;
+    button.setAttribute("aria-expanded", "true");
+    popover.hidden = false;
+    positionInfoTooltip(button, popover);
+}
+
+function closeAllInfoTooltips() {
+    document.querySelectorAll("[data-tooltip-button]").forEach(function (button) {
+        button.setAttribute("aria-expanded", "false");
+    });
+    document.querySelectorAll(".scenario-info-popover").forEach(function (popover) {
+        popover.hidden = true;
+        popover.style.top = "";
+        popover.style.left = "";
+        popover.removeAttribute("data-placement");
+    });
+    activeInfoTooltipId = "";
+}
+
+function repositionActiveInfoTooltip() {
+    if (!activeInfoTooltipId) {
+        return;
+    }
+    const popover = document.getElementById(activeInfoTooltipId);
+    const button = document.querySelector('[data-tooltip-id="' + activeInfoTooltipId + '"]');
+    if (!popover || !button || popover.hidden) {
+        return;
+    }
+    positionInfoTooltip(button, popover);
+}
+
+function positionInfoTooltip(button, popover) {
+    const margin = 12;
+    const buttonRect = button.getBoundingClientRect();
+    const popoverRect = popover.getBoundingClientRect();
+    const fitsBelow = buttonRect.bottom + 10 + popoverRect.height <= window.innerHeight - margin;
+    const top = fitsBelow
+        ? buttonRect.bottom + 10
+        : Math.max(margin, buttonRect.top - popoverRect.height - 10);
+    const left = clamp(
+        buttonRect.left + buttonRect.width / 2 - popoverRect.width / 2,
+        margin,
+        window.innerWidth - popoverRect.width - margin
+    );
+    popover.style.top = top + "px";
+    popover.style.left = left + "px";
+    popover.setAttribute("data-placement", fitsBelow ? "bottom" : "top");
 }
 
 function bindClick(elementId, handler) {
@@ -519,7 +809,9 @@ function bindClick(elementId, handler) {
 }
 
 function renderDashboard() {
+    closeAllInfoTooltips();
     syncControls();
+    renderControlInfoSummaries();
     renderMap();
     renderRankings();
     renderStateExplorer();
@@ -564,7 +856,7 @@ function renderScenarioStories() {
         return [
             '<article class="dashboard-card scenario-story-card' + (scenario.id === dashboardState.selectedScenario ? " is-active" : "") + '" data-scenario-story="' + scenario.id + '">',
             '<p class="dashboard-section-kicker">Scenario ' + (index + 1) + "</p>",
-            "<h3>" + scenario.label + "</h3>",
+            "<h3>" + buildInlineInfoLabelHtml(scenario.id, scenario.label) + "</h3>",
             '<p class="scenario-story-copy">' + scenario.hypothesis + "</p>",
             '<button class="scenario-story-button" type="button" data-run-scenario="' + scenario.id + '">Run scenario</button>',
             "</article>",
@@ -598,12 +890,15 @@ function renderMap() {
         return row[dashboardState.selectedOutcome];
     });
     const scenarioDiffs = mapRows.map(function (row) { return row.scenario_difference; }).filter(Number.isFinite);
+    const scenarioExtent = getScenarioDifferenceExtent(scenarioDiffs);
 
     const model = getSelectedModel();
     const mapBadge = document.getElementById("map-model-badge");
     if (mapBadge && model) {
         mapBadge.textContent = model.label;
     }
+
+    updateFigure1Title();
 
     if (!values.length || !values.every(Number.isFinite)) {
         renderPlotFallback("state-map-chart", "Unavailable for current selection.");
@@ -624,17 +919,22 @@ function renderMap() {
         colorscale: dashboardState.selectedOutcome === "scenario_difference"
             ? [[0, "#8b3a22"], [0.5, "#f6f1e8"], [1, "#1f6b75"]]
             : [[0, "#f3e5c8"], [0.5, "#d1dcbf"], [1, "#205b62"]],
+        zmin: dashboardState.selectedOutcome === "scenario_difference" ? scenarioExtent.min : undefined,
+        zmax: dashboardState.selectedOutcome === "scenario_difference" ? scenarioExtent.max : undefined,
         zmid: dashboardState.selectedOutcome === "scenario_difference" ? 0 : undefined,
         hovertemplate:
             "<b>%{customdata[1]}</b><br>" +
-            "Reference path: %{customdata[2]:.1f}<br>" +
+            "Model-based reference path: %{customdata[2]:.1f}<br>" +
             "Scenario path: %{customdata[3]:.1f}<br>" +
             "Scenario difference: %{customdata[4]:+.1f}<br>" +
             "Main driver: %{customdata[5]}<extra></extra>",
         colorbar: {
-            title: dashboardState.selectedOutcome === "scenario_difference"
-                ? "Scenario difference from reference path<br>Births per 1,000 women aged 15-44"
-                : "Births per 1,000 women aged 15-44",
+            title: {
+                text: dashboardState.selectedOutcome === "scenario_difference"
+                    ? "Scenario difference from reference path<br>Live births per 1,000 women aged " + WOMEN_AGE_LABEL
+                    : "Live births per 1,000 women aged " + WOMEN_AGE_LABEL,
+                side: "right",
+            },
             thickness: 12,
             tickfont: { size: 11 },
         },
@@ -678,26 +978,173 @@ function renderMap() {
     renderMapSummary();
 }
 
+function updateFigure1Title() {
+    const titleNode = document.getElementById("figure-1-title");
+    if (!titleNode) {
+        return;
+    }
+    if (dashboardState.selectedOutcome === "reference_path") {
+        titleNode.textContent = "Figure 1: Reference fertility path across U.S. states";
+        return;
+    }
+    if (dashboardState.selectedOutcome === "scenario_path") {
+        titleNode.textContent = "Figure 1: Scenario fertility path across U.S. states";
+        return;
+    }
+    titleNode.textContent = "Figure 1: Scenario difference across U.S. states";
+}
+
 function updateMapNote(scenarioDiffs) {
     const noteNode = document.getElementById("state-map-note");
     if (!noteNode) {
         return;
     }
     if (dashboardState.selectedOutcome !== "scenario_difference") {
-        noteNode.textContent =
-            "Values show General Fertility Rate levels: live births per 1,000 women aged 15-44. Scenario rankings below still use differences from the reference path.";
+        noteNode.innerHTML =
+            "Values show " + buildInlineInfoLabelHtml("gfr_level") +
+            ". Rankings below still use " + buildInlineInfoLabelHtml("scenario_difference") +
+            " relative to the " + buildInlineInfoLabelHtml("reference_path") + ".";
         return;
     }
     if (!scenarioDiffs.length) {
         noteNode.textContent = "Range unavailable for the current selection.";
         return;
     }
-    const minDiff = Math.min.apply(null, scenarioDiffs);
-    const maxDiff = Math.max.apply(null, scenarioDiffs);
-    noteNode.textContent =
-        "Values show how far the selected scenario is above or below the selected model's reference path, measured in births per 1,000 women aged 15-44. In the current view, scenario differences range from " +
-        formatSignedValue(minDiff, 1) + " to " + formatSignedValue(maxDiff, 1) +
-        " births per 1,000 women relative to the reference path. These are projections under assumptions, not causal estimates.";
+    const extent = getScenarioDifferenceExtent(scenarioDiffs);
+    let text =
+        buildScenarioInterpretationNote() + " In the current view, scenario differences range from " +
+        formatSignedValue(extent.min, 1) + " to " + formatSignedValue(extent.max, 1) +
+        " births per 1,000 women relative to the reference path. The projections can change based on the chosen assumptions.";
+    const calibrationNote = buildScenarioCalibrationNote();
+    if (calibrationNote) {
+        text += " " + calibrationNote;
+    }
+    const commuteNote = buildScenarioCommuteInputNote();
+    if (commuteNote) {
+        text += " " + commuteNote;
+    }
+    const scenarioDirectionNote = getScenarioDirectionNote(scenarioDiffs);
+    if (scenarioDirectionNote) {
+        text += " " + scenarioDirectionNote;
+    }
+    const reliabilityNote = buildModelReliabilityNote();
+    if (reliabilityNote) {
+        text += " " + reliabilityNote;
+    }
+    noteNode.textContent = text;
+}
+
+function getSelectedModelOption() {
+    const models = dashboardData.model_options || [];
+    return models.find(function (model) { return model.id === dashboardState.selectedModel; }) || null;
+}
+
+// Surfaces the bundle's recursive-forecast clamping diagnostic. If a model pins most of its
+// forecast state-years at the floor/ceiling clamp, its reference and scenario paths collapse onto
+// the same value and the scenario difference is mechanically meaningless -- warn the reader instead
+// of letting them compare scenarios with a degenerate model.
+function buildModelReliabilityNote() {
+    const model = getSelectedModelOption();
+    if (!model) {
+        return "";
+    }
+    if (model.forecast_clamped_heavily || model.reliable === false) {
+        return "Caution: the " + (model.label || "selected") + " benchmark pins most forecast state-years at the model's forecast clamp, so its reference and scenario paths collapse onto the same value and scenario differences are not meaningful for this model.";
+    }
+    return "";
+}
+
+function getCurrentScenarioDiagnostic() {
+    const rows = Array.isArray(dashboardData.scenario_diagnostics) ? dashboardData.scenario_diagnostics : [];
+    return rows.find(function (row) {
+        return row.model === dashboardState.selectedModel
+            && row.scenario === dashboardState.selectedScenario
+            && Number(row.year) === Number(dashboardState.selectedHorizon);
+    }) || null;
+}
+
+function buildScenarioInterpretationNote() {
+    const diagnostic = getCurrentScenarioDiagnostic();
+    if (dashboardState.selectedScenario === "remote_work_saves_time") {
+        let text = "Scenario interpretation: This scenario assumes that remote work saves commuting time and increases flexibility. The adjustment is based on the change in remote-work time saved relative to the reference path. Positive values mean the scenario path is above the reference path.";
+        if (diagnostic && typeof diagnostic.legacy_mean_scenario_difference === "number" && diagnostic.legacy_mean_scenario_difference < -0.01) {
+            text += " The earlier statistical baseline often fell below the reference path because the legacy scenario package mixed opaque proxy shifts; the current map instead uses a direct calibration anchored to additional remote-work time saved.";
+        }
+        return text;
+    }
+    if (dashboardState.selectedScenario === "digital_distraction_crowds_out") {
+        return "Scenario interpretation: this scenario uses ATUS-based screen leisure and digital media minutes as proxies for screen-based distraction. It captures digital leisure broadly, not pure social media use.";
+    }
+    if (dashboardState.selectedScenario === "online_life_helps_matching") {
+        return "Scenario interpretation: this scenario assumes that online social life and digital matching tools make it easier for people to meet or maintain relationships. The adjustment is based on the change in an online-dating search-interest proxy relative to the reference path, so the scenario difference shows whether that placed fertility above or below the reference path.";
+    }
+    if (dashboardState.selectedScenario === "home_centered_digital_life_increases_care_work") {
+        return "Scenario interpretation: this scenario assumes that more digital life - remote work, online services and shopping, and digital entertainment - keeps more activities inside the home and increases unpaid care or household-work burdens. It uses ATUS-based household-work and unpaid-care minutes, with a small offsetting remote-work flexibility credit. Negative values mean the added care burden places fertility below the reference path.";
+    }
+    return "Scenario interpretation: values show how the selected scenario moves fertility above or below the model-based reference path.";
+}
+
+function getCurrentScenarioStateRecords() {
+    return lookup.allForecastRecords.filter(function (record) {
+        return record.geography_type === "state"
+            && record.model === dashboardState.selectedModel
+            && record.scenario === dashboardState.selectedScenario
+            && Number(record.year) === Number(dashboardState.selectedHorizon);
+    });
+}
+
+function buildScenarioCalibrationNote() {
+    if (dashboardState.selectedScenario !== "remote_work_saves_time") {
+        return "";
+    }
+    const meta = dashboardData.metadata && dashboardData.metadata.remote_work_scenario;
+    if (!meta) {
+        return "";
+    }
+    return "The default calibration is anchored to the " + String(meta.default_level || "default") +
+        " CPS remote-work fertility benchmark: " + formatNumber(Number(meta.default_births_per_1000_per_1sd), 3) +
+        " births per 1,000 women for a 1 SD increase in remote-work exposure.";
+}
+
+function buildScenarioCommuteInputNote() {
+    if (dashboardState.selectedScenario !== "remote_work_saves_time") {
+        return "";
+    }
+    const rows = getCurrentScenarioStateRecords();
+    if (!rows.length) {
+        return "";
+    }
+    const qualityLabels = [];
+    const labelMap = {
+        observed: "state-specific ACS values",
+        state_smoothed: "smoothed state values",
+        region_fallback: "region fallback",
+        national_fallback: "national fallback",
+    };
+    rows.forEach(function (row) {
+        const key = String(row.commute_minutes_quality_state_year || "");
+        const label = labelMap[key];
+        if (label && qualityLabels.indexOf(label) === -1) {
+            qualityLabels.push(label);
+        }
+    });
+    if (!qualityLabels.length) {
+        return "";
+    }
+    return "Commute-time inputs use " + qualityLabels.join(", ") + ".";
+}
+
+function getScenarioDifferenceExtent(scenarioDiffs) {
+    if (!scenarioDiffs.length) {
+        return { min: NaN, max: NaN };
+    }
+    const maxAbs = Math.max.apply(null, scenarioDiffs.map(function (value) {
+        return Math.abs(Number(value));
+    }));
+    return {
+        min: -maxAbs,
+        max: maxAbs,
+    };
 }
 
 function renderMapSummary() {
@@ -710,7 +1157,7 @@ function renderMapSummary() {
     }
 
     titleNode.textContent = state.state_name + " | " + dashboardState.selectedHorizon;
-    textNode.textContent = buildSummarySentence("state", state.state_name, getSelectedModel().label, getSelectedScenario().label, context.scenarioDifference, dashboardState.selectedHorizon, context.mainDriver, false);
+    textNode.textContent = buildSummarySentence("state", state.state_name, getSelectedModel().label, getSelectedScenario().label, dashboardState.selectedModel, dashboardState.selectedScenario, context.scenarioDifference, dashboardState.selectedHorizon, context.mainDriver, false);
 }
 
 function renderRankings() {
@@ -728,14 +1175,17 @@ function renderRankings() {
         renderRankingCard({
             title: "Largest upward scenario differences",
             rows: stateAbove,
-            emptyMessage: "No states are meaningfully above the reference path in the current view.",
-            fallbackRows: closestToReference,
+            emptyMessage: "No states are above the reference path in the current view.",
         }),
         renderRankingCard({
             title: "Largest downward scenario differences",
             rows: stateBelow,
-            emptyMessage: "No states are meaningfully below the reference path in the current view.",
-            fallbackRows: closestToReference,
+            emptyMessage: "No states are below the reference path in the current view.",
+        }),
+        renderRankingCard({
+            title: "States closest to the reference path",
+            rows: closestToReference,
+            emptyMessage: "No states are near the reference path in the current view.",
         }),
     ];
 
@@ -750,6 +1200,9 @@ function renderStateExplorer() {
         titleNode.textContent = state.state_name + " through " + dashboardState.selectedHorizon;
     }
 
+    renderStateLegend();
+    updateStateLineNote();
+
     const takeawayNode = document.getElementById("state-takeaway-text");
     if (!hasRenderableStateContext(context)) {
         renderPlotFallback("state-line-chart", "Unavailable for current selection.");
@@ -762,8 +1215,29 @@ function renderStateExplorer() {
     const chartSpec = buildLineChartSpec("state", state.state_name, context);
     plotChart("state-line-chart", chartSpec.traces, chartSpec.layout);
     if (takeawayNode) {
-        takeawayNode.textContent = buildSummarySentence("state", state.state_name, getSelectedModel().label, getSelectedScenario().label, context.scenarioDifference, dashboardState.selectedHorizon, context.mainDriver, true);
+        takeawayNode.textContent = buildSummarySentence("state", state.state_name, getSelectedModel().label, getSelectedScenario().label, dashboardState.selectedModel, dashboardState.selectedScenario, context.scenarioDifference, dashboardState.selectedHorizon, context.mainDriver, true);
     }
+}
+
+function renderStateLegend() {
+    const legendNode = document.getElementById("state-line-legend");
+    if (!legendNode) {
+        return;
+    }
+    legendNode.innerHTML = [
+        '<span class="scenario-inline-chip scenario-inline-chip-observed">Observed</span>',
+        '<span class="scenario-inline-chip scenario-inline-chip-reference">' + buildInlineInfoLabelHtml("reference_path") + "</span>",
+        '<span class="scenario-inline-chip scenario-inline-chip-scenario">' + buildInlineInfoLabelHtml("scenario_path") + "</span>",
+    ].join("");
+}
+
+function updateStateLineNote() {
+    const noteNode = document.getElementById("state-line-note");
+    if (!noteNode) {
+        return;
+    }
+    noteNode.textContent =
+        "The line chart shows General Fertility Rate levels: live births per 1,000 women aged " + WOMEN_AGE_LABEL + ".";
 }
 
 function renderCompare() {
@@ -804,7 +1278,7 @@ function renderCompare() {
         metricGrid.innerHTML = [
             renderCompareMetricCard("Scenario A difference from reference path", scenarioA.label, scenarioADifference),
             renderCompareMetricCard("Scenario B difference from reference path", scenarioB.label, scenarioBDifference),
-            renderCompareMetricCard("Difference between Scenario A and Scenario B", "Scenario A difference - Scenario B difference", normalizedDifference),
+            renderCompareMetricCard("Difference between Scenario A and Scenario B", "Scenario A difference \u2212 Scenario B difference", normalizedDifference),
         ].join("");
     }
 
@@ -812,7 +1286,7 @@ function renderCompare() {
         type: "bar",
         orientation: "h",
         x: [scenarioADifference, scenarioBDifference, normalizedDifference],
-        y: [scenarioA.short_label || scenarioA.label, scenarioB.short_label || scenarioB.label, "Scenario A - Scenario B"],
+        y: [scenarioA.short_label || scenarioA.label, scenarioB.short_label || scenarioB.label, "Scenario A \u2212 Scenario B"],
         marker: {
             color: ["#1f6b75", "#c86d3f", normalizedDifference >= 0 ? "#21484f" : "#8b3a22"],
         },
@@ -822,7 +1296,7 @@ function renderCompare() {
         paper_bgcolor: "rgba(0,0,0,0)",
         plot_bgcolor: "rgba(0,0,0,0)",
         xaxis: {
-            title: "Births per 1,000 women aged 15-44",
+            title: "Births per 1,000 women aged " + WOMEN_AGE_LABEL,
             zeroline: true,
             zerolinecolor: "#d6cab9",
             gridcolor: "#efe6d8",
@@ -844,7 +1318,7 @@ function renderCompare() {
                 "In " + geography.geography_name +
                 ", the " + scenarioA.label +
                 " scenario is " + formatNumber(Math.abs(difference), 1) +
-                " births per 1,000 women aged 15-44 " + (difference > 0 ? "higher" : "lower") +
+                " births per 1,000 women aged " + WOMEN_AGE_LABEL + " " + (difference > 0 ? "higher" : "lower") +
                 " than the " + scenarioB.label +
                 " scenario in " + dashboardState.selectedHorizon + ".";
         }
@@ -896,14 +1370,14 @@ function renderModelStatus() {
         const statusText = !model.available
             ? "Unavailable"
             : model.id === "temporal_neural_net"
-                ? "Exploratory"
+                ? "Benchmark only"
                 : "Available";
         const meta = validation
             ? "Validation RMSE " + formatNumber(validation.rmse, 2) + " | MAE " + formatNumber(validation.mae, 2)
             : ((dashboardData.metadata && dashboardData.metadata.benchmark_note) || "Metrics not available.");
         return [
             '<div class="scenario-model-row' + (selectedModel && model.id === selectedModel.id ? " is-active" : "") + '">',
-            "<strong>" + (model.id === "temporal_neural_net" ? model.label + " (exploratory)" : model.label) + "</strong>",
+            "<strong>" + getModelDisplayLabel(model) + "</strong>",
             "<span>" + statusText + "</span>",
             "<small>" + meta + "</small>",
             "</div>",
@@ -919,43 +1393,19 @@ function renderModelStatus() {
 function renderMethodCards() {
     const cards = [
         {
-            title: "How to use the dashboard",
+            title: "Interpretation",
             body:
-                "<p>This dashboard is built for state-level scenario exploration. Use it to compare a selected digital-life scenario with a reference path, identify where scenario differences are largest, compare two scenarios directly, and download the state-year scenario outputs currently loaded in the browser. The results are projections under assumptions, not causal estimates.</p>",
+                "<p>This dashboard compares a selected " + buildInlineInfoLabelHtml("scenario_path") + " with the " + buildInlineInfoLabelHtml("reference_path") + " for each state and year. The key map outcome is the " + buildInlineInfoLabelHtml("scenario_difference") + ": scenario path minus reference path.</p><p>Use the top Data &amp; Methods panel for the full data, scenario, and limitations overview. Remote-work scenarios in the current build use direct state-year inputs such as remote-work share and commute time saved rather than an opaque flexibility proxy.</p>",
         },
         {
-            title: "Data sources",
+            title: "Models and validation",
             body:
-                "<p>Observed fertility rates come from CDC state-year data. Remote-work and labor-market measures come from ACS and CPS/Hansen panels, time-use inputs come from ATUS, and digital-attention proxies come from Google Trends.</p>",
+                "<p>Statistical baseline, tree ML benchmark, and neural network benchmark are predictive tools used for projection under assumptions. The neural network benchmark is exploratory and should be read more cautiously than the statistical baseline.</p>" + buildValidationHtml(),
         },
         {
-            title: "Proxy measures",
+            title: "Downloads and assumptions",
             body:
-                "<p>The dashboard uses remote-work exposure, digital distraction, online matching / digital social attention, in-person interaction, commute burden, and care-burden proxies already present in the processed panel.</p>",
-        },
-        {
-            title: "Projection models",
-            body:
-                "<p>Statistical baseline, tree ML benchmark, and neural network benchmark are predictive tools used for projection under assumptions.</p><p><strong>Reference path</strong> = projected fertility path from observed trends and covariates<br><strong>Scenario path</strong> = selected model reference path plus scenario adjustment<br><strong>Scenario difference</strong> = scenario path minus the selected model reference path</p><p><strong>Reference path</strong> and <strong>scenario path</strong> are GFR levels: live births per 1,000 women aged 15-44.</p>",
-        },
-        {
-            title: "Scenario assumptions",
-            body:
-                "<p>Template scenarios use precomputed future covariate paths already exported in the repository. The assumption panel shifts the selected scenario path inside the browser as a transparent scenario exercise around the current reference path.</p><p>Scenario directions are generated from the current model/scenario parameters and may differ from the simple hypothesis labels.</p>",
-        },
-        {
-            title: "Validation and model performance",
-            body: buildValidationHtml(),
-        },
-        {
-            title: "Limitations",
-            body:
-                "<p>The dashboard does not provide causal estimates, does not provide certainty about future births, and should be read as a scenario atlas rather than a statement of future certainty. Tree ML and neural-network benchmarks should be read as predictive comparisons; weaker performance is reported rather than hidden.</p>",
-        },
-        {
-            title: "What downloadable data mean",
-            body:
-                "<p>Downloaded values report reference paths, scenario paths, and scenario differences where available. Scenario difference is measured in births per 1,000 women aged 15-44 relative to the selected model's reference path. Reference path and scenario path are GFR levels unless otherwise noted.</p>",
+                "<p>Downloaded values report " + buildInlineInfoLabelHtml("reference_path") + ", " + buildInlineInfoLabelHtml("scenario_path") + ", and " + buildInlineInfoLabelHtml("scenario_difference") + " where available. Level outputs are reported as " + buildInlineInfoLabelHtml("gfr_level") + " unless otherwise noted.</p><p>The assumption sliders adjust the selected scenario around the precomputed path already loaded in the browser. These outputs are scenario comparisons under assumptions, not causal estimates.</p>",
         },
     ];
 
@@ -964,7 +1414,15 @@ function renderMethodCards() {
         return;
     }
 
-    methodGrid.innerHTML = cards.map(function (card) {
+    methodGrid.innerHTML = cards.map(function (card, index) {
+        if (index === 0) {
+            return [
+                '<article class="dashboard-card scenario-method-card scenario-method-card-static">',
+                '<div class="scenario-method-card-title">' + card.title + "</div>",
+                '<div class="scenario-method-body">' + card.body + "</div>",
+                "</article>",
+            ].join("");
+        }
         return [
             '<details class="dashboard-card scenario-method-card">',
             "<summary>" + card.title + "</summary>",
@@ -999,7 +1457,7 @@ function buildMetricsTable(geoType) {
         const test = metrics.find(function (row) { return row.split === "test"; });
         return [
             "<tr>",
-            "<th>" + (model.id === "temporal_neural_net" ? model.label + " (exploratory)" : model.label) + "</th>",
+            "<th>" + getModelDisplayLabel(model) + "</th>",
             "<td>" + metricCell(validation, "mae") + "</td>",
             "<td>" + metricCell(validation, "rmse") + "</td>",
             "<td>" + metricCell(test, "mae") + "</td>",
@@ -1046,6 +1504,7 @@ function getScenarioContext(geoType, geographyId, modelId, scenarioId, horizonYe
 
     const referenceFinal = finalReferenceRecord ? Number(finalReferenceRecord.reference_path) : (lastObserved ? Number(lastObserved.value) : NaN);
     const scenarioFinal = finalScenarioRecord ? Number(finalScenarioRecord.scenario_path) + manualAdjustmentFinal : (lastObserved ? Number(lastObserved.value) : NaN);
+    const precomputedScenarioShift = finalScenarioRecord ? Number(finalScenarioRecord.scenario_difference) : NaN;
 
     return {
         observedSeries: observedSeries,
@@ -1054,6 +1513,8 @@ function getScenarioContext(geoType, geographyId, modelId, scenarioId, horizonYe
         referenceFinal: referenceFinal,
         scenarioFinal: scenarioFinal,
         scenarioDifference: Number.isFinite(referenceFinal) && Number.isFinite(scenarioFinal) ? scenarioFinal - referenceFinal : NaN,
+        scenarioShiftComponent: precomputedScenarioShift,
+        manualAdjustmentComponent: manualAdjustmentFinal,
         mechanismScores: mechanismScores,
         maxMechanismAbs: maxMechanismAbs,
         mainDriver: finalScenarioRecord && finalScenarioRecord.main_driver ? finalScenarioRecord.main_driver : findMainDriver(mechanismScores),
@@ -1077,6 +1538,16 @@ function buildPathSeries(lastObserved, records, useScenarioPath, horizonYear, en
         });
     });
     return series;
+}
+
+function getScenarioAdjustmentProfile(scenarioId) {
+    return scenarioAdjustmentProfiles[scenarioId] || {
+        remote: 1.0,
+        distraction: 1.0,
+        online: 1.0,
+        inPerson: 1.0,
+        care: 1.0,
+    };
 }
 
 function computeManualAdjustment(entity, year, horizonYear, scenarioId) {
@@ -1105,13 +1576,14 @@ function computeManualAdjustment(entity, year, horizonYear, scenarioId) {
         inPerson: 0.9 + Math.min(0.5, Math.abs(populationGrowth) * 18),
         care: 1 + remoteShare * 3,
     };
+    const profile = getScenarioAdjustmentProfile(scenarioId);
 
     const rawAdjustment =
-        44 * deltas.remote * sensitivities.remote -
-        34 * deltas.distraction * sensitivities.distraction +
-        28 * deltas.online * sensitivities.online +
-        26 * deltas.inPerson * sensitivities.inPerson -
-        40 * deltas.care * sensitivities.care;
+        44 * deltas.remote * sensitivities.remote * profile.remote -
+        34 * deltas.distraction * sensitivities.distraction * profile.distraction +
+        28 * deltas.online * sensitivities.online * profile.online +
+        26 * deltas.inPerson * sensitivities.inPerson * profile.inPerson -
+        40 * deltas.care * sensitivities.care * profile.care;
 
     const forecastStartYear = getForecastStartYear();
     const horizonSpan = Math.max(1, horizonYear - forecastStartYear);
@@ -1140,12 +1612,13 @@ function combineMechanismScores(record, entity, scenarioId) {
     const inPersonDelta = Number(dashboardState.params.face_to_face_change) - Number(defaults.face_to_face_change || 0);
     const careDelta = Number(dashboardState.params.gendered_care_penalty) - Number(defaults.gendered_care_penalty || 0);
     const remoteSensitivity = 1 + Number(latest.remote_work_share || latest.remote_work_share_state_year || 0) * 3;
+    const profile = getScenarioAdjustmentProfile(scenarioId);
 
-    score.mechanism_remote_work_flexibility += 15 * remoteDelta * remoteSensitivity + 8 * inPersonDelta;
-    score.mechanism_digital_distraction += -14 * distractionDelta;
-    score.mechanism_online_matching += 12 * onlineDelta;
-    score.mechanism_in_person_social += 11 * inPersonDelta - 3 * distractionDelta;
-    score.mechanism_care_burden += -16 * careDelta - 4 * remoteDelta;
+    score.mechanism_remote_work_flexibility += profile.remote * (15 * remoteDelta * remoteSensitivity + 8 * inPersonDelta);
+    score.mechanism_digital_distraction += profile.distraction * (-14 * distractionDelta);
+    score.mechanism_online_matching += profile.online * (12 * onlineDelta);
+    score.mechanism_in_person_social += profile.inPerson * (11 * inPersonDelta - 3 * distractionDelta);
+    score.mechanism_care_burden += profile.care * (-16 * careDelta - 4 * remoteDelta);
 
     return score;
 }
@@ -1170,7 +1643,7 @@ function buildLineChartSpec(geoType, label, context) {
         mode: "lines",
         name: "Reference path",
         line: { color: "#184f58", width: 3 },
-        hovertemplate: "Reference path %{x}: %{y:.1f}<extra></extra>",
+        hovertemplate: "Model-based reference path %{x}: %{y:.1f}<extra></extra>",
     });
 
     traces.push({
@@ -1196,7 +1669,7 @@ function buildLineChartSpec(geoType, label, context) {
                 zeroline: false,
             },
             yaxis: {
-                title: "General Fertility Rate (births per 1,000 women aged 15-44)",
+                title: "General Fertility Rate (births per 1,000 women aged " + WOMEN_AGE_LABEL + ")",
                 gridcolor: "#e8e0d5",
                 zeroline: false,
             },
@@ -1271,13 +1744,18 @@ function updateSelectionStrips() {
         return;
     }
 
+    const selectedModel = getSelectedModel();
+    const selectedScenario = getSelectedScenario();
     const selectedOutcome = getSelectedOutcome();
-    strip.textContent = [
-        getSelectedModel().label,
-        getSelectedScenario().label,
-        String(dashboardState.selectedHorizon),
-        selectedOutcome ? selectedOutcome.label : "Scenario difference from reference path",
-    ].join(" | ");
+    strip.innerHTML = [
+        '<span class="scenario-headline-segment">' + buildInlineInfoLabelHtml(selectedModel.id, selectedModel.label) + "</span>",
+        '<span class="scenario-summary-separator" aria-hidden="true">|</span>',
+        '<span class="scenario-headline-segment">' + buildInlineInfoLabelHtml(selectedScenario.id, selectedScenario.label) + "</span>",
+        '<span class="scenario-summary-separator" aria-hidden="true">|</span>',
+        '<span class="scenario-headline-segment">' + escapeHtml(String(dashboardState.selectedHorizon)) + "</span>",
+        '<span class="scenario-summary-separator" aria-hidden="true">|</span>',
+        '<span class="scenario-headline-segment">' + buildOutcomeLabelHtml(selectedOutcome) + "</span>",
+    ].join("");
 }
 
 function initializeSectionNavigation() {
@@ -1388,7 +1866,7 @@ function downloadRankings() {
 function copySummary() {
     const primary = getPrimarySummaryGeography();
     const context = getScenarioContext(primary.geography_type, primary.geography_id, dashboardState.selectedModel, dashboardState.selectedScenario, dashboardState.selectedHorizon);
-    const summary = buildSummarySentence(primary.geography_type, primary.geography_name, getSelectedModel().label, getSelectedScenario().label, context.scenarioDifference, dashboardState.selectedHorizon, context.mainDriver, true);
+    const summary = buildSummarySentence(primary.geography_type, primary.geography_name, getSelectedModel().label, getSelectedScenario().label, dashboardState.selectedModel, dashboardState.selectedScenario, context.scenarioDifference, dashboardState.selectedHorizon, context.mainDriver, true);
     if (summary === "Summary unavailable for the current selection.") {
         setUtilityStatus(summary);
         return;
@@ -1444,16 +1922,9 @@ function getRankingsExportRows() {
     downwardRows.forEach(function (row) {
         rows.push(buildExportRow(row, { rank: row.rank, ranking_group: "largest_downward_scenario_differences" }));
     });
-    if (!upwardRows.length) {
-        closestRows.forEach(function (row) {
-            rows.push(buildExportRow(row, { rank: row.rank, ranking_group: "closest_to_reference_path_upward_fallback" }));
-        });
-    }
-    if (!downwardRows.length) {
-        closestRows.forEach(function (row) {
-            rows.push(buildExportRow(row, { rank: row.rank, ranking_group: "closest_to_reference_path_downward_fallback" }));
-        });
-    }
+    closestRows.forEach(function (row) {
+        rows.push(buildExportRow(row, { rank: row.rank, ranking_group: "closest_to_reference_path" }));
+    });
 
     return rows;
 }
@@ -1473,6 +1944,8 @@ function getStateRowsForCurrentView() {
             reference_path: context.referenceFinal,
             scenario_path: context.scenarioFinal,
             scenario_difference: context.scenarioDifference,
+            scenario_shift_component: context.scenarioShiftComponent,
+            manual_adjustment_component: context.manualAdjustmentComponent,
             main_driver: context.mainDriver,
         };
     });
@@ -1496,6 +1969,8 @@ function getMsaRowsForCurrentView() {
             reference_path: context.referenceFinal,
             scenario_path: context.scenarioFinal,
             scenario_difference: context.scenarioDifference,
+            scenario_shift_component: context.scenarioShiftComponent,
+            manual_adjustment_component: context.manualAdjustmentComponent,
             main_driver: context.mainDriver,
         };
     });
@@ -1521,6 +1996,8 @@ function getSelectedStateSeriesRows() {
                 reference_path: referencePath,
                 scenario_path: scenarioPath,
                 scenario_difference: scenarioPath - referencePath,
+                scenario_shift_component: Number(record.scenario_difference),
+                manual_adjustment_component: adjustment,
                 main_driver: record.main_driver || "",
             };
         });
@@ -1549,6 +2026,8 @@ function getSelectedMsaSeriesRows() {
                 reference_path: referencePath,
                 scenario_path: scenarioPath,
                 scenario_difference: scenarioPath - referencePath,
+                scenario_shift_component: Number(record.scenario_difference),
+                manual_adjustment_component: adjustment,
                 main_driver: record.main_driver || "",
             };
         });
@@ -1589,7 +2068,7 @@ function buildRankingListHtml(rows) {
             '<span class="scenario-ranking-rank">' + row.rank + "</span>",
             '<div class="scenario-ranking-copy">',
             '<strong>' + row.geography_name + "</strong>",
-            '<span>' + formatSignedValue(normalizeDifferenceForMeaning(row.scenario_difference), 1) + " births per 1,000 women aged 15-44</span>",
+            '<span>' + describeRankingDifference(row.scenario_difference) + "</span>",
             '<small>' + (row.main_driver ? "Main driver: " + row.main_driver : "Main driver unavailable") + "</small>",
             "</div>",
             "</div>",
@@ -1601,22 +2080,14 @@ function renderRankingCard(config) {
     const primarySection = config.rows.length
         ? buildRankingListHtml(config.rows)
         : '<p class="scenario-ranking-empty">' + config.emptyMessage + "</p>";
-    const fallbackSection = !config.rows.length && config.fallbackRows.length
-        ? [
-            '<div class="scenario-ranking-subsection">',
-            '<p class="scenario-ranking-subsection-title">States closest to the reference path</p>',
-            buildRankingListHtml(config.fallbackRows),
-            "</div>",
-        ].join("")
-        : "";
     return [
         '<section class="scenario-ranking-card">',
         '<div class="scenario-ranking-head">',
         "<p>State rankings</p>",
         "<h4>" + config.title + "</h4>",
-        '<div class="scenario-ranking-unit">births per 1,000 women aged 15-44 relative to reference path</div>',
+        '<div class="scenario-ranking-unit">births per 1,000 women aged ' + WOMEN_AGE_LABEL + " relative to reference path</div>",
         "</div>",
-        '<div class="scenario-ranking-list">' + primarySection + fallbackSection + "</div>",
+        '<div class="scenario-ranking-list">' + primarySection + "</div>",
         "</section>",
     ].join("");
 }
@@ -1640,7 +2111,7 @@ function renderCompareMessageCard(message) {
     ].join("");
 }
 
-function buildSummarySentence(geoType, geographyName, modelLabel, scenarioLabel, difference, year, driver, withCaveat) {
+function buildSummarySentence(geoType, geographyName, modelLabel, scenarioLabel, modelId, scenarioId, difference, year, driver, withCaveat) {
     if (!Number.isFinite(difference) || !geographyName || !modelLabel || !scenarioLabel || !year) {
         return "Summary unavailable for the current selection.";
     }
@@ -1649,8 +2120,9 @@ function buildSummarySentence(geoType, geographyName, modelLabel, scenarioLabel,
             "In " + geographyName +
             ", under the " + modelLabel +
             " model, the " + scenarioLabel +
-            " scenario is approximately equal to the reference path in " + year + ".";
-        return withCaveat ? nearZeroText + " This is a scenario comparison, not a causal estimate." : nearZeroText;
+            " scenario is approximately equal to the model-based reference path in " + year + ".";
+        const nearZeroExplanation = getScenarioSummaryExplanation(modelId, scenarioId, difference);
+        return nearZeroExplanation ? nearZeroText + " " + nearZeroExplanation : nearZeroText;
     }
     const preposition = difference > 0 ? "above" : "below";
     const text =
@@ -1658,10 +2130,22 @@ function buildSummarySentence(geoType, geographyName, modelLabel, scenarioLabel,
         ", under the " + modelLabel +
         " model, the " + scenarioLabel +
         " scenario is " + formatNumber(Math.abs(difference), 1) +
-        " births per 1,000 women aged 15-44 " + preposition +
-        " the reference path in " + year +
+        " births per 1,000 women aged " + WOMEN_AGE_LABEL + " " + preposition +
+        " the model-based reference path in " + year +
         ". The main driver is " + (driver || "not available") + ".";
-    return withCaveat ? text + " This is a scenario difference, not a causal estimate." : text;
+    const explanation = getScenarioSummaryExplanation(modelId, scenarioId, difference);
+    return explanation ? text + " " + explanation : text;
+}
+
+function getScenarioSummaryExplanation(modelId, scenarioId, difference) {
+    if (!Number.isFinite(difference)) {
+        return "";
+    }
+    const diagnostic = getCurrentScenarioDiagnostic();
+    if (scenarioId === "remote_work_saves_time" && diagnostic && diagnostic.diagnostic_reason) {
+        return diagnostic.diagnostic_reason;
+    }
+    return "";
 }
 
 function getPrimarySummaryGeography() {
@@ -1692,6 +2176,8 @@ function normalizeForecastRecords() {
         const scenarioDifference = Number.isFinite(referencePath) && Number.isFinite(scenarioPath)
             ? scenarioPath - referencePath
             : toFiniteOrNaN(record.scenario_difference);
+        const scenarioShiftComponent = toFiniteOrNaN(record.scenario_shift_component);
+        const manualAdjustmentComponent = toFiniteOrNaN(record.manual_adjustment_component);
 
         return {
             geography_type: geographyType,
@@ -1710,6 +2196,8 @@ function normalizeForecastRecords() {
             reference_path: referencePath,
             scenario_path: scenarioPath,
             scenario_difference: scenarioDifference,
+            scenario_shift_component: Number.isFinite(scenarioShiftComponent) ? scenarioShiftComponent : scenarioDifference,
+            manual_adjustment_component: Number.isFinite(manualAdjustmentComponent) ? manualAdjustmentComponent : 0,
             main_driver: record.main_driver || "",
             mechanism_remote_work_flexibility: toFiniteOrZero(record.mechanism_remote_work_flexibility),
             mechanism_digital_distraction: toFiniteOrZero(record.mechanism_digital_distraction),
@@ -1862,6 +2350,140 @@ function getOutcomeLabel(outcomeId, fallbackLabel) {
     return fallbackLabel || "Scenario difference from reference path";
 }
 
+function buildOutcomeLabelHtml(outcome) {
+    if (!outcome) {
+        return buildInlineInfoLabelHtml("scenario_difference");
+    }
+    if (outcome.id === "reference_path") {
+        return buildInlineInfoLabelHtml("reference_path_level");
+    }
+    if (outcome.id === "scenario_path") {
+        return buildInlineInfoLabelHtml("scenario_path_level");
+    }
+    return buildInlineInfoLabelHtml("scenario_difference");
+}
+
+function renderControlInfoSummaries() {
+    document.querySelectorAll(".scenario-control").forEach(function (control) {
+        const heading = control.firstElementChild;
+        const select = control.querySelector("select");
+        if (!heading || !select) {
+            return;
+        }
+
+        const baseLabel = heading.getAttribute("data-control-label") || normalizeInlineText(heading.textContent);
+        heading.setAttribute("data-control-label", baseLabel);
+        heading.classList.add("scenario-control-heading");
+
+        const labelTermKey = getControlLabelTermKey(select);
+        const selectedInfo = getControlSelectedInfo(select);
+        heading.innerHTML = [
+            '<span class="scenario-control-heading-main">',
+            labelTermKey ? buildInlineInfoLabelHtml(labelTermKey, baseLabel) : escapeHtml(baseLabel),
+            "</span>",
+            selectedInfo.label
+                ? '<span class="scenario-control-selection">' +
+                    buildControlSelectedValueHtml(selectedInfo.label, selectedInfo.termKey) +
+                    "</span>"
+                : "",
+        ].join("");
+    });
+}
+
+function getControlLabelTermKey(select) {
+    const setting = select.getAttribute("data-setting");
+    if (setting === "model") {
+        return "control_model";
+    }
+    if (setting === "scenario" || select.id === "compare-scenario-a-select" || select.id === "compare-scenario-b-select") {
+        return "control_scenario";
+    }
+    if (setting === "horizon") {
+        return "control_horizon";
+    }
+    if (setting === "outcome") {
+        return "control_outcome";
+    }
+    return "";
+}
+
+function getControlSelectedInfo(select) {
+    const setting = select.getAttribute("data-setting");
+    if (setting === "model") {
+        const model = lookup.modelById.get(select.value);
+        return {
+            label: model ? getModelDisplayLabel(model) : getSelectedOptionText(select),
+            termKey: model ? model.id : "",
+        };
+    }
+    if (setting === "scenario" || select.id === "compare-scenario-a-select" || select.id === "compare-scenario-b-select") {
+        const scenario = lookup.scenarioById.get(select.value);
+        return {
+            label: scenario ? scenario.label : getSelectedOptionText(select),
+            termKey: scenario ? scenario.id : "",
+        };
+    }
+    if (setting === "outcome") {
+        return {
+            label: getOutcomeLabel(select.value, getSelectedOptionText(select)),
+            termKey: getOutcomeInfoKey(select.value),
+        };
+    }
+    return { label: "", termKey: "" };
+}
+
+function getOutcomeInfoKey(outcomeId) {
+    if (outcomeId === "reference_path") {
+        return "reference_path_level";
+    }
+    if (outcomeId === "scenario_path") {
+        return "scenario_path_level";
+    }
+    return "scenario_difference";
+}
+
+function buildControlSelectedValueHtml(label, termKey) {
+    return termKey
+        ? buildInlineInfoLabelHtml(termKey, label)
+        : escapeHtml(label);
+}
+
+function getSelectedOptionText(select) {
+    const option = select && select.options
+        ? select.options[select.selectedIndex]
+        : null;
+    return option ? normalizeInlineText(option.textContent) : "";
+}
+
+function normalizeInlineText(value) {
+    return String(value || "").replace(/\s+/g, " ").trim();
+}
+
+function buildInlineInfoLabelHtml(termKey, labelOverride) {
+    const info = infoTooltipCopy[termKey];
+    const label = labelOverride || (info ? info.label : termKey);
+    return '<span class="scenario-inline-label">' + escapeHtml(label) + buildInfoTooltipButtonHtml(termKey, label) + "</span>";
+}
+
+function buildInfoTooltipButtonHtml(termKey, labelOverride) {
+    const info = infoTooltipCopy[termKey];
+    if (!info) {
+        return "";
+    }
+    infoTooltipSequence += 1;
+    const tooltipId = "scenario-info-tooltip-" + termKey + "-" + infoTooltipSequence;
+    const buttonLabel = "Explain " + (labelOverride || info.label);
+    return [
+        '<button type="button" class="scenario-info-button info-marker" data-tooltip-button data-tooltip-id="' + tooltipId + '" aria-label="' + escapeHtml(buttonLabel) + '" aria-expanded="false" aria-controls="' + tooltipId + '" aria-describedby="' + tooltipId + '">',
+        '<span aria-hidden="true"><em>i</em></span>',
+        "</button>",
+        '<span class="scenario-info-popover" id="' + tooltipId + '" role="tooltip" hidden>',
+        "<strong>" + escapeHtml(info.label) + "</strong>",
+        escapeHtml(info.description),
+        "</span>",
+    ].join("");
+}
+
 function getForecastStartYear() {
     return lookup.forecastStartYear || dashboardState.selectedHorizon;
 }
@@ -1926,6 +2548,10 @@ function buildModelSplitNote() {
     return "Current exported backtests use train years " + trainYears + ", validation years " + validationYears + ", and test years " + testYears + ".";
 }
 
+function getModelDisplayLabel(model) {
+    return model && model.label ? model.label : "Model";
+}
+
 function metricCell(row, key, isPercent) {
     if (!row || !Number.isFinite(Number(row[key]))) {
         return "n/a";
@@ -1981,6 +2607,8 @@ function buildExportRow(record, overrides) {
         reference_path: valueOrBlank(record.reference_path),
         scenario_path: valueOrBlank(record.scenario_path),
         scenario_difference: valueOrBlank(record.scenario_difference),
+        scenario_shift_component: valueOrBlank(record.scenario_shift_component),
+        manual_adjustment_component: valueOrBlank(record.manual_adjustment_component),
         main_driver: valueOrBlank(record.main_driver || ""),
         remote_work_assumption: valueOrBlank(extra.remote_work_assumption),
         digital_distraction_assumption: valueOrBlank(extra.digital_distraction_assumption),
@@ -2014,6 +2642,8 @@ function downloadCsv(rows, filename) {
         "reference_path",
         "scenario_path",
         "scenario_difference",
+        "scenario_shift_component",
+        "manual_adjustment_component",
         "main_driver",
         "remote_work_assumption",
         "digital_distraction_assumption",
@@ -2045,6 +2675,15 @@ function escapeCsvValue(value) {
         return '"' + text.replace(/"/g, '""') + '"';
     }
     return text;
+}
+
+function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
 }
 
 function copyTextToClipboard(text, successMessage) {
@@ -2105,7 +2744,7 @@ function setButtonDisabled(elementId, disabled) {
 function getCurrentSummaryText() {
     const primary = getPrimarySummaryGeography();
     const context = getScenarioContext(primary.geography_type, primary.geography_id, dashboardState.selectedModel, dashboardState.selectedScenario, dashboardState.selectedHorizon);
-    return buildSummarySentence(primary.geography_type, primary.geography_name, getSelectedModel().label, getSelectedScenario().label, context.scenarioDifference, dashboardState.selectedHorizon, context.mainDriver, true);
+    return buildSummarySentence(primary.geography_type, primary.geography_name, getSelectedModel().label, getSelectedScenario().label, dashboardState.selectedModel, dashboardState.selectedScenario, context.scenarioDifference, dashboardState.selectedHorizon, context.mainDriver, true);
 }
 
 function dedupeExportRows(rows) {
@@ -2209,8 +2848,46 @@ function normalizeDifferenceForMeaning(value) {
     return Math.abs(value) < SCENARIO_DIFFERENCE_TOLERANCE ? 0 : value;
 }
 
+function describeRankingDifference(value) {
+    const cleanValue = normalizeDifferenceForMeaning(value);
+    if (!Number.isFinite(cleanValue)) {
+        return "Unavailable.";
+    }
+    if (cleanValue === 0) {
+        return "Near the reference path.";
+    }
+    const direction = cleanValue > 0 ? "above" : "below";
+    return (
+        formatSignedValue(cleanValue, RANKING_DISPLAY_DIGITS) +
+        " births per 1,000 women aged " +
+        WOMEN_AGE_LABEL +
+        " " +
+        direction +
+        " the reference path."
+    );
+}
+
 function isApproximatelyEqualDifference(value) {
     return Number.isFinite(value) && Math.abs(value) < SCENARIO_DIFFERENCE_TOLERANCE;
+}
+
+function getScenarioDirectionNote(scenarioDiffs) {
+    if (dashboardState.selectedScenario !== "remote_work_saves_time" || !scenarioDiffs.length) {
+        return "";
+    }
+    const anyAbove = scenarioDiffs.some(function (value) {
+        return Number(value) > SCENARIO_DIFFERENCE_TOLERANCE;
+    });
+    const anyBelow = scenarioDiffs.some(function (value) {
+        return Number(value) < -SCENARIO_DIFFERENCE_TOLERANCE;
+    });
+    if (!anyAbove && anyBelow) {
+        return "In this view, the selected scenario still sits below the reference path in every state, which reflects the current scenario construction rather than causal evidence that remote work lowers fertility.";
+    }
+    if (anyAbove && !anyBelow) {
+        return "In this view, the remote-work time-saved scenario lifts fertility above the reference path in every state.";
+    }
+    return "";
 }
 
 function hasRenderableStateContext(context) {
@@ -2220,4 +2897,198 @@ function hasRenderableStateContext(context) {
         Number.isFinite(context.referenceFinal) &&
         Number.isFinite(context.scenarioFinal)
     );
+}
+
+function exposeDashboardValidation() {
+    window.runFertilityDashboardValidation = runDashboardValidation;
+}
+
+function runDashboardValidation() {
+    const report = {
+        requestedModel: new URLSearchParams(window.location.search).get("model") || "",
+        appliedModel: dashboardState.selectedModel,
+        urlModelRespected: true,
+        dropdownOnlyModels: [],
+        dataOnlyModels: [],
+        metricOnlyModels: [],
+        modelsMissingMetrics: [],
+        coverageFailures: [],
+        missingValueRecords: [],
+        identityFailures: [],
+        selectedViewConsistencyFailures: [],
+    };
+
+    const modelIds = new Set((dashboardData.model_options || []).map(function (model) { return model.id; }));
+    const metricModelIds = new Set((dashboardData.model_metrics || []).map(function (metric) {
+        return metric.model || metric.model_name || "";
+    }).filter(Boolean));
+    const expectedStateCount = getAvailableStates().length;
+    const stateCounts = new Map();
+
+    if (report.requestedModel && modelIds.has(report.requestedModel)) {
+        report.urlModelRespected = report.requestedModel === report.appliedModel;
+    }
+
+    lookup.allForecastRecords.forEach(function (record) {
+        if (!modelIds.has(record.model)) {
+            report.dataOnlyModels.push(record.model);
+        }
+
+        ["reference_path", "scenario_path", "scenario_difference"].forEach(function (field) {
+            if (!Number.isFinite(Number(record[field]))) {
+                report.missingValueRecords.push({
+                    model: record.model,
+                    scenario: record.scenario,
+                    geography_id: record.geography_id,
+                    year: record.year,
+                    field: field,
+                    value: record[field],
+                });
+            }
+        });
+
+        const identityError = Math.abs((Number(record.scenario_path) - Number(record.reference_path)) - Number(record.scenario_difference));
+        if (identityError > 1e-8) {
+            report.identityFailures.push({
+                model: record.model,
+                scenario: record.scenario,
+                geography_id: record.geography_id,
+                year: record.year,
+                identity_error: identityError,
+            });
+        }
+
+        if (record.geography_type === "state") {
+            const key = [record.model, record.scenario, record.year].join("|");
+            stateCounts.set(key, (stateCounts.get(key) || 0) + 1);
+        }
+    });
+
+    (dashboardData.model_options || []).forEach(function (model) {
+        if (!lookup.allForecastRecords.some(function (record) { return record.model === model.id; })) {
+            report.dropdownOnlyModels.push(model.id);
+        }
+        if (!metricModelIds.has(model.id)) {
+            report.modelsMissingMetrics.push(model.id);
+        }
+    });
+
+    Array.from(metricModelIds).forEach(function (modelId) {
+        if (!modelIds.has(modelId)) {
+            report.metricOnlyModels.push(modelId);
+        }
+    });
+
+    stateCounts.forEach(function (count, key) {
+        if (count !== expectedStateCount) {
+            const parts = key.split("|");
+            report.coverageFailures.push({
+                model: parts[0],
+                scenario: parts[1],
+                year: Number(parts[2]),
+                state_count: count,
+                expected_state_count: expectedStateCount,
+            });
+        }
+    });
+
+    const selectedState = getSelectedState();
+    const mapRow = getStateRowsForCurrentView().find(function (row) {
+        return row.geography_id === selectedState.state_fips;
+    });
+    const seriesRow = getSelectedStateSeriesRows().find(function (row) {
+        return Number(row.year) === Number(dashboardState.selectedHorizon);
+    });
+    const context = getScenarioContext("state", selectedState.state_fips, dashboardState.selectedModel, dashboardState.selectedScenario, dashboardState.selectedHorizon);
+    const summary = getCurrentSummaryText();
+    const currentViewRows = getCurrentViewExportRows().filter(function (row) {
+        return row.state_id === selectedState.state_fips && Number(row.year) === Number(dashboardState.selectedHorizon);
+    });
+    const rankingsRows = getRankingsExportRows().filter(function (row) {
+        return row.state_id === selectedState.state_fips && Number(row.year) === Number(dashboardState.selectedHorizon);
+    });
+
+    if (mapRow && seriesRow) {
+        ["reference_path", "scenario_path", "scenario_difference"].forEach(function (field) {
+            const mapValue = Number(mapRow[field]);
+            const seriesValue = Number(seriesRow[field]);
+            const contextValue = Number(
+                field === "reference_path"
+                    ? context.referenceFinal
+                    : field === "scenario_path"
+                        ? context.scenarioFinal
+                        : context.scenarioDifference
+            );
+            if (Math.abs(mapValue - seriesValue) > 1e-8 || Math.abs(mapValue - contextValue) > 1e-8) {
+                report.selectedViewConsistencyFailures.push({
+                    field: field,
+                    map_value: mapValue,
+                    series_value: seriesValue,
+                    context_value: contextValue,
+                });
+            }
+            currentViewRows.forEach(function (row) {
+                const exportValue = Number(row[field]);
+                if (Math.abs(exportValue - mapValue) > 1e-8) {
+                    report.selectedViewConsistencyFailures.push({
+                        field: field,
+                        map_value: mapValue,
+                        export_value: exportValue,
+                        source: "current_view_download",
+                    });
+                }
+            });
+            rankingsRows.forEach(function (row) {
+                if (field !== "scenario_difference") {
+                    return;
+                }
+                const rankingValue = Number(row[field]);
+                if (Math.abs(rankingValue - mapValue) > 1e-8) {
+                    report.selectedViewConsistencyFailures.push({
+                        field: field,
+                        map_value: mapValue,
+                        ranking_value: rankingValue,
+                        source: "rankings_download",
+                    });
+                }
+            });
+        });
+    }
+
+    if (summary === "Summary unavailable for the current selection.") {
+        report.selectedViewConsistencyFailures.push({
+            field: "summary",
+            issue: "Summary unavailable for the current selection.",
+        });
+    }
+
+    console.groupCollapsed("Digital Life & Fertility dashboard validation");
+    console.log("Validation summary", {
+        requestedModel: report.requestedModel || "(none)",
+        appliedModel: report.appliedModel,
+        urlModelRespected: report.urlModelRespected,
+        dropdownOnlyModels: report.dropdownOnlyModels.length,
+        dataOnlyModels: report.dataOnlyModels.length,
+        metricOnlyModels: report.metricOnlyModels.length,
+        modelsMissingMetrics: report.modelsMissingMetrics.length,
+        coverageFailures: report.coverageFailures.length,
+        missingValueRecords: report.missingValueRecords.length,
+        identityFailures: report.identityFailures.length,
+        selectedViewConsistencyFailures: report.selectedViewConsistencyFailures.length,
+    });
+    if (report.coverageFailures.length) {
+        console.table(report.coverageFailures);
+    }
+    if (report.missingValueRecords.length) {
+        console.table(report.missingValueRecords.slice(0, 25));
+    }
+    if (report.identityFailures.length) {
+        console.table(report.identityFailures.slice(0, 25));
+    }
+    if (report.selectedViewConsistencyFailures.length) {
+        console.table(report.selectedViewConsistencyFailures.slice(0, 25));
+    }
+    console.groupEnd();
+
+    return report;
 }

@@ -1,0 +1,17 @@
+{
+  "model": "statistical_ridge",
+  "scenario": "digital_distraction_crowds_out",
+  "year": 2035,
+  "n_states": 51,
+  "min_scenario_difference": -0.1314514755,
+  "max_scenario_difference": -0.1223760809,
+  "mean_scenario_difference": -0.12665310848627448,
+  "std_scenario_difference": 0.0022355086408551764,
+  "unique_scenario_difference_values_3dp": 10,
+  "positive_states": 0,
+  "negative_states": 51,
+  "zero_or_near_zero_states": 0,
+  "share_abs_lt_0_05": 0.0,
+  "share_abs_lt_0_10": 0.0,
+  "share_abs_lt_0_50": 1.0
+}

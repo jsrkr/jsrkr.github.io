@@ -1,0 +1,17 @@
+{
+  "model": "statistical_ridge",
+  "scenario": "home_centered_digital_life_increases_care_work",
+  "year": 2035,
+  "n_states": 51,
+  "min_scenario_difference": -0.0919848017,
+  "max_scenario_difference": -0.0460035485,
+  "mean_scenario_difference": -0.07203920876470589,
+  "std_scenario_difference": 0.010754961389367115,
+  "unique_scenario_difference_values_3dp": 30,
+  "positive_states": 0,
+  "negative_states": 50,
+  "zero_or_near_zero_states": 1,
+  "share_abs_lt_0_05": 0.0196078431372549,
+  "share_abs_lt_0_10": 1.0,
+  "share_abs_lt_0_50": 1.0
+}

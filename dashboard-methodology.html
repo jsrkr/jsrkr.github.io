@@ -20,11 +20,12 @@
             <section class="paper-list">
                 <article class="dashboard-card">
                     <h3>Observed state layer</h3>
-                    <p>For each state, the dashboard stores ACS-based digital-work measures for 2014-2024, along with the latest fertility measures, population growth, and Google Trends search-attention proxies.</p>
+                    <p>For each state, the dashboard stores ACS remote-work share, commute inputs, remote-work time saved, fertility measures, population growth, and other direct state-year inputs for 2014-2024. When the local ACS extract does not contain commute-time microdata, the pipeline flags the fallback and uses the best available state, region, or national substitute.</p>
                 </article>
                 <article class="dashboard-card">
                     <h3>Observed national time-use layer</h3>
-                    <p>ATUS provides the benchmark for digital distraction, face-to-face social time, work at home, and work away from home.</p>
+                    <p>ATUS provides the benchmark for digital media minutes, broad screen leisure, in-person social minutes, work at home, work away, household work, and unpaid care.</p>
+                    <p>Digital-media and screen-leisure scenarios use these ATUS-based screen-leisure and digital-media time measures. Some broader digital-access measures are not currently used in the public scenario adjustment because they are not consistently populated across states and years.</p>
                 </article>
                 <article class="dashboard-card">
                     <h3>Reference path</h3>
@@ -32,7 +33,7 @@
                 </article>
                 <article class="dashboard-card">
                     <h3>Scenario path</h3>
-                    <p>Each scenario maps the user's chosen parameter values into a standardized future shift. Different scenarios weight distraction, digital social life, remote work, face-to-face time, and care-burden terms differently.</p>
+                    <p>Each public scenario path is defined as reference path plus a transparent scenario adjustment. The remote-work scenario uses the change in remote-work time saved relative to the reference path and is anchored to a documented CPS remote-work fertility benchmark; screen scenarios use ATUS-based digital and screen-leisure minutes; care scenarios use ATUS-based household and unpaid-care minutes.</p>
                 </article>
                 <article class="dashboard-card">
                     <h3>Projection map</h3>
