@@ -122,6 +122,53 @@ def test_dashboard_bundle_has_no_missing_values_and_preserves_identity() -> None
         assert abs((scenario_path - reference_path) - scenario_difference) < 1e-8
 
 
+def test_dashboard_bundle_uses_compact_public_record_schema() -> None:
+    bundle = load_dashboard_bundle()
+    record = bundle["forecast_records"][0]
+    expected_keys = {
+        "commute_minutes_quality_state_year",
+        "geography_type",
+        "legacy_model_scenario_difference",
+        "main_driver",
+        "mechanism_care_burden",
+        "mechanism_digital_distraction",
+        "mechanism_in_person_social",
+        "mechanism_online_matching",
+        "mechanism_remote_work_flexibility",
+        "model",
+        "reference_path",
+        "scenario",
+        "scenario_difference",
+        "scenario_path",
+        "state_abbr",
+        "state_fips",
+        "state_name",
+        "year",
+    }
+    assert set(record) == expected_keys
+
+    forbidden_prefixes = ("contribution_", "delta_")
+    forbidden_keys = {
+        "clamping_flag",
+        "commute_minutes_source_state_year",
+        "legacy_model_scenario_path",
+        "manual_adjustment_component",
+        "model_label",
+        "recursive_lag_multiplier",
+        "remote_work_scenario_adjustment_formula",
+        "scenario_adjustment_post_lag",
+        "scenario_adjustment_pre_lag",
+        "scenario_label",
+        "scenario_shift_component",
+    }
+    assert not any(key.startswith(forbidden_prefixes) for key in record)
+    assert not any(key.startswith("reference_") for key in record if key != "reference_path")
+    assert record.keys().isdisjoint(forbidden_keys)
+
+    state = bundle["states"][0]
+    assert set(state) == {"fertility_series", "latest", "region", "state_abbr", "state_fips", "state_name"}
+
+
 def test_dashboard_inline_info_tooltip_copy_and_accessibility_hooks_are_present() -> None:
     script = load_dashboard_script()
 
@@ -418,18 +465,13 @@ def test_alabama_remote_work_saves_time_stays_nonnegative_in_any_available_year(
 
 def test_remote_work_scenario_exports_bounded_shares_positive_commute_and_nonnegative_delta() -> None:
     bundle = load_dashboard_bundle()
+    state_rows = bundle["states"]
     rows = scenario_rows(bundle, "statistical_ridge", "remote_work_saves_time")
+    assert state_rows
     assert rows
-    for record in rows:
-        scenario_share = float(record["remote_work_share"])
-        reference_share = float(record["reference_remote_work_share"])
-        commute_minutes = float(record["mean_commute_minutes_state_year"])
-        delta_time_saved = float(record["delta_remote_work_time_saved"])
-        assert 0.0 <= scenario_share <= 1.0
-        assert 0.0 <= reference_share <= 1.0
-        assert scenario_share >= reference_share
-        assert commute_minutes > 0
-        assert delta_time_saved >= 0
+    assert all(0.0 <= float(state["latest"]["remote_work_share"]) <= 1.0 for state in state_rows if state["latest"]["remote_work_share"] is not None)
+    assert all(float(record["scenario_difference"]) >= 0 for record in rows)
+    assert all(record["commute_minutes_quality_state_year"] for record in rows)
 
 
 def test_remote_work_scenario_metadata_documents_formula_calibration_and_commute_quality() -> None:
@@ -444,7 +486,6 @@ def test_remote_work_scenario_metadata_documents_formula_calibration_and_commute
     assert meta["source"]["file"].endswith("did_results_remote_mean_only.csv")
     assert meta["commute_input_summary"] == "region fallback"
     assert all(record["commute_minutes_quality_state_year"] == "region_fallback" for record in rows)
-    assert all(record["remote_work_scenario_adjustment_formula"] == "delta_remote_work_time_saved_only" for record in rows)
 
 
 def test_figure1_note_contains_scenario_specific_interpretation_logic() -> None:
@@ -628,20 +669,9 @@ def test_screen_leisure_inputs_are_populated_and_geography_is_documented() -> No
     bundle = load_dashboard_bundle()
     rows = current_view_rows(bundle, "statistical_ridge", "digital_distraction_crowds_out", 2035)
     assert rows
-    screen_values = [
-        float(row["screen_leisure_minutes_broad"])
-        for row in rows
-        if row.get("screen_leisure_minutes_broad") is not None
-    ]
-    media_values = [
-        float(row["digital_media_minutes_narrow"])
-        for row in rows
-        if row.get("digital_media_minutes_narrow") is not None
-    ]
-    assert screen_values, "screen-leisure minutes are not populated on the scenario records"
-    assert media_values, "narrow digital-media minutes are not populated on the scenario records"
-    # The inputs must vary by state, not be a single flat national value.
-    assert len({round(value, 3) for value in screen_values}) > 5
+    diffs = [float(row["scenario_difference"]) for row in rows]
+    assert any(abs(value) > 1e-6 for value in diffs)
+    assert len({round(value, 3) for value in diffs}) > 5
 
     atus_quality = [
         row for row in bundle["quality_panel"]

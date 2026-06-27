@@ -2199,6 +2199,7 @@ function normalizeForecastRecords() {
             scenario_shift_component: Number.isFinite(scenarioShiftComponent) ? scenarioShiftComponent : scenarioDifference,
             manual_adjustment_component: Number.isFinite(manualAdjustmentComponent) ? manualAdjustmentComponent : 0,
             main_driver: record.main_driver || "",
+            commute_minutes_quality_state_year: record.commute_minutes_quality_state_year || "",
             mechanism_remote_work_flexibility: toFiniteOrZero(record.mechanism_remote_work_flexibility),
             mechanism_digital_distraction: toFiniteOrZero(record.mechanism_digital_distraction),
             mechanism_online_matching: toFiniteOrZero(record.mechanism_online_matching),

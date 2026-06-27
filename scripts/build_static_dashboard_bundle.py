@@ -163,6 +163,23 @@ PUBLIC_INPUT_LABELS = {
     "search_interest_online_dating_state_year": "dating_search_interest",
 }
 
+PUBLIC_FORECAST_RECORD_COLUMNS = [
+    "geography_type",
+    "state_fips",
+    "state_abbr",
+    "state_name",
+    "year",
+    "model",
+    "scenario",
+    "reference_path",
+    "scenario_path",
+    "scenario_difference",
+    "legacy_model_scenario_difference",
+    "main_driver",
+    "commute_minutes_quality_state_year",
+    *MECHANISM_LABELS.keys(),
+]
+
 
 def _series_rows(df: pd.DataFrame, value_cols: list[str]) -> list[dict]:
     keep_cols = ["year", *value_cols]
@@ -459,13 +476,13 @@ def _compute_model_forecast_clamp_shares(predictions: pd.DataFrame, selected_mod
     return shares
 
 
-def _build_forecast_records() -> tuple[list[dict], list[dict], list[dict], list[int], str | None]:
+def _build_forecast_records() -> tuple[list[dict], list[dict], list[dict], list[dict], list[int], str | None]:
     predictions_path = PROJECT_ROOT / "data" / "processed" / "ml_predictions.parquet"
     metrics_path = PROJECT_ROOT / "data" / "processed" / "ml_model_metrics.parquet"
     scenario_covariates_path = PROJECT_ROOT / "data" / "processed" / "scenario_covariates.parquet"
 
     if not predictions_path.exists() or not scenario_covariates_path.exists():
-        return [], [], [], [], "Precomputed model outputs have not been added."
+        return [], [], [], [], [], "Precomputed model outputs have not been added."
 
     predictions = pd.read_parquet(predictions_path)
     scenario_covariates = pd.read_parquet(scenario_covariates_path)
@@ -483,7 +500,7 @@ def _build_forecast_records() -> tuple[list[dict], list[dict], list[dict], list[
         ["state_fips", "state_name", "year", "model_name", "scenario_name", "predicted_fertility_rate"],
     ].copy()
     if legacy_forecast.empty:
-        return [], [], [], [], "Precomputed model outputs have not been added."
+        return [], [], [], [], [], "Precomputed model outputs have not been added."
 
     reference = legacy_forecast.loc[legacy_forecast["scenario_name"].eq("baseline_continuation")].copy()
     reference = reference.rename(columns={"predicted_fertility_rate": "reference_path"})
@@ -528,58 +545,9 @@ def _build_forecast_records() -> tuple[list[dict], list[dict], list[dict], list[
     merged["state_abbr"] = merged["state_fips"].map(STATE_FIPS_TO_ABBR)
     merged["state_name"] = merged["state_name"].fillna(merged["state_fips"].map(STATE_FIPS_TO_NAME))
 
-    forecast_records = []
-    keep_cols = [
-        "geography_type",
-        "state_fips",
-        "state_abbr",
-        "state_name",
-        "year",
-        "model",
-        "model_label",
-        "scenario",
-        "scenario_label",
-        "reference_path",
-        "scenario_path",
-        "scenario_difference",
-        "scenario_shift_component",
-        "manual_adjustment_component",
-        "legacy_model_scenario_path",
-        "legacy_model_scenario_difference",
-        "scenario_adjustment_pre_lag",
-        "scenario_adjustment_post_lag",
-        "recursive_lag_multiplier",
-        "clamping_flag",
-        "main_driver",
-        *MECHANISM_LABELS.keys(),
-    ]
-    keep_cols.extend(
-        [
-            column for column in merged.columns
-            if (
-                column.startswith("contribution_")
-                or column.startswith("delta_")
-                or column.startswith("reference_")
-                or column in PUBLIC_INPUT_LABELS.values()
-                or column in {"sample_size", "respondent_count_unweighted"}
-                or column
-                in {
-                    "commute_minutes_quality_state_year",
-                    "reference_commute_minutes_quality_state_year",
-                    "commute_minutes_source_state_year",
-                    "reference_commute_minutes_source_state_year",
-                    "remote_work_scenario_adjustment_formula",
-                    "remote_work_scenario_calibration_level",
-                    "remote_work_scenario_beta_remote",
-                    "remote_work_time_saved_unit",
-                }
-            )
-            and column not in keep_cols
-        ]
-    )
     merged = merged.sort_values(["state_fips", "model_name", "scenario_name", "year"])
-    for row in json.loads(merged[keep_cols].to_json(orient="records")):
-        forecast_records.append(row)
+    scenario_diagnostics = _build_scenario_diagnostics(merged)
+    forecast_records = json.loads(merged[PUBLIC_FORECAST_RECORD_COLUMNS].to_json(orient="records"))
 
     available_years = sorted({int(value) for value in merged["year"].dropna().astype(int).tolist()})
 
@@ -666,13 +634,19 @@ def _build_forecast_records() -> tuple[list[dict], list[dict], list[dict], list[
             }
         )
 
-    return forecast_records, metric_rows, model_rows, available_years, None
+    return forecast_records, scenario_diagnostics, metric_rows, model_rows, available_years, None
 
 
-def _build_scenario_diagnostics(forecast_records: list[dict]) -> list[dict]:
-    if not forecast_records:
+def _build_scenario_diagnostics(forecast_source: pd.DataFrame | list[dict]) -> list[dict]:
+    if isinstance(forecast_source, pd.DataFrame):
+        frame = forecast_source.copy()
+    else:
+        if not forecast_source:
+            return []
+        frame = pd.DataFrame(forecast_source)
+
+    if frame.empty:
         return []
-    frame = pd.DataFrame(forecast_records)
     frame = frame[frame.get("geography_type", "state").eq("state")].copy()
     diagnostics: list[dict] = []
     delta_columns = [column for column in frame.columns if column.startswith("delta_")]
@@ -837,13 +811,7 @@ def build_bundle() -> dict:
                     "dating_search_interest": dating_value,
                     "dating_year": dating_year,
                 },
-                "remote_series": _series_rows(remote_state, ["remote_work_share_state_year"]),
                 "fertility_series": _series_rows(fert_state, ["general_fertility_rate", "total_fertility_rate_approx"]),
-                "population_series": _series_rows(pop_state, ["population_growth_rate", "population_total"]),
-                "attention_series": _series_rows(
-                    attention_state,
-                    ["search_interest_genai_state_year", "search_interest_online_dating_state_year", "digital_attention_proxy_index"],
-                ),
             }
         )
 
@@ -864,8 +832,7 @@ def build_bundle() -> dict:
     if atus_quality_row is not None:
         quality_rows.append(atus_quality_row)
 
-    forecast_records, model_metrics, model_options, available_years, benchmark_note = _build_forecast_records()
-    scenario_diagnostics = _build_scenario_diagnostics(forecast_records)
+    forecast_records, scenario_diagnostics, model_metrics, model_options, available_years, benchmark_note = _build_forecast_records()
     remote_work_forecast = pd.DataFrame(
         [
             record
@@ -1049,7 +1016,7 @@ def build_bundle() -> dict:
 def main() -> None:
     bundle = build_bundle()
     out_js = PROJECT_ROOT / "ai-work-fertility-dashboard-data.js"
-    payload = "window.AI_WORK_FERTILITY_DASHBOARD_V1 = " + json.dumps(bundle, indent=2) + ";\n"
+    payload = "window.AI_WORK_FERTILITY_DASHBOARD_V1=" + json.dumps(bundle, separators=(",", ":")) + ";\n"
     out_js.write_text(payload, encoding="utf-8")
     print(f"Wrote {out_js}")
 

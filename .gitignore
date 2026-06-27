@@ -1,0 +1,16 @@
+# Python caches and test artifacts
+__pycache__/
+.pytest_cache/
+
+# Temporary scratch outputs
+tmp_*
+*.log
+
+# Large local analysis artifacts
+*.pkl
+data/shrug_nightlights/*.zip
+data/google_trends_flexible_jobs/*.zip
+data/wfh_exposure/**/_cache/
+
+# Local assistant/tooling folders
+.claude/
