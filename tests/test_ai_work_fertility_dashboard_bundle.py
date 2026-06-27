@@ -11,6 +11,7 @@ DATA_BUNDLE_PATH = PROJECT_ROOT / "ai-work-fertility-dashboard-data.js"
 HTML_PATH = PROJECT_ROOT / "ai-work-fertility-dashboard.html"
 SCRIPT_PATH = PROJECT_ROOT / "ai-work-fertility-dashboard.js"
 STYLE_PATH = PROJECT_ROOT / "style.css"
+GITIGNORE_PATH = PROJECT_ROOT / ".gitignore"
 
 
 def load_dashboard_bundle() -> dict:
@@ -29,6 +30,10 @@ def load_dashboard_script() -> str:
 
 def load_dashboard_styles() -> str:
     return STYLE_PATH.read_text(encoding="utf-8")
+
+
+def load_gitignore() -> str:
+    return GITIGNORE_PATH.read_text(encoding="utf-8")
 
 
 def js_display_extent(values: list[float]) -> tuple[float, float]:
@@ -229,6 +234,18 @@ def test_dashboard_header_uses_top_utility_nav_and_removes_hero_badge() -> None:
     assert "align-items: center;" in styles
     assert "justify-content: flex-end;" in styles
     assert "Scenario exercise &mdash; not a causal estimate" not in html
+
+
+def test_dashboard_bundle_is_not_gitignored() -> None:
+    gitignore = load_gitignore()
+
+    forbidden_entries = [
+        "/ai-work-fertility-dashboard-data.js",
+        "ai-work-fertility-dashboard-data.js",
+    ]
+
+    for entry in forbidden_entries:
+        assert entry not in gitignore
 
 
 def test_dashboard_uses_simplified_section_navigation_and_integrated_us_state_layout() -> None:
