@@ -196,7 +196,8 @@ def test_dashboard_inline_info_tooltip_copy_and_accessibility_hooks_are_present(
         'aria-controls="',
         'aria-describedby="',
         'renderControlInfoSummaries();',
-        'buildInlineInfoLabelHtml(scenario.id, scenario.label)',
+        'getHeroScenarioDefinition(scenario.id)',
+        'data-scenario-story',
     ]
 
     for needle in required_copy:
@@ -205,6 +206,7 @@ def test_dashboard_inline_info_tooltip_copy_and_accessibility_hooks_are_present(
 
 def test_dashboard_header_uses_top_utility_nav_and_removes_hero_badge() -> None:
     html = load_dashboard_html()
+    styles = load_dashboard_styles()
 
     required_markup = [
         'class="scenario-dashboard-hero"',
@@ -222,7 +224,82 @@ def test_dashboard_header_uses_top_utility_nav_and_removes_hero_badge() -> None:
     for needle in required_markup:
         assert needle in html
 
+    assert 'scenario-utility-trigger-download' not in html
+    assert '.scenario-utility-trigger-download' not in styles
+    assert "align-items: center;" in styles
+    assert "justify-content: flex-end;" in styles
     assert "Scenario exercise &mdash; not a causal estimate" not in html
+
+
+def test_dashboard_uses_simplified_section_navigation_and_integrated_us_state_layout() -> None:
+    html = load_dashboard_html()
+
+    required_nav = [
+        'href="#us-state" data-section-link>U.S. State</a>',
+        'href="#compare" data-section-link>Compare Scenarios</a>',
+        'href="#assumptions" data-section-link>Assumptions</a>',
+        'href="#method" data-section-link>Method</a>',
+    ]
+    for needle in required_nav:
+        assert needle in html
+
+    forbidden_nav = [
+        "01 State Map",
+        "02 Rankings",
+        "03 U.S. State",
+        "04 Scenarios",
+        "05 Compare",
+        "06 Assumptions",
+        "07 Method",
+    ]
+    for needle in forbidden_nav:
+        assert needle not in html
+
+    us_state_start = html.index('<section class="scenario-section scenario-section-primary" id="us-state"')
+    us_state_end = html.index("</section>", us_state_start)
+    us_state_markup = html[us_state_start:us_state_end]
+
+    assert 'id="state-map-chart"' in us_state_markup
+    assert 'id="state-line-chart"' in us_state_markup
+    assert 'id="rankings-grid"' in us_state_markup
+    assert 'id="scenario-story-grid"' in us_state_markup
+    assert 'class="scenario-state-layout"' in us_state_markup
+    assert "Choose a scenario, then click a state to see how projected fertility changes" not in us_state_markup
+    assert 'class="scenario-control-grid scenario-control-grid-primary"' not in us_state_markup
+    assert "How fertility changes across states under this scenario" in us_state_markup
+    assert "Advanced controls" in us_state_markup
+    assert 'data-setting="scenario"' in us_state_markup
+    assert 'data-setting="horizon"' in us_state_markup
+    assert 'data-setting="model"' in us_state_markup
+    assert 'data-setting="outcome"' in us_state_markup
+    assert 'data-setting="state"' in us_state_markup
+    assert 'class="scenario-card-tools scenario-card-tools-map"' in us_state_markup
+    assert 'class="scenario-card-tools scenario-card-tools-line"' in us_state_markup
+    assert 'class="scenario-strip-head"' in us_state_markup
+
+
+def test_dashboard_bundle_size_stays_well_below_github_limits() -> None:
+    assert DATA_BUNDLE_PATH.stat().st_size < 50 * 1024 * 1024
+
+
+def test_dashboard_hero_summary_links_expose_scenario_and_benchmark_definitions() -> None:
+    script = load_dashboard_script()
+
+    required_copy = [
+        'digital-life scenarios',
+        'predictive benchmarks',
+        'Remote work can save commuting time and increase schedule flexibility.',
+        'Screen leisure and digital media time may reduce time available for in-person interaction, dating, or family formation.',
+        'Online social life and digital matching tools may make it easier for people to meet, match, or maintain relationships.',
+        'More digital life may keep more activities inside the home and increase unpaid care or household work burdens.',
+        'Main projection model. It is easier to interpret and should be treated as the default benchmark.',
+        'A flexible machine-learning benchmark that allows nonlinear relationships and interactions.',
+        'An exploratory predictive benchmark. Use cautiously, especially when reliability flags appear.',
+        'buildHeroSummaryDetails(',
+        'scenario-summary-panel-entry',
+    ]
+    for needle in required_copy:
+        assert needle in script
 
 
 def test_figure1_scenario_difference_uses_symmetric_zero_centered_display_scale() -> None:
@@ -233,8 +310,7 @@ def test_figure1_scenario_difference_uses_symmetric_zero_centered_display_scale(
         'const scenarioExtent = getScenarioDifferenceExtent(scenarioDiffs);',
         'zmin: dashboardState.selectedOutcome === "scenario_difference" ? scenarioExtent.min : undefined,',
         'zmax: dashboardState.selectedOutcome === "scenario_difference" ? scenarioExtent.max : undefined,',
-        'const extent = getScenarioDifferenceExtent(scenarioDiffs);',
-        'formatSignedValue(extent.min, 1) + " to " + formatSignedValue(extent.max, 1)',
+        'Positive values mean the selected scenario is above the model-based reference path. Negative values mean it is below.',
         'const prefix = cleanValue > 0 ? "+" : "";',
     ]
     for needle in required_script_wiring:
@@ -255,7 +331,7 @@ def test_figure1_scenario_difference_uses_symmetric_zero_centered_display_scale(
     assert caption_range.endswith(js_signed_display(display_max, 1))
 
 
-def test_rankings_use_sign_safe_groups_and_separate_closest_card() -> None:
+def test_rankings_use_sign_safe_groups_and_plain_language_labels() -> None:
     bundle = load_dashboard_bundle()
     script = load_dashboard_script()
     rows = current_view_rows(bundle, "statistical_ridge", "remote_work_saves_time", 2035)
@@ -264,7 +340,11 @@ def test_rankings_use_sign_safe_groups_and_separate_closest_card() -> None:
     downward = python_build_ranking_rows(rows, "downward")
     closest = python_build_ranking_rows(rows, "closest")
 
-    assert "States closest to the reference path" in script
+    assert "Top 5 states where this scenario raises fertility the most" in script
+    assert "Top 5 states where this scenario lowers fertility the most" in script
+    assert "Does this scenario raise fertility overall?" in script
+    assert "highest projected fertility under this scenario" not in script
+    assert "lowest projected fertility under this scenario" not in script
     assert "closest_to_reference_path_upward_fallback" not in script
     assert "closest_to_reference_path_downward_fallback" not in script
     assert all(float(row["scenario_difference"]) > 0.05 for row in upward)
@@ -492,17 +572,28 @@ def test_figure1_note_contains_scenario_specific_interpretation_logic() -> None:
     script = load_dashboard_script()
     required_copy = [
         "buildScenarioInterpretationNote()",
-        "buildScenarioCalibrationNote()",
-        "buildScenarioCommuteInputNote()",
-        'Scenario interpretation: This scenario assumes that remote work saves commuting time and increases flexibility.',
-        "Positive values mean the scenario path is above the reference path.",
-        "The default calibration is anchored to the ",
-        "Commute-time inputs use ",
-        'Scenario interpretation: this scenario uses ATUS-based screen leisure and digital media minutes as proxies for screen-based distraction.',
-        'Scenario interpretation: this scenario assumes that online social life and digital matching tools make it easier for people to meet or maintain relationships.',
-        'Scenario interpretation: this scenario assumes that more digital life - remote work, online services and shopping, and digital entertainment - keeps more activities inside the home and increases unpaid care or household-work burdens.',
+        "Positive values mean the selected scenario is above the model-based reference path.",
+        "Negative values mean it is below.",
+        "Remote work can save commuting time and increase schedule flexibility.",
+        "Screen leisure and digital media time may reduce time available for in-person interaction, dating, or family formation.",
+        "Online social life and digital matching tools may make it easier for people to meet, match, or maintain relationships.",
+        "More digital life may keep more activities inside the home and increase unpaid care or household work burdens.",
     ]
     for needle in required_copy:
+        assert needle in script
+
+
+def test_compact_scenario_cards_update_the_selected_scenario() -> None:
+    script = load_dashboard_script()
+
+    required_wiring = [
+        'const storyCard = event.target.closest("[data-scenario-story]");',
+        'dashboardState.selectedScenario = storyCard.getAttribute("data-scenario-story");',
+        'dashboardState.compareScenarioA = dashboardState.selectedScenario;',
+        'renderDashboard();',
+        'formatSignedValue(averageDifference, 2) + " by " + storyYear',
+    ]
+    for needle in required_wiring:
         assert needle in script
 
 

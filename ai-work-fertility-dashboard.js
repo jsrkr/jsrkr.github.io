@@ -76,10 +76,7 @@ const MSA_RANKINGS_UNAVAILABLE_MESSAGE =
     "MSA rankings will appear once MSA-level scenario outputs are available.";
 
 const sectionIds = [
-    "state-map",
-    "rankings",
     "us-state",
-    "scenarios",
     "compare",
     "assumptions",
     "method",
@@ -119,6 +116,13 @@ const availability = {
         available: false,
         reason: MSA_UNAVAILABLE_MESSAGE,
     },
+};
+
+const scenarioStoryIcons = {
+    remote_work_saves_time: "fa-briefcase",
+    digital_distraction_crowds_out: "fa-desktop",
+    online_life_helps_matching: "fa-users",
+    home_centered_digital_life_increases_care_work: "fa-house",
 };
 
 const infoTooltipCopy = {
@@ -545,11 +549,11 @@ function bindEvents() {
     const scenarioGrid = document.getElementById("scenario-story-grid");
     if (scenarioGrid) {
         scenarioGrid.addEventListener("click", function (event) {
-            const button = event.target.closest("[data-run-scenario]");
-            if (!button) {
+            const storyCard = event.target.closest("[data-scenario-story]");
+            if (!storyCard) {
                 return;
             }
-            dashboardState.selectedScenario = button.getAttribute("data-run-scenario");
+            dashboardState.selectedScenario = storyCard.getAttribute("data-scenario-story");
             dashboardState.compareScenarioA = dashboardState.selectedScenario;
             syncControls();
             renderDashboard();
@@ -633,9 +637,9 @@ function bindUtilityActions() {
 }
 
 function bindUtilityPanels() {
-    const nav = document.querySelector(".scenario-utility-nav");
-    const detailsNodes = Array.from(document.querySelectorAll("[data-utility-panel]"));
-    if (!nav || !detailsNodes.length || utilityPanelEventsBound) {
+    const root = document.querySelector(".scenario-dashboard");
+    const detailsNodes = root ? Array.from(root.querySelectorAll("[data-utility-panel]")) : [];
+    if (!root || !detailsNodes.length || utilityPanelEventsBound) {
         return;
     }
     utilityPanelEventsBound = true;
@@ -676,7 +680,7 @@ function bindUtilityPanels() {
     });
 
     document.addEventListener("click", function (event) {
-        if (!nav.contains(event.target)) {
+        if (!event.target.closest("[data-utility-panel]")) {
             closePanels(null);
         }
     });
@@ -828,21 +832,42 @@ function renderDashboard() {
 function renderHeroStats() {
     const stateCount = getAvailableStates().length;
     const stateLabel = stateCount === 51 ? "50 states + DC" : stateCount + " state geographies";
-    const summaryItems = [
-        stateLabel,
-        getScenarioChoices().length + " digital-life scenarios",
-        (dashboardData.model_options || []).length + " predictive benchmarks",
-        "State-year exports available",
-    ];
-
     const summaryNode = document.getElementById("hero-stat-grid");
     if (!summaryNode) {
         return;
     }
 
-    summaryNode.innerHTML = summaryItems.map(function (item) {
-        return '<span class="scenario-summary-item">' + item + "</span>";
-    }).join('<span class="scenario-summary-separator" aria-hidden="true">&middot;</span>');
+    const summaryItems = [
+        '<span class="scenario-summary-item">' + escapeHtml(stateLabel) + "</span>",
+        buildHeroSummaryDetails(
+            getScenarioChoices().length + " digital-life scenarios",
+            "scenario-summary-scenarios",
+            getScenarioChoices().map(function (scenario) {
+                return [
+                    '<details class="scenario-summary-panel-entry">',
+                    '<summary>' + escapeHtml(scenario.label) + "</summary>",
+                    "<p>" + escapeHtml(getHeroScenarioDefinition(scenario.id)) + "</p>",
+                    "</details>",
+                ].join("");
+            }).join("")
+        ),
+        buildHeroSummaryDetails(
+            (dashboardData.model_options || []).length + " predictive benchmarks",
+            "scenario-summary-benchmarks",
+            (dashboardData.model_options || []).map(function (model) {
+                return [
+                    '<details class="scenario-summary-panel-entry">',
+                    '<summary>' + escapeHtml(getModelDisplayLabel(model)) + "</summary>",
+                    "<p>" + escapeHtml(getHeroBenchmarkDefinition(model.id)) + "</p>",
+                    "</details>",
+                ].join("");
+            }).join("")
+        ),
+        '<span class="scenario-summary-item">State-year exports available</span>',
+        '<a href="#state-map" class="scenario-summary-link scenario-summary-link-inline">Jump to map &#8595;</a>',
+    ];
+
+    summaryNode.innerHTML = summaryItems.join('<span class="scenario-summary-separator" aria-hidden="true">&middot;</span>');
 }
 
 function renderScenarioStories() {
@@ -853,13 +878,23 @@ function renderScenarioStories() {
     }
 
     container.innerHTML = stories.map(function (scenario, index) {
+        const storyYear = getScenarioStoryYear();
+        const averageDifference = getAverageScenarioDifference(scenario.id, storyYear);
+        const summaryText = Number.isFinite(averageDifference)
+            ? formatSignedValue(averageDifference, 2) + " by " + storyYear
+            : "Summary unavailable";
         return [
-            '<article class="dashboard-card scenario-story-card' + (scenario.id === dashboardState.selectedScenario ? " is-active" : "") + '" data-scenario-story="' + scenario.id + '">',
-            '<p class="dashboard-section-kicker">Scenario ' + (index + 1) + "</p>",
-            "<h3>" + buildInlineInfoLabelHtml(scenario.id, scenario.label) + "</h3>",
-            '<p class="scenario-story-copy">' + scenario.hypothesis + "</p>",
-            '<button class="scenario-story-button" type="button" data-run-scenario="' + scenario.id + '">Run scenario</button>',
-            "</article>",
+            '<button class="dashboard-card scenario-story-card' + (scenario.id === dashboardState.selectedScenario ? " is-active" : "") + '" type="button" data-scenario-story="' + scenario.id + '">',
+            '<span class="scenario-story-topline">Scenario ' + (index + 1) + "</span>",
+            '<span class="scenario-story-head">',
+            '<span class="scenario-story-icon" aria-hidden="true"><i class="fa-solid ' + (scenarioStoryIcons[scenario.id] || "fa-circle") + '"></i></span>',
+            '<span class="scenario-story-head-copy">',
+            "<strong>" + escapeHtml(scenario.label) + "</strong>",
+            "</span>",
+            '<span class="scenario-story-chevron" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>',
+            "</span>",
+            '<span class="scenario-story-summary">' + escapeHtml(summaryText) + "</span>",
+            "</button>",
         ].join("");
     }).join("");
 }
@@ -925,13 +960,13 @@ function renderMap() {
         hovertemplate:
             "<b>%{customdata[1]}</b><br>" +
             "Model-based reference path: %{customdata[2]:.1f}<br>" +
-            "Scenario path: %{customdata[3]:.1f}<br>" +
-            "Scenario difference: %{customdata[4]:+.1f}<br>" +
+            "Projected path under this scenario: %{customdata[3]:.1f}<br>" +
+            "Change relative to reference path: %{customdata[4]:+.1f}<br>" +
             "Main driver: %{customdata[5]}<extra></extra>",
         colorbar: {
             title: {
                 text: dashboardState.selectedOutcome === "scenario_difference"
-                    ? "Scenario difference from reference path<br>Live births per 1,000 women aged " + WOMEN_AGE_LABEL
+                    ? "Change relative to reference path<br>Live births per 1,000 women aged " + WOMEN_AGE_LABEL
                     : "Live births per 1,000 women aged " + WOMEN_AGE_LABEL,
                 side: "right",
             },
@@ -984,14 +1019,14 @@ function updateFigure1Title() {
         return;
     }
     if (dashboardState.selectedOutcome === "reference_path") {
-        titleNode.textContent = "Figure 1: Reference fertility path across U.S. states";
+        titleNode.textContent = "Model-based reference path across states";
         return;
     }
     if (dashboardState.selectedOutcome === "scenario_path") {
-        titleNode.textContent = "Figure 1: Scenario fertility path across U.S. states";
+        titleNode.textContent = "Projected fertility under this scenario across states";
         return;
     }
-    titleNode.textContent = "Figure 1: Scenario difference across U.S. states";
+    titleNode.textContent = "How fertility changes across states under this scenario";
 }
 
 function updateMapNote(scenarioDiffs) {
@@ -1001,28 +1036,17 @@ function updateMapNote(scenarioDiffs) {
     }
     if (dashboardState.selectedOutcome !== "scenario_difference") {
         noteNode.innerHTML =
-            "Values show " + buildInlineInfoLabelHtml("gfr_level") +
-            ". Rankings below still use " + buildInlineInfoLabelHtml("scenario_difference") +
-            " relative to the " + buildInlineInfoLabelHtml("reference_path") + ".";
+            "Values show fertility levels for the selected outcome. Rankings at right still use " +
+            buildInlineInfoLabelHtml("scenario_difference", "change relative to the reference path") + ".";
         return;
     }
     if (!scenarioDiffs.length) {
         noteNode.textContent = "Range unavailable for the current selection.";
         return;
     }
-    const extent = getScenarioDifferenceExtent(scenarioDiffs);
     let text =
-        buildScenarioInterpretationNote() + " In the current view, scenario differences range from " +
-        formatSignedValue(extent.min, 1) + " to " + formatSignedValue(extent.max, 1) +
-        " births per 1,000 women relative to the reference path. The projections can change based on the chosen assumptions.";
-    const calibrationNote = buildScenarioCalibrationNote();
-    if (calibrationNote) {
-        text += " " + calibrationNote;
-    }
-    const commuteNote = buildScenarioCommuteInputNote();
-    if (commuteNote) {
-        text += " " + commuteNote;
-    }
+        "Positive values mean the selected scenario is above the model-based reference path. Negative values mean it is below. " +
+        buildScenarioInterpretationNote();
     const scenarioDirectionNote = getScenarioDirectionNote(scenarioDiffs);
     if (scenarioDirectionNote) {
         text += " " + scenarioDirectionNote;
@@ -1066,22 +1090,22 @@ function getCurrentScenarioDiagnostic() {
 function buildScenarioInterpretationNote() {
     const diagnostic = getCurrentScenarioDiagnostic();
     if (dashboardState.selectedScenario === "remote_work_saves_time") {
-        let text = "Scenario interpretation: This scenario assumes that remote work saves commuting time and increases flexibility. The adjustment is based on the change in remote-work time saved relative to the reference path. Positive values mean the scenario path is above the reference path.";
+        let text = "Remote work can save commuting time and increase schedule flexibility.";
         if (diagnostic && typeof diagnostic.legacy_mean_scenario_difference === "number" && diagnostic.legacy_mean_scenario_difference < -0.01) {
-            text += " The earlier statistical baseline often fell below the reference path because the legacy scenario package mixed opaque proxy shifts; the current map instead uses a direct calibration anchored to additional remote-work time saved.";
+            text += " Earlier versions behaved differently because they relied on a more opaque proxy mix.";
         }
         return text;
     }
     if (dashboardState.selectedScenario === "digital_distraction_crowds_out") {
-        return "Scenario interpretation: this scenario uses ATUS-based screen leisure and digital media minutes as proxies for screen-based distraction. It captures digital leisure broadly, not pure social media use.";
+        return "Screen leisure and digital media time may reduce time available for in-person interaction, dating, or family formation.";
     }
     if (dashboardState.selectedScenario === "online_life_helps_matching") {
-        return "Scenario interpretation: this scenario assumes that online social life and digital matching tools make it easier for people to meet or maintain relationships. The adjustment is based on the change in an online-dating search-interest proxy relative to the reference path, so the scenario difference shows whether that placed fertility above or below the reference path.";
+        return "Online social life and digital matching tools may make it easier for people to meet, match, or maintain relationships.";
     }
     if (dashboardState.selectedScenario === "home_centered_digital_life_increases_care_work") {
-        return "Scenario interpretation: this scenario assumes that more digital life - remote work, online services and shopping, and digital entertainment - keeps more activities inside the home and increases unpaid care or household-work burdens. It uses ATUS-based household-work and unpaid-care minutes, with a small offsetting remote-work flexibility credit. Negative values mean the added care burden places fertility below the reference path.";
+        return "More digital life may keep more activities inside the home and increase unpaid care or household work burdens.";
     }
-    return "Scenario interpretation: values show how the selected scenario moves fertility above or below the model-based reference path.";
+    return "This view shows how the selected scenario moves fertility above or below the model-based reference path.";
 }
 
 function getCurrentScenarioStateRecords() {
@@ -1169,24 +1193,19 @@ function renderRankings() {
     const stateRows = getStateRowsForCurrentView();
     const stateAbove = buildRankingRows(stateRows, "upward");
     const stateBelow = buildRankingRows(stateRows, "downward");
-    const closestToReference = buildRankingRows(stateRows, "closest");
 
     const cards = [
         renderRankingCard({
-            title: "Largest upward scenario differences",
+            title: "Top 5 states where this scenario raises fertility the most",
             rows: stateAbove,
             emptyMessage: "No states are above the reference path in the current view.",
         }),
         renderRankingCard({
-            title: "Largest downward scenario differences",
+            title: "Top 5 states where this scenario lowers fertility the most",
             rows: stateBelow,
             emptyMessage: "No states are below the reference path in the current view.",
         }),
-        renderRankingCard({
-            title: "States closest to the reference path",
-            rows: closestToReference,
-            emptyMessage: "No states are near the reference path in the current view.",
-        }),
+        renderOverallImpactCard(stateRows),
     ];
 
     rankingsGrid.innerHTML = cards.join("");
@@ -1195,9 +1214,13 @@ function renderRankings() {
 function renderStateExplorer() {
     const state = getSelectedState();
     const context = getScenarioContext("state", state.state_fips, dashboardState.selectedModel, dashboardState.selectedScenario, dashboardState.selectedHorizon);
+    const figureTitleNode = document.getElementById("figure-2-title");
     const titleNode = document.getElementById("state-explorer-title");
+    if (figureTitleNode) {
+        figureTitleNode.textContent = "Selected state trends: " + state.state_name;
+    }
     if (titleNode) {
-        titleNode.textContent = state.state_name + " through " + dashboardState.selectedHorizon;
+        titleNode.textContent = "Observed, model-based reference path, and projected path through " + dashboardState.selectedHorizon;
     }
 
     renderStateLegend();
@@ -1226,8 +1249,8 @@ function renderStateLegend() {
     }
     legendNode.innerHTML = [
         '<span class="scenario-inline-chip scenario-inline-chip-observed">Observed</span>',
-        '<span class="scenario-inline-chip scenario-inline-chip-reference">' + buildInlineInfoLabelHtml("reference_path") + "</span>",
-        '<span class="scenario-inline-chip scenario-inline-chip-scenario">' + buildInlineInfoLabelHtml("scenario_path") + "</span>",
+        '<span class="scenario-inline-chip scenario-inline-chip-reference">' + buildInlineInfoLabelHtml("reference_path", "Model-based reference path") + "</span>",
+        '<span class="scenario-inline-chip scenario-inline-chip-scenario">' + escapeHtml(getSelectedScenario().label) + "</span>",
     ].join("");
 }
 
@@ -1237,7 +1260,7 @@ function updateStateLineNote() {
         return;
     }
     noteNode.textContent =
-        "The line chart shows General Fertility Rate levels: live births per 1,000 women aged " + WOMEN_AGE_LABEL + ".";
+        "Both lines can move down over time. The key comparison is whether the projected path under this scenario stays above or below the model-based reference path.";
 }
 
 function renderCompare() {
@@ -1641,7 +1664,7 @@ function buildLineChartSpec(geoType, label, context) {
         x: context.referenceSeries.map(function (row) { return row.year; }),
         y: context.referenceSeries.map(function (row) { return row.value; }),
         mode: "lines",
-        name: "Reference path",
+        name: "Model-based reference path",
         line: { color: "#184f58", width: 3 },
         hovertemplate: "Model-based reference path %{x}: %{y:.1f}<extra></extra>",
     });
@@ -1652,7 +1675,7 @@ function buildLineChartSpec(geoType, label, context) {
         mode: "lines",
         name: getSelectedScenario().label,
         line: { color: "#bf6b3c", width: 3 },
-        hovertemplate: "Scenario path %{x}: %{y:.1f}<extra></extra>",
+        hovertemplate: "Projected path under this scenario %{x}: %{y:.1f}<extra></extra>",
     });
 
     return {
@@ -1750,11 +1773,11 @@ function updateSelectionStrips() {
     strip.innerHTML = [
         '<span class="scenario-headline-segment">' + buildInlineInfoLabelHtml(selectedModel.id, selectedModel.label) + "</span>",
         '<span class="scenario-summary-separator" aria-hidden="true">|</span>',
-        '<span class="scenario-headline-segment">' + buildInlineInfoLabelHtml(selectedScenario.id, selectedScenario.label) + "</span>",
-        '<span class="scenario-summary-separator" aria-hidden="true">|</span>',
         '<span class="scenario-headline-segment">' + escapeHtml(String(dashboardState.selectedHorizon)) + "</span>",
         '<span class="scenario-summary-separator" aria-hidden="true">|</span>',
         '<span class="scenario-headline-segment">' + buildOutcomeLabelHtml(selectedOutcome) + "</span>",
+        '<span class="scenario-summary-separator" aria-hidden="true">|</span>',
+        '<span class="scenario-headline-segment">' + buildInlineInfoLabelHtml(selectedScenario.id, selectedScenario.label) + "</span>",
     ].join("");
 }
 
@@ -2083,9 +2106,8 @@ function renderRankingCard(config) {
     return [
         '<section class="scenario-ranking-card">',
         '<div class="scenario-ranking-head">',
-        "<p>State rankings</p>",
         "<h4>" + config.title + "</h4>",
-        '<div class="scenario-ranking-unit">births per 1,000 women aged ' + WOMEN_AGE_LABEL + " relative to reference path</div>",
+        '<div class="scenario-ranking-unit">Change relative to the model-based reference path, births per 1,000 women aged ' + WOMEN_AGE_LABEL + "</div>",
         "</div>",
         '<div class="scenario-ranking-list">' + primarySection + "</div>",
         "</section>",
@@ -2343,25 +2365,124 @@ function getAvailableHorizonYears() {
 
 function getOutcomeLabel(outcomeId, fallbackLabel) {
     if (outcomeId === "reference_path") {
-        return "Reference path (GFR level)";
+        return "Model-based reference path";
     }
     if (outcomeId === "scenario_path") {
-        return "Scenario path (GFR level)";
+        return "Projected path under this scenario";
     }
-    return fallbackLabel || "Scenario difference from reference path";
+    return fallbackLabel || "Change relative to reference path";
 }
 
 function buildOutcomeLabelHtml(outcome) {
     if (!outcome) {
-        return buildInlineInfoLabelHtml("scenario_difference");
+        return buildInlineInfoLabelHtml("scenario_difference", "Change relative to reference path");
     }
     if (outcome.id === "reference_path") {
-        return buildInlineInfoLabelHtml("reference_path_level");
+        return buildInlineInfoLabelHtml("reference_path_level", "Model-based reference path");
     }
     if (outcome.id === "scenario_path") {
-        return buildInlineInfoLabelHtml("scenario_path_level");
+        return buildInlineInfoLabelHtml("scenario_path_level", "Projected path under this scenario");
     }
-    return buildInlineInfoLabelHtml("scenario_difference");
+    return buildInlineInfoLabelHtml("scenario_difference", "Change relative to reference path");
+}
+
+function buildHeroSummaryDetails(label, panelId, bodyHtml) {
+    return [
+        '<details class="scenario-summary-detail" data-utility-panel>',
+        '<summary class="scenario-summary-link" aria-expanded="false" aria-controls="' + panelId + '">' + escapeHtml(label) + "</summary>",
+        '<div class="scenario-summary-panel" id="' + panelId + '">' + bodyHtml + "</div>",
+        "</details>",
+    ].join("");
+}
+
+function getHeroScenarioDefinition(scenarioId) {
+    if (scenarioId === "remote_work_saves_time") {
+        return "Remote work can save commuting time and increase schedule flexibility. The scenario shows how fertility changes if this raises the scenario path relative to the model-based reference path.";
+    }
+    if (scenarioId === "digital_distraction_crowds_out") {
+        return "Screen leisure and digital media time may reduce time available for in-person interaction, dating, or family formation.";
+    }
+    if (scenarioId === "online_life_helps_matching") {
+        return "Online social life and digital matching tools may make it easier for people to meet, match, or maintain relationships.";
+    }
+    if (scenarioId === "home_centered_digital_life_increases_care_work") {
+        return "More digital life may keep more activities inside the home and increase unpaid care or household work burdens.";
+    }
+    return "Scenario definition unavailable.";
+}
+
+function getHeroBenchmarkDefinition(modelId) {
+    if (modelId === "statistical_ridge") {
+        return "Main projection model. It is easier to interpret and should be treated as the default benchmark.";
+    }
+    if (modelId === "tree_gradient_boosting") {
+        return "A flexible machine-learning benchmark that allows nonlinear relationships and interactions.";
+    }
+    if (modelId === "temporal_neural_net") {
+        return "An exploratory predictive benchmark. Use cautiously, especially when reliability flags appear.";
+    }
+    return "Benchmark definition unavailable.";
+}
+
+function getScenarioStoryYear() {
+    const years = getAvailableHorizonYears();
+    if (years.includes(2050)) {
+        return 2050;
+    }
+    return years.length ? years[years.length - 1] : dashboardState.selectedHorizon;
+}
+
+function getAverageScenarioDifference(scenarioId, year) {
+    const rows = lookup.allForecastRecords.filter(function (record) {
+        return record.geography_type === "state"
+            && record.model === dashboardState.selectedModel
+            && record.scenario === scenarioId
+            && Number(record.year) === Number(year)
+            && Number.isFinite(Number(record.scenario_difference));
+    });
+    if (!rows.length) {
+        return NaN;
+    }
+    return rows.reduce(function (sum, row) {
+        return sum + Number(row.scenario_difference);
+    }, 0) / rows.length;
+}
+
+function renderOverallImpactCard(stateRows) {
+    const differences = stateRows.map(function (row) {
+        return Number(row.scenario_difference);
+    }).filter(Number.isFinite);
+    const meanDifference = differences.length
+        ? differences.reduce(function (sum, value) { return sum + value; }, 0) / differences.length
+        : NaN;
+    const positiveCount = differences.filter(function (value) {
+        return value > SCENARIO_DIFFERENCE_TOLERANCE;
+    }).length;
+    const negativeCount = differences.filter(function (value) {
+        return value < -SCENARIO_DIFFERENCE_TOLERANCE;
+    }).length;
+    const neutralCount = differences.length - positiveCount - negativeCount;
+    const directionText = !Number.isFinite(meanDifference)
+        ? "Overall direction unavailable for the current selection."
+        : meanDifference > SCENARIO_DIFFERENCE_TOLERANCE
+            ? "On average, this scenario raises fertility relative to the model-based reference path."
+            : meanDifference < -SCENARIO_DIFFERENCE_TOLERANCE
+                ? "On average, this scenario lowers fertility relative to the model-based reference path."
+                : "On average, this scenario stays close to the model-based reference path.";
+
+    return [
+        '<section class="scenario-ranking-card scenario-ranking-card-summary">',
+        '<div class="scenario-ranking-head">',
+        "<h4>Does this scenario raise fertility overall?</h4>",
+        '<div class="scenario-ranking-unit">State-average change by ' + escapeHtml(String(dashboardState.selectedHorizon)) + "</div>",
+        "</div>",
+        Number.isFinite(meanDifference)
+            ? '<strong class="scenario-ranking-highlight">' + formatSignedValue(meanDifference, 2) + "</strong>"
+            : '<strong class="scenario-ranking-highlight">N/A</strong>',
+        '<p class="scenario-ranking-card-message">' + escapeHtml(directionText) + "</p>",
+        '<p class="scenario-ranking-card-message">Above reference in ' + positiveCount + " states, below in " + negativeCount + ", and near the reference path in " + neutralCount + ".</p>",
+        "</section>",
+    ].join("");
 }
 
 function renderControlInfoSummaries() {

@@ -27,14 +27,10 @@
                     <div class="scenario-dashboard-copy">
                         <h2>Digital Life &amp; Fertility Trends</h2>
                         <p class="scenario-dashboard-subtitle">
-                            Explore how remote-work share, commute time saved, screen leisure, online social life, and in-person interaction could shift projected fertility trends across U.S. states.
-                        </p>
-                        <p class="scenario-dashboard-subnote">
-                            Compare model-based reference paths with scenario paths, inspect state rankings, and download state-year outputs.
+                            Explore how remote-work share, commute time saved, screen leisure, online social life, and in-person interaction shape projected fertility trends across U.S. states.
                         </p>
                         <div class="scenario-dashboard-meta">
                             <div class="scenario-summary-line" id="hero-stat-grid" aria-label="Dashboard summary"></div>
-                            <a href="#state-map" class="scenario-dashboard-jump-link">Jump to map &darr;</a>
                         </div>
                     </div>
 
@@ -103,7 +99,7 @@
                         </details>
 
                         <details class="scenario-utility-item scenario-utility-item-download" data-utility-panel>
-                            <summary class="scenario-utility-trigger scenario-utility-trigger-download" aria-expanded="false">Download</summary>
+                            <summary class="scenario-utility-trigger" aria-expanded="false">Download</summary>
                             <div class="scenario-utility-panel scenario-utility-panel-download">
                                 <div class="scenario-utility-section">
                                     <p class="scenario-utility-section-label">Downloads</p>
@@ -128,137 +124,101 @@
             </section>
 
             <nav class="scenario-section-nav" aria-label="Dashboard sections">
-                <a href="#state-map" data-section-link>01 State Map</a>
-                <a href="#rankings" data-section-link>02 Rankings</a>
-                <a href="#us-state" data-section-link>03 U.S. State</a>
-                <a href="#scenarios" data-section-link>04 Scenarios</a>
-                <a href="#compare" data-section-link>05 Compare</a>
-                <a href="#assumptions" data-section-link>06 Assumptions</a>
-                <a href="#method" data-section-link>07 Method</a>
+                <a href="#us-state" data-section-link>U.S. State</a>
+                <a href="#compare" data-section-link>Compare Scenarios</a>
+                <a href="#assumptions" data-section-link>Assumptions</a>
+                <a href="#method" data-section-link>Method</a>
             </nav>
 
-            <div class="scenario-floating-nav" aria-label="Section navigation">
-                <button class="scenario-floating-button" type="button" data-nav-direction="up" aria-label="Scroll to previous section">
-                    <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
-                </button>
-                <button class="scenario-floating-button" type="button" data-nav-direction="down" aria-label="Scroll to next section">
-                    <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
-                </button>
-            </div>
+            <section class="scenario-section scenario-section-primary" id="us-state" data-section-index="0">
+                <div class="scenario-state-layout">
+                    <div class="scenario-state-main">
+                        <article class="dashboard-card scenario-figure-card scenario-map-card" id="state-map">
+                            <div class="scenario-figure-head">
+                                <div class="scenario-card-copy">
+                                    <h3 class="scenario-card-title" id="figure-1-title">How fertility changes across states under this scenario</h3>
+                                    <p class="scenario-figure-caption-line">Click a state to see its trend below.</p>
+                                </div>
+                                <div class="scenario-card-tools scenario-card-tools-map">
+                                    <label class="scenario-control scenario-control-compact">
+                                        <span>Scenario</span>
+                                        <select data-setting="scenario" data-sync="explorer"></select>
+                                    </label>
+                                    <label class="scenario-control scenario-control-compact">
+                                        <span>Horizon year</span>
+                                        <select data-setting="horizon" data-sync="global"></select>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="scenario-map-toolbar">
+                                <p class="scenario-headline-strip" id="map-selection-strip"></p>
+                                <details class="scenario-inline-details scenario-inline-details-advanced">
+                                    <summary>Advanced controls</summary>
+                                    <div class="scenario-inline-details-body scenario-card-advanced-grid">
+                                        <label class="scenario-control scenario-control-compact">
+                                            <span>Model</span>
+                                            <select data-setting="model" data-sync="explorer"></select>
+                                        </label>
+                                        <label class="scenario-control scenario-control-compact">
+                                            <span>Outcome</span>
+                                            <select data-setting="outcome" data-sync="global"></select>
+                                        </label>
+                                    </div>
+                                </details>
+                            </div>
+                            <div id="state-map-chart" class="scenario-plot scenario-map-plot" role="img" aria-label="U.S. state scenario map"></div>
+                            <p class="scenario-figure-note" id="state-map-note">
+                                Scenario interpretation text updates here based on the selected scenario.
+                            </p>
+                            <div class="scenario-caption-grid">
+                                <div class="scenario-caption-box">
+                                    <p class="scenario-caption-label" id="map-summary-title">Selected state</p>
+                                    <p class="scenario-summary-text" id="map-summary-text"></p>
+                                </div>
+                                <div class="scenario-caption-box">
+                                    <p class="scenario-caption-label">Predictive benchmarks</p>
+                                    <div id="model-status-panel"></div>
+                                </div>
+                            </div>
+                        </article>
 
-            <section class="scenario-section" id="state-map" data-section-index="0">
-                <div class="scenario-section-head scenario-section-head-compact scenario-section-head-wide">
-                    <p class="scenario-section-kicker">01 State Map</p>
-                    <h3 class="scenario-figure-title-long" id="figure-1-title">Figure 1: Scenario difference across U.S. states</h3>
+                        <article class="dashboard-card scenario-figure-card scenario-line-card">
+                            <div class="scenario-figure-head">
+                                <div class="scenario-card-copy">
+                                    <h3 class="scenario-card-title" id="figure-2-title">Selected state trends</h3>
+                                    <p class="scenario-figure-caption-line" id="state-explorer-title">Loading state explorer</p>
+                                </div>
+                                <div class="scenario-card-tools scenario-card-tools-line">
+                                    <label class="scenario-control scenario-control-compact">
+                                        <span>State</span>
+                                        <select data-setting="state" data-sync="global"></select>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="scenario-inline-legend" id="state-line-legend" aria-label="Chart legend"></div>
+                            <div id="state-line-chart" class="scenario-plot scenario-line-plot" role="img" aria-label="State scenario line chart"></div>
+                            <p class="scenario-figure-note" id="state-line-note"></p>
+                            <p class="scenario-takeaway-text" id="state-takeaway-text"></p>
+                        </article>
+                    </div>
+
+                    <aside class="scenario-state-sidebar" aria-label="State rankings and summary">
+                        <div class="scenario-ranking-grid" id="rankings-grid"></div>
+                    </aside>
                 </div>
 
-                <div class="scenario-control-grid">
-                    <label class="scenario-control">
-                        <span>Model</span>
-                        <select data-setting="model" data-sync="global"></select>
-                    </label>
-                    <label class="scenario-control">
-                        <span>Scenario</span>
-                        <select data-setting="scenario" data-sync="global"></select>
-                    </label>
-                    <label class="scenario-control">
-                        <span>Horizon year</span>
-                        <select data-setting="horizon" data-sync="global"></select>
-                    </label>
-                    <label class="scenario-control">
-                        <span>Outcome</span>
-                        <select data-setting="outcome" data-sync="global"></select>
-                    </label>
-                </div>
-
-                <article class="dashboard-card scenario-figure-card scenario-map-card">
-                    <div class="scenario-figure-head">
-                        <div>
-                            <p class="scenario-headline-strip" id="map-selection-strip"></p>
-                            <p class="scenario-figure-caption-line">Click any state to update the selected-state view below.</p>
-                        </div>
-                        <span class="dashboard-state-badge badge-modeled" id="map-model-badge">Statistical baseline</span>
-                    </div>
-                    <div id="state-map-chart" class="scenario-plot scenario-map-plot" role="img" aria-label="U.S. state scenario map"></div>
-                    <p class="scenario-figure-note" id="state-map-note">
-                        Scenario interpretation text updates here based on the selected scenario.
-                    </p>
-                    <div class="scenario-caption-grid">
-                        <div class="scenario-caption-box">
-                            <p class="scenario-caption-label" id="map-summary-title">Selected state</p>
-                            <p class="scenario-summary-text" id="map-summary-text"></p>
-                        </div>
-                        <div class="scenario-caption-box">
-                            <p class="scenario-caption-label">Predictive benchmarks</p>
-                            <div id="model-status-panel"></div>
-                        </div>
-                    </div>
-                </article>
-            </section>
-
-            <section class="scenario-section" id="rankings" data-section-index="1">
-                <div class="scenario-section-head scenario-section-head-compact">
-                    <p class="scenario-section-kicker">02 Rankings</p>
-                    <h3>Where are scenario differences largest?</h3>
+                <div class="scenario-strip-head">
+                    <h3>Compare digital-life scenarios</h3>
                     <p class="scenario-section-note">
-                        Rankings show which states are farthest above, farthest below, or closest to the reference path. Differences are measured in births per 1,000 women aged 15&ndash;44; values close to zero are treated as no meaningful difference.
+                        See how different digital-life changes could shape fertility across U.S. states.
                     </p>
-                </div>
-
-                <article class="dashboard-card scenario-figure-card">
-                    <div class="scenario-ranking-grid" id="rankings-grid"></div>
-                </article>
-            </section>
-
-            <section class="scenario-section" id="us-state" data-section-index="2">
-                <div class="scenario-section-head scenario-section-head-compact">
-                    <p class="scenario-section-kicker">03 U.S. State</p>
-                    <h3 id="figure-2-title">Figure 2: Reference and scenario paths for the selected state</h3>
-                </div>
-
-                <div class="scenario-control-grid scenario-control-grid-explorer">
-                    <label class="scenario-control">
-                        <span>State</span>
-                        <select data-setting="state" data-sync="global"></select>
-                    </label>
-                    <label class="scenario-control">
-                        <span>Model</span>
-                        <select data-setting="model" data-sync="explorer"></select>
-                    </label>
-                    <label class="scenario-control">
-                        <span>Scenario</span>
-                        <select data-setting="scenario" data-sync="explorer"></select>
-                    </label>
-                    <label class="scenario-control">
-                        <span>Horizon year</span>
-                        <select data-setting="horizon" data-sync="explorer"></select>
-                    </label>
-                </div>
-
-                <article class="dashboard-card scenario-figure-card scenario-line-card">
-                    <div class="scenario-figure-head">
-                        <div>
-                            <p class="scenario-figure-caption-line" id="state-explorer-title">Loading state explorer</p>
-                        </div>
-                        <div class="scenario-inline-legend" id="state-line-legend" aria-label="Chart legend"></div>
-                    </div>
-                    <div id="state-line-chart" class="scenario-plot scenario-line-plot" role="img" aria-label="State scenario line chart"></div>
-                    <p class="scenario-figure-note" id="state-line-note"></p>
-                    <p class="scenario-takeaway-text" id="state-takeaway-text"></p>
-                </article>
-            </section>
-
-            <section class="scenario-section" id="scenarios" data-section-index="3">
-                <div class="scenario-section-head scenario-section-head-compact">
-                    <p class="scenario-section-kicker">04 Scenarios</p>
-                    <h3>Choose a digital-life scenario</h3>
                 </div>
                 <div class="scenario-story-grid" id="scenario-story-grid"></div>
             </section>
 
-            <section class="scenario-section" id="compare" data-section-index="4">
+            <section class="scenario-section" id="compare" data-section-index="1">
                 <div class="scenario-section-head scenario-section-head-compact">
-                    <p class="scenario-section-kicker">05 Compare</p>
+                    <p class="scenario-section-kicker">Compare Scenarios</p>
                     <h3>Compare two digital-life scenarios</h3>
                     <p class="scenario-section-note">
                         Compare two scenarios to see which one places fertility farther above or below the reference path.
@@ -303,9 +263,9 @@
                 </article>
             </section>
 
-            <section class="scenario-section" id="assumptions" data-section-index="5">
+            <section class="scenario-section" id="assumptions" data-section-index="2">
                 <div class="scenario-section-head scenario-section-head-compact">
-                    <p class="scenario-section-kicker">06 Assumptions</p>
+                    <p class="scenario-section-kicker">Assumptions</p>
                     <h3>Adjust assumptions</h3>
                 </div>
 
@@ -327,9 +287,9 @@
                 </details>
             </section>
 
-            <section class="scenario-section" id="method" data-section-index="6">
+            <section class="scenario-section" id="method" data-section-index="3">
                 <div class="scenario-section-head scenario-section-head-compact">
-                    <p class="scenario-section-kicker">07 Method</p>
+                    <p class="scenario-section-kicker">Method</p>
                     <h3>Data and method</h3>
                     <p class="scenario-section-note">
                         Use the top Data &amp; Methods panel for the full overview. This section keeps only the key interpretation notes and validation snapshot.
