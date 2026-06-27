@@ -2,6 +2,9 @@
 __pycache__/
 .pytest_cache/
 
+# Generated dashboard bundle kept local until replaced with a smaller public asset
+/ai-work-fertility-dashboard-data.js
+
 # Temporary scratch outputs
 tmp_*
 *.log
