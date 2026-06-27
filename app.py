@@ -268,10 +268,10 @@ def render_executive_summary(bundle: dict[str, pd.DataFrame | None], controls: d
     columns = st.columns(8)
     render_metric_card(columns[0], "Latest observed fertility", latest_observed_value(modeling_panel, "fertility_rate", selected_state))
     render_metric_card(columns[1], "Latest pop. growth", latest_observed_value(modeling_panel, "population_growth_rate", selected_state), suffix="")
-    render_metric_card(columns[2], "Latest remote-work exposure", latest_observed_value(modeling_panel, "remote_work_exposure_index", selected_state))
+    render_metric_card(columns[2], "Latest remote-work share", latest_observed_value(modeling_panel, "remote_work_share_state_year", selected_state), suffix="")
     render_metric_card(columns[3], "Latest digital-use prevalence", latest_observed_value(modeling_panel, "digital_use_prevalence_index", selected_state))
-    render_metric_card(columns[4], "Latest digital distraction", latest_observed_value(modeling_panel, "digital_distraction_index", selected_state))
-    render_metric_card(columns[5], "Latest in-person social", latest_observed_value(modeling_panel, "in_person_social_index", selected_state))
+    render_metric_card(columns[4], "Latest screen leisure minutes", latest_observed_value(modeling_panel, "screen_leisure_minutes_broad_state_year", selected_state))
+    render_metric_card(columns[5], "Latest in-person social minutes", latest_observed_value(modeling_panel, "in_person_social_minutes_state_year", selected_state))
     columns[6].metric("Scenario", SCENARIO_SPECS[selected_scenario]["label"].replace("Scenario ", ""))
     columns[7].metric("Model", selected_model)
 
@@ -300,10 +300,11 @@ def render_historical_trends(bundle: dict[str, pd.DataFrame | None], controls: d
 
     for metric, title in [
         ("fertility_rate", "Fertility by state-year"),
-        ("remote_work_exposure_index", "Remote work exposure"),
-        ("digital_distraction_index", "Digital distraction"),
+        ("remote_work_share_state_year", "Remote-work share"),
+        ("remote_work_time_saved_roundtrip_minutes_state_year", "Remote-work time saved (round trip minutes)"),
+        ("screen_leisure_minutes_broad_state_year", "Screen leisure minutes"),
         ("digital_social_index", "Digital social exposure"),
-        ("in_person_social_index", "In-person social interaction"),
+        ("in_person_social_minutes_state_year", "In-person social minutes"),
         ("in_person_work_exposure_index", "In-person work exposure"),
         ("population_growth_rate", "Population growth"),
     ]:
