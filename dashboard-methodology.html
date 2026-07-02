@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Methodology</title>
-    <link rel="stylesheet" href="style.css?v=20260624">
+    <title>Digital Life and Fertility Future | Methodology</title>
+    <link rel="stylesheet" href="style.css?v=20260630b">
 </head>
 <body>
     <div class="container">
@@ -12,8 +12,8 @@
             <section class="dashboard-card dashboard-hero">
                 <div>
                     <p class="dashboard-eyebrow">Dashboard Notes</p>
-                    <h2>Methodology</h2>
-                    <p class="dashboard-intro">The dashboard combines observed state trends with transparent scenario paths so users can compare alternative digital futures without treating them as causal forecasts.</p>
+                    <h2>Digital Life and Fertility Future</h2>
+                    <p class="dashboard-intro">Methodology and interpretation notes for the dashboard, which combines observed state trends with transparent scenario paths so users can compare alternative digital futures without treating them as causal forecasts.</p>
                 </div>
             </section>
 
@@ -38,6 +38,29 @@
                 <article class="dashboard-card">
                     <h3>Projection map</h3>
                     <p>The main map shows scenario effect vs reference at the selected horizon, using diverging colors centered at zero.</p>
+                </article>
+                <article class="dashboard-card">
+                    <h3>How to use State and MSA views</h3>
+                    <p><strong>State view.</strong> The State view is the primary forecast view. State models are based on fewer, larger, more stable geographies and have stronger held-out performance.</p>
+                    <p><strong>Metro patterns view.</strong> The Metro patterns view is exploratory. It helps users see whether digital-life scenarios may matter more in some metropolitan labor markets than others, but it is best used for broad spatial patterns rather than exact local forecasts.</p>
+                    <p><strong>Why counties appear in the MSA map.</strong> The dashboard estimates MSA-level values but displays them across counties for visibility. Counties inside the same estimated MSA receive the same MSA-level value.</p>
+                    <p><strong>Model choice.</strong> Model choice depends on the task. For exact prediction, compare RMSE, MAE, and R<sup>2</sup>. For map display, also check whether forecasts hit model boundaries and whether the model preserves spatial variation. Tree ML is preferred for MSA display because it preserves metropolitan variation, not because the Metro view is intended for exact local forecasting.</p>
+                    <p><strong>Rankings.</strong> MSA rankings are exploratory and should be checked against model diagnostics and scenario assumptions.</p>
+                </article>
+                <article class="dashboard-card">
+                    <h3>MSA county display layer</h3>
+                    <p>The Metro patterns view keeps the analytical unit at the identified MSA / CBSA level. County polygons are used only as a fuller display layer: counties inside an estimated MSA inherit the parent MSA value, while micropolitan and outside-CBSA counties remain context only.</p>
+                    <p>For the current MSA scenario build, remote-work and online-matching scenarios may use parent-state proxy inputs merged onto each MSA when fully MSA-native inputs are not available. MSA-specific reference paths are retained, but the scenario shock itself is proxy-based, so those proxy-backed scenarios should not be read as fully local MSA-native estimates.</p>
+                    <p>For the current MSA build, the online-matching scenario applies a common proxy shock across MSAs at each horizon. It should be interpreted as a national overlay rather than MSA-specific online-matching exposure.</p>
+                    <p>Late-horizon MSA reference paths from the statistical baseline and neural-network benchmark often hit the model's lower bound in this build, so Tree ML is preferred for MSA display because it preserves metropolitan variation and avoids lower-bound forecast problems. That preference is about display quality, not about claiming exact metro-level forecasts.</p>
+                </article>
+                <article class="dashboard-card">
+                    <h3>Model reliability labels</h3>
+                    <p>State and MSA models are evaluated separately. State forecasts are based on fewer, more stable geographies. MSA forecasts provide finer metropolitan variation, but they are noisier and more vulnerable to lower-bound problems.</p>
+                    <p>The dashboard assigns each model and geography one of four labels: Recommended, Available, Use caution, or Benchmark only. The labels combine held-out validation accuracy, geography coverage, and how often reference or scenario forecasts hit the model's lower or upper bound.</p>
+                    <p>The statistical baseline is the primary State benchmark because it is transparent, stable, and performs well out of sample. Tree ML has strong held-out accuracy and is shown as a robustness benchmark.</p>
+                    <p>When many forecasts hit a bound, maps and rankings can become less informative because place-to-place differences are compressed. In the current bundle, Tree ML is preferred for MSA display because it preserves metropolitan variation better in the forecast horizon. Neural-network results are shown as benchmark or robustness results rather than the main interpretation.</p>
+                    <p>Future dashboard versions may add model-agreement indicators for MSA scenario direction and ranking stability.</p>
                 </article>
                 <article class="dashboard-card">
                     <h3>Interpretation rule</h3>
