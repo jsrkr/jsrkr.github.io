@@ -1,0 +1,255 @@
+{
+  "bundle_total_bytes": 44808260,
+  "bundle_top_size_drivers": [
+    [
+      "msa_forecast_records",
+      27307657
+    ],
+    [
+      "forecast_records",
+      16112255
+    ],
+    [
+      "county_display_records",
+      361030
+    ],
+    [
+      "scenario_diagnostics",
+      353972
+    ],
+    [
+      "model_reliability_diagnostics",
+      305245
+    ],
+    [
+      "msas",
+      260255
+    ],
+    [
+      "states",
+      55644
+    ],
+    [
+      "national",
+      8226
+    ],
+    [
+      "msa_model_diagnostics_by_year",
+      7643
+    ],
+    [
+      "state_model_diagnostics_by_year",
+      7131
+    ]
+  ],
+  "msa_reference_zero_share_by_model": [
+    {
+      "model": "statistical_ridge",
+      "pct_clamped_reference": 0.8373860182370821,
+      "pct_clamped_scenario": 0.3463779128672746
+    },
+    {
+      "model": "temporal_neural_net",
+      "pct_clamped_reference": 0.7127659574468085,
+      "pct_clamped_scenario": 0.2938196555217832
+    },
+    {
+      "model": "tree_gradient_boosting",
+      "pct_clamped_reference": 0.0,
+      "pct_clamped_scenario": 0.0
+    }
+  ],
+  "msa_test_benchmarks": [
+    {
+      "model": "statistical_ridge",
+      "rmse": 19.820534754904727,
+      "mae": 15.455011334066842,
+      "r_squared": -0.2997527346864628,
+      "n_obs": 528
+    },
+    {
+      "model": "tree_gradient_boosting",
+      "rmse": 16.829572940060956,
+      "mae": 12.305029985619173,
+      "r_squared": 0.06292102000216881,
+      "n_obs": 528
+    },
+    {
+      "model": "temporal_neural_net",
+      "rmse": 16.54773608893603,
+      "mae": 11.895764075308142,
+      "r_squared": 0.09404385158066397,
+      "n_obs": 528
+    }
+  ],
+  "uniform_online_matching_rows": [
+    {
+      "model": "statistical_ridge",
+      "year": 2030,
+      "min": 0.03943832678682213,
+      "mean": 0.039438326786822145,
+      "max": 0.03943832678682302,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "statistical_ridge",
+      "year": 2035,
+      "min": 0.060148858393667126,
+      "mean": 0.06014885839366887,
+      "max": 0.06014885839367423,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "statistical_ridge",
+      "year": 2040,
+      "min": 0.07379878711138943,
+      "mean": 0.07379878711139119,
+      "max": 0.07379878711139298,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "statistical_ridge",
+      "year": 2045,
+      "min": 0.08279520292223808,
+      "mean": 0.0827952029222389,
+      "max": 0.08279520292223985,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "statistical_ridge",
+      "year": 2050,
+      "min": 0.08872457435819214,
+      "mean": 0.08872457435819263,
+      "max": 0.08872457435819392,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "statistical_ridge",
+      "year": 2055,
+      "min": 0.09263251351581836,
+      "mean": 0.09263251351582007,
+      "max": 0.09263251351582102,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "statistical_ridge",
+      "year": 2060,
+      "min": 0.09520816400840015,
+      "mean": 0.09520816400840187,
+      "max": 0.0952081640084037,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "tree_gradient_boosting",
+      "year": 2030,
+      "min": 0.03943832678682213,
+      "mean": 0.03943832678682213,
+      "max": 0.03943832678682213,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "tree_gradient_boosting",
+      "year": 2035,
+      "min": 0.060148858393667126,
+      "mean": 0.06014885839366861,
+      "max": 0.06014885839367423,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "tree_gradient_boosting",
+      "year": 2040,
+      "min": 0.07379878711138588,
+      "mean": 0.07379878711139129,
+      "max": 0.07379878711139298,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "tree_gradient_boosting",
+      "year": 2045,
+      "min": 0.08279520292223808,
+      "mean": 0.08279520292224139,
+      "max": 0.08279520292224163,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "tree_gradient_boosting",
+      "year": 2050,
+      "min": 0.08872457435818859,
+      "mean": 0.08872457435819532,
+      "max": 0.0887245743581957,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "tree_gradient_boosting",
+      "year": 2055,
+      "min": 0.09263251351581658,
+      "mean": 0.09263251351581989,
+      "max": 0.09263251351582369,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "tree_gradient_boosting",
+      "year": 2060,
+      "min": 0.09520816400839749,
+      "mean": 0.09520816400840235,
+      "max": 0.0952081640084046,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "temporal_neural_net",
+      "year": 2030,
+      "min": 0.03943832678682213,
+      "mean": 0.03943832678682213,
+      "max": 0.03943832678682302,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "temporal_neural_net",
+      "year": 2035,
+      "min": 0.060148858393667126,
+      "mean": 0.06014885839366859,
+      "max": 0.06014885839367423,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "temporal_neural_net",
+      "year": 2040,
+      "min": 0.07379878711138943,
+      "mean": 0.07379878711139116,
+      "max": 0.07379878711139298,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "temporal_neural_net",
+      "year": 2045,
+      "min": 0.08279520292223808,
+      "mean": 0.08279520292223891,
+      "max": 0.08279520292224163,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "temporal_neural_net",
+      "year": 2050,
+      "min": 0.08872457435819214,
+      "mean": 0.08872457435819263,
+      "max": 0.08872457435819392,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "temporal_neural_net",
+      "year": 2055,
+      "min": 0.09263251351581836,
+      "mean": 0.09263251351582007,
+      "max": 0.09263251351582102,
+      "visible_nonzero_3dp": 282
+    },
+    {
+      "model": "temporal_neural_net",
+      "year": 2060,
+      "min": 0.09520816400840015,
+      "mean": 0.09520816400840187,
+      "max": 0.0952081640084037,
+      "visible_nonzero_3dp": 282
+    }
+  ]
+}
