@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jheelum Sarkar - Digital Life &amp; Fertility Trends</title>
+    <title>Digital Life and Fertility Future</title>
+    <link rel="icon" type="image/png" href="assets/img/favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=20260626b">
+    <link rel="stylesheet" href="style.css?v=20260702a">
     <script src="assets/vendor/plotly-2.35.2.min.js"></script>
 </head>
-<body>
+<body data-county-geometry-src="data/geo/us_counties_cbsa_context_simplified.js?v=20260702a">
     <div class="container">
         <header>
             <h1>Jheelum Sarkar</h1>
@@ -17,7 +18,7 @@
                 <a href="research.html">Research</a>
                 <a href="teaching.html">Teaching</a>
                 <a href="other-writings.html">Policy &amp; Public Writings</a>
-                <a href="ai-work-fertility-dashboard.html" class="active">Digital Life &amp; Fertility Trends</a>
+                <a href="ai-work-fertility-dashboard.html" class="active">Digital Life and Fertility Future</a>
             </nav>
         </header>
 
@@ -25,7 +26,7 @@
             <section class="scenario-dashboard-header">
                 <div class="scenario-dashboard-hero">
                     <div class="scenario-dashboard-copy">
-                        <h2>Digital Life &amp; Fertility Trends</h2>
+                        <h2>Digital Life and Fertility Future</h2>
                         <p class="scenario-dashboard-subtitle">
                             Explore how remote-work share, commute time saved, screen leisure, online social life, and in-person interaction shape projected fertility trends across U.S. states.
                         </p>
@@ -79,8 +80,8 @@
                                 </div>
                                 <div class="scenario-utility-section">
                                     <p class="scenario-utility-section-label">Projection models</p>
-                                    <p><strong>Statistical baseline</strong>: Main projection model. It uses observed fertility trends and state-level predictors to create the reference path. This is the default because it is easier to interpret than the machine-learning benchmarks.</p>
-                                    <p><strong>Tree ML benchmark</strong>: Flexible prediction benchmark. It allows nonlinear patterns and interactions across predictors. It is used to check whether the scenario results change when the model is more flexible.</p>
+                                    <p><strong>Statistical baseline</strong>: Primary State benchmark. It uses observed fertility trends and state-level predictors to create the reference path. It is transparent, stable, and performs well out of sample for the main interpretation.</p>
+                                    <p><strong>Tree ML benchmark</strong>: State robustness benchmark with strong held-out accuracy. In the Metro patterns view, it is the preferred MSA display model because it preserves metropolitan variation better.</p>
                                     <p><strong>Neural network benchmark</strong>: Exploratory prediction benchmark. It can capture more complex patterns, but it is less transparent and should be interpreted cautiously.</p>
                                 </div>
                                 <div class="scenario-utility-section">
@@ -107,6 +108,8 @@
                                         <button type="button" class="scenario-action-button" id="download-current-view-button">Download current view</button>
                                         <button type="button" class="scenario-action-button" id="download-all-data-button">Download all state-year scenario data</button>
                                         <button type="button" class="scenario-action-button" id="download-rankings-button">Download rankings</button>
+                                        <button type="button" class="scenario-action-button" id="download-benchmarks-button">Download benchmarks</button>
+                                        <button type="button" class="scenario-action-button" id="download-county-display-layer-button">Download county-CBSA display layer</button>
                                     </div>
                                 </div>
                                 <div class="scenario-utility-section">
@@ -124,13 +127,15 @@
             </section>
 
             <nav class="scenario-section-nav" aria-label="Dashboard sections">
-                <a href="#us-state" data-section-link>U.S. State</a>
+                <a href="#us-state" data-section-link data-geo-link="state">U.S. State</a>
+                <a href="#us-state" data-section-link data-geo-link="msa">Metro patterns</a>
                 <a href="#compare" data-section-link>Compare Scenarios</a>
                 <a href="#assumptions" data-section-link>Assumptions</a>
                 <a href="#method" data-section-link>Method</a>
             </nav>
 
             <section class="scenario-section scenario-section-primary" id="us-state" data-section-index="0">
+                <div class="scenario-geo-panel is-active" id="state-panel" data-geo-panel="state">
                 <div class="scenario-state-layout">
                     <div class="scenario-state-main">
                         <article class="dashboard-card scenario-figure-card scenario-map-card" id="state-map">
@@ -160,7 +165,7 @@
                                             <select data-setting="model" data-sync="explorer"></select>
                                         </label>
                                         <label class="scenario-control scenario-control-compact">
-                                            <span>Outcome</span>
+                                            <span>Display metric</span>
                                             <select data-setting="outcome" data-sync="global"></select>
                                         </label>
                                     </div>
@@ -214,6 +219,119 @@
                     </p>
                 </div>
                 <div class="scenario-story-grid" id="scenario-story-grid"></div>
+                </div>
+
+                <div class="scenario-geo-panel" id="msa-panel" data-geo-panel="msa" hidden>
+                    <div class="scenario-state-layout scenario-state-layout-msa">
+                        <div class="scenario-state-main">
+                            <article class="dashboard-card scenario-figure-card scenario-map-card" id="msa-map">
+                                <div class="scenario-figure-head scenario-figure-head-msa">
+                                    <div class="scenario-card-copy">
+                                        <h3 class="scenario-card-title" id="msa-map-title">How fertility changes across MSAs under this scenario</h3>
+                                        <p class="scenario-figure-caption-line">Select an MSA to see its trend below.</p>
+                                        <p class="scenario-figure-caption-line scenario-figure-caption-line-secondary">Counties are used only to display MSA-level estimates more clearly.</p>
+                                    </div>
+                                    <div class="scenario-card-tools scenario-card-tools-map scenario-card-tools-map-msa msa-control-grid">
+                                        <label class="scenario-control scenario-control-compact msa-control-state-filter">
+                                            <span>State filter</span>
+                                            <select id="msa-state-filter-select"></select>
+                                        </label>
+                                        <label class="scenario-control scenario-control-compact msa-control-select">
+                                            <span>MSA</span>
+                                            <select id="msa-select"></select>
+                                        </label>
+                                        <div class="msa-scenario-row">
+                                            <label class="scenario-control scenario-control-compact msa-control-scenario">
+                                                <span>Scenario</span>
+                                                <select data-setting="scenario" data-sync="msa"></select>
+                                            </label>
+                                            <label class="scenario-control scenario-control-compact msa-control-year">
+                                                <span>Horizon year</span>
+                                                <select data-setting="horizon" data-sync="msa"></select>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="scenario-map-toolbar">
+                                    <p class="scenario-headline-strip" id="msa-selection-strip"></p>
+                                    <details class="scenario-inline-details scenario-inline-details-advanced">
+                                        <summary>Advanced controls</summary>
+                                        <div class="scenario-inline-details-body scenario-card-advanced-grid">
+                                            <label class="scenario-control scenario-control-compact">
+                                                <span>Model</span>
+                                                <select data-setting="model" data-sync="msa"></select>
+                                            </label>
+                                            <label class="scenario-control scenario-control-compact">
+                                                <span>Display metric</span>
+                                                <select data-setting="outcome" data-sync="msa"></select>
+                                            </label>
+                                        </div>
+                                    </details>
+                                </div>
+                                <div id="msa-map-chart" class="scenario-plot scenario-map-plot" role="img" aria-label="U.S. county-based MSA scenario map"></div>
+                                <div class="scenario-inline-legend scenario-inline-legend-map" id="msa-map-legend" aria-label="County map legend">
+                                    <span class="scenario-inline-chip scenario-inline-chip-map">
+                                        <span class="scenario-map-legend-swatch scenario-map-legend-swatch-estimated" aria-hidden="true"></span>
+                                        Estimated MSA counties
+                                    </span>
+                                    <span class="scenario-inline-chip scenario-inline-chip-map">
+                                        <span class="scenario-map-legend-swatch scenario-map-legend-swatch-metro" aria-hidden="true"></span>
+                                        Metropolitan CBSA context only
+                                    </span>
+                                    <span class="scenario-inline-chip scenario-inline-chip-map">
+                                        <span class="scenario-map-legend-swatch scenario-map-legend-swatch-micro" aria-hidden="true"></span>
+                                        Micropolitan CBSA context only
+                                    </span>
+                                    <span class="scenario-inline-chip scenario-inline-chip-map">
+                                        <span class="scenario-map-legend-swatch scenario-map-legend-swatch-outside" aria-hidden="true"></span>
+                                        Outside CBSA / not in analytical universe
+                                    </span>
+                                </div>
+                                <div class="scenario-map-status msa-map-status" id="msa-map-status" role="status" aria-live="polite" hidden></div>
+                                <div class="scenario-figure-note msa-map-caption-box">
+                                    <p class="msa-map-clarifier">Displayed by county; estimated at MSA level.</p>
+                                    <p class="msa-map-caption-summary">This map shows MSA-level scenario estimates. For visibility, each MSA's estimate is displayed across the counties that belong to that MSA.</p>
+                                    <p>
+                                        This map shows MSA-level scenario estimates. For visibility, each MSA’s estimate is displayed across the counties that belong to that MSA. Counties in micropolitan areas or outside CBSAs are shown only as geographic background unless an estimate is available.
+                                    </p>
+                                    <button type="button" class="msa-map-caption-toggle" id="msa-map-caption-toggle" aria-expanded="false" aria-controls="msa-map-note">Click here for more details</button>
+                                    <p class="msa-map-caption-details" id="msa-map-note" hidden>
+                                        Positive values mean the scenario is above the model-based reference path; negative values mean it is below it. The analysis is conducted at the MSA level. County shapes are used only as a display layer, so counties inside the same estimated MSA receive the same MSA-level value. Counties in micropolitan areas or outside CBSAs are shown as geographic background unless an estimate is available.
+                                    </p>
+                                </div>
+                                <div class="scenario-caption-grid">
+                                    <div class="scenario-caption-box">
+                                        <p class="scenario-caption-label" id="msa-summary-title">Selected MSA</p>
+                                        <p class="scenario-summary-text" id="msa-summary-text"></p>
+                                    </div>
+                                    <div class="scenario-caption-box">
+                                        <p class="scenario-caption-label">Predictive benchmarks</p>
+                                        <p class="scenario-benchmark-note">MSA estimates are exploratory and more uncertain than State estimates. Use this view to compare broad metropolitan patterns, not exact local forecasts for individual MSAs.</p>
+                                        <div id="msa-model-status-panel"></div>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="dashboard-card scenario-figure-card scenario-line-card">
+                                <div class="scenario-figure-head">
+                                    <div class="scenario-card-copy">
+                                        <h3 class="scenario-card-title" id="msa-figure-title">Selected MSA trends</h3>
+                                        <p class="scenario-figure-caption-line" id="msa-explorer-title">Loading MSA explorer</p>
+                                    </div>
+                                </div>
+                                <div class="scenario-inline-legend" id="msa-line-legend" aria-label="Chart legend"></div>
+                                <div id="msa-line-chart" class="scenario-plot scenario-line-plot" role="img" aria-label="MSA scenario line chart"></div>
+                                <p class="scenario-figure-note" id="msa-line-note"></p>
+                                <p class="scenario-takeaway-text" id="msa-takeaway-text"></p>
+                            </article>
+                        </div>
+
+                        <aside class="scenario-state-sidebar" aria-label="MSA rankings and summary">
+                            <p class="scenario-sidebar-inline-note">Exploratory rankings: MSA-level forecast accuracy is modest, so rankings are suggestive.</p>
+                            <div class="scenario-ranking-grid" id="msa-rankings-grid"></div>
+                        </aside>
+                    </div>
+                </div>
             </section>
 
             <section class="scenario-section" id="compare" data-section-index="1">
@@ -221,13 +339,13 @@
                     <p class="scenario-section-kicker">Compare Scenarios</p>
                     <h3>Compare two digital-life scenarios</h3>
                     <p class="scenario-section-note">
-                        Compare two scenarios to see which one places fertility farther above or below the reference path.
+                        Compare two scenarios for the active geography and selected display metric at the chosen horizon year.
                     </p>
                 </div>
 
                 <div class="scenario-control-grid scenario-control-grid-compare">
                     <label class="scenario-control">
-                        <span>State</span>
+                        <span id="compare-place-label">Geography</span>
                         <select id="compare-place-select"></select>
                     </label>
                     <label class="scenario-control">
@@ -251,13 +369,13 @@
                 <article class="dashboard-card scenario-figure-card scenario-compare-card">
                     <div class="scenario-figure-head">
                         <div>
-                            <p class="scenario-headline-strip scenario-headline-strip-muted">Scenario comparison = Scenario A difference &#8722; Scenario B difference</p>
+                            <p class="scenario-headline-strip scenario-headline-strip-muted" id="scenario-compare-strip">Scenario comparison = Scenario A difference &#8722; Scenario B difference</p>
                         </div>
                     </div>
                     <div class="scenario-compare-metric-grid" id="scenario-compare-metric-grid"></div>
                     <div id="scenario-compare-chart" class="scenario-plot scenario-compare-plot" role="img" aria-label="Scenario comparison bar chart"></div>
-                    <p class="scenario-figure-note">
-                        Differences in scenario differences, births per 1,000 women aged 15&ndash;44.
+                    <p class="scenario-figure-note" id="scenario-compare-note">
+                        Comparisons follow the selected display metric for the active geography and horizon year.
                     </p>
                     <p class="scenario-takeaway-text" id="scenario-compare-text"></p>
                 </article>
@@ -304,7 +422,8 @@
         </footer>
     </div>
 
-    <script src="ai-work-fertility-dashboard-data.js?v=20260625a"></script>
-    <script src="ai-work-fertility-dashboard.js?v=20260626b"></script>
+    <script src="ai-work-fertility-dashboard-data.js?v=20260702a"></script>
+    <script src="data/geo/us_msa_cbsa_simplified.js?v=20260702a"></script>
+    <script src="ai-work-fertility-dashboard.js?v=20260702a"></script>
 </body>
 </html>
