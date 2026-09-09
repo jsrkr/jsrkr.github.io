@@ -447,7 +447,7 @@ ul li {
     grid-template-columns: minmax(0, 1fr);
     gap: 10px;
     margin-bottom: 12px;
-    order: 2;
+    order: 3;
 }
 
 .paper-findings[hidden] {
@@ -542,7 +542,7 @@ ul li {
 
 .paper-card-note {
     margin-bottom: 10px;
-    order: 3;
+    order: 4;
 }
 
 .paper-card-actions {
@@ -551,7 +551,7 @@ ul li {
     gap: 18px;
     flex-wrap: wrap;
     margin-bottom: 12px;
-    order: 4;
+    order: 2;
 }
 
 .paper-card-actions .paper-toggle {
