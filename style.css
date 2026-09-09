@@ -160,7 +160,7 @@ main {
 
 .home-featured-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: 16px;
     align-items: stretch;
 }
@@ -410,7 +410,8 @@ ul li {
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
 }
 
-.featured-paper-title {
+.featured-paper-title,
+.paper-card-title {
     font-size: 24px;
     line-height: 1.3;
     margin-top: 0;
@@ -439,6 +440,34 @@ ul li {
 
 .paper-card-summary {
     order: 4;
+}
+
+.paper-findings {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+    order: 2;
+}
+
+.paper-findings[hidden] {
+    display: none;
+}
+
+.paper-finding h4 {
+    margin: 0;
+    color: #333;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.6;
+}
+
+.paper-finding p {
+    margin: 0;
+    color: #555;
+    font-size: 16px;
+    line-height: 1.55;
+    text-align: left;
 }
 
 .featured-paper-actions {
@@ -508,11 +537,6 @@ ul li {
 }
 
 .paper-card-title {
-    font-size: 22px;
-    line-height: 1.35;
-    margin-top: 0;
-    margin-bottom: 10px;
-    color: #111;
     order: 1;
 }
 
@@ -527,7 +551,7 @@ ul li {
     gap: 18px;
     flex-wrap: wrap;
     margin-bottom: 12px;
-    order: 2;
+    order: 4;
 }
 
 .paper-card-actions .paper-toggle {
