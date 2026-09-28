@@ -62,8 +62,6 @@
         { field: "share_highspeed", label: "Households with High-Speed Internet (%)", unit: "percent", color: "#687f48" },
         { field: "share_cellular_data_plan", label: "Households with Cellular Data (%)", unit: "percent", color: "#9a6887" }
     ];
-    // Set this to the Buttondown account username after the public signup page exists.
-    const BUTTONDOWN_USERNAME = "";
     const MAP_COLORS = [
         [0, "#edf1f1"],
         [0.2, "#c8d7dc"],
@@ -612,8 +610,7 @@
             "state-statistics",
             "about",
             "method",
-            "download",
-            "signup"
+            "download"
         ];
         const sections = sectionIds.map(function (id) {
             return document.getElementById(id);
@@ -668,23 +665,6 @@
         window.addEventListener("scroll", scheduleSync, { passive: true });
         window.addEventListener("resize", scheduleSync);
         syncCurrentSection();
-    }
-
-    function setupButtondownForm() {
-        const form = document.getElementById("buttondown-form");
-        const submit = document.getElementById("buttondown-submit");
-        const status = document.getElementById("signup-status");
-        const username = BUTTONDOWN_USERNAME.trim();
-        if (!username) {
-            form.removeAttribute("action");
-            submit.disabled = true;
-            status.hidden = false;
-            return;
-        }
-        form.action = "https://buttondown.com/api/emails/embed-subscribe/" + encodeURIComponent(username);
-        form.method = "post";
-        submit.disabled = false;
-        status.hidden = true;
     }
 
     function attachInteractions() {
@@ -766,7 +746,6 @@
     }
 
     async function init() {
-        setupButtondownForm();
         if (!window.Plotly) {
             showLoadError(new Error("Plotly is not available."));
             return;
