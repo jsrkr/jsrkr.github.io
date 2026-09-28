@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Explore state-level trends in digital work, leisure, and accessibility across the United States.">
+    <title>Digital Life Atlas</title>
+    <link rel="stylesheet" href="assets/css/digital-life.css">
+</head>
+<body class="digital-life-page">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="atlas-header">
+        <div class="atlas-header-inner">
+            <a class="atlas-brand" href="#intro">Digital Life Atlas</a>
+            <nav class="atlas-nav" aria-label="Digital Life Atlas sections">
+                <a href="#about">About</a>
+                <a href="#method">Method</a>
+                <a href="#download">Download</a>
+                <a href="#signup">Signup</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <section class="atlas-intro major-section" id="intro" aria-labelledby="intro-title">
+            <div class="atlas-content">
+                <p class="eyebrow">A state-by-year data project</p>
+                <h1 id="intro-title">Digital life across U.S. states</h1>
+                <p class="intro-deck">How digital work, digital leisure, and connectivity are reshaping everyday life.</p>
+                <p class="intro-note">Explore trends across states, changes over time, and the underlying data.</p>
+            </div>
+        </section>
+
+        <section class="atlas-section major-section" id="trends" aria-labelledby="trends-title">
+            <div class="atlas-content">
+                <p class="section-label">01 <span>Trends</span></p>
+                <div class="section-heading">
+                    <h2 id="trends-title">Figure 1: Digital life trends in U.S.</h2>
+                    <p class="figure-subtitle">Cross-state averages of the Digital Life Index and its three component scores.</p>
+                </div>
+                <figure class="atlas-figure">
+                    <div id="trend-chart" class="plot trend-plot" role="img" aria-label="Line chart of cross-state average digital life, work, leisure, and accessibility across observed years"></div>
+                    <ul class="metric-legend" aria-label="Trend line colors">
+                        <li><span class="legend-swatch legend-life"></span>Digital Life Index</li>
+                        <li><span class="legend-swatch legend-work"></span>Digital Work Score</li>
+                        <li><span class="legend-swatch legend-leisure"></span>Digital Leisure Score</li>
+                        <li><span class="legend-swatch legend-access"></span>Digital Accessibility Score</li>
+                    </ul>
+                    <figcaption class="figure-note">
+                        <p>Annual trends in digital life. For the full state-year series, <a href="#download">download the full data</a>. Note: 2020 is omitted because ATUS did not produce a comparable full-year estimate.</p>
+                    </figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section class="atlas-section major-section" id="map-section" aria-labelledby="map-title">
+            <div class="atlas-content">
+                <p class="section-label">02 <span>Map</span></p>
+                <div class="section-heading">
+                    <h2 id="map-title">Figure 2: Digital life across U.S. states</h2>
+                    <p class="figure-subtitle">Choose a measure and year to explore the state-by-state pattern.</p>
+                </div>
+                <div class="control-row" aria-label="Map controls">
+                    <label class="select-control">
+                        <span>Metric</span>
+                        <select id="map-metric" aria-label="Map metric">
+                            <option value="digital_life_index">Digital Life Index</option>
+                            <option value="digital_work">Digital Work Score</option>
+                            <option value="digital_leisure">Digital Leisure Score</option>
+                            <option value="digital_accessibility">Digital Accessibility Score</option>
+                        </select>
+                    </label>
+                    <label class="select-control">
+                        <span>Year</span>
+                        <select id="map-year" aria-label="Map year"></select>
+                    </label>
+                </div>
+                <figure class="atlas-figure map-figure">
+                    <div id="state-map" class="plot map-plot" role="img" aria-label="Interactive choropleth map of all available U.S. states and the District of Columbia"></div>
+                    <div class="map-legend" id="map-legend" role="group" aria-label="Map color scale">
+                        <p class="map-legend-title" id="map-legend-title">Digital Life Index</p>
+                        <div class="map-legend-gradient" aria-hidden="true"></div>
+                        <div class="map-legend-ticks" aria-hidden="true">
+                            <span id="map-legend-min">0.000</span>
+                            <span id="map-legend-mid">0.500</span>
+                            <span id="map-legend-max">1.000</span>
+                        </div>
+                    </div>
+                    <p class="map-note" id="map-note" aria-live="polite"></p>
+                    <figcaption class="figure-note">
+                        <p>Darker shades indicate higher values. The color range is fixed to the full state-year range for each measure, so colors remain comparable across years.</p>
+                    </figcaption>
+                </figure>
+                <div class="map-state-selection">
+                    <label class="select-control state-picker">
+                        <span>State</span>
+                        <select id="state-select" aria-label="Choose a state for the profile chart">
+                            <option value="">Choose a state</option>
+                        </select>
+                    </label>
+                    <p class="map-state-prompt">Select a state on the map or from the list to view its digital-life profile below.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="atlas-section major-section" id="state-profile" aria-labelledby="state-profile-title">
+            <div class="atlas-content">
+                <p class="section-label">03 <span>State profile</span></p>
+                <div class="section-heading">
+                    <h2 id="state-profile-title">Figure 3: Digital profile of selected state</h2>
+                    <p class="figure-subtitle">Four normalized scores for the state selected above and the map year.</p>
+                </div>
+                <figure class="atlas-figure profile-figure">
+                    <h3 class="profile-state-year" id="profile-state-year" aria-live="polite">State &middot; Year</h3>
+                    <div id="state-profile-chart" class="plot profile-plot" role="img" aria-label="Horizontal bar chart of the four digital-life measures for the selected state and year"></div>
+                    <figcaption class="figure-note">Hover over a bar for the state&#39;s descending rank within the selected year. Tied scores share a rank.</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section class="atlas-section major-section" id="state-statistics" aria-labelledby="state-statistics-title">
+            <div class="atlas-content">
+                <p class="section-label">04 <span>State statistics</span></p>
+                <div class="section-heading">
+                    <h2 id="state-statistics-title">Figure 4: Underlying digital-life measures across states</h2>
+                    <p class="figure-subtitle">Explore the underlying state statistics in their original units.</p>
+                </div>
+                <div class="control-row" aria-label="State statistics controls">
+                    <label class="select-control">
+                        <span>Measure</span>
+                        <select id="stat-measure" aria-label="Underlying measure"></select>
+                    </label>
+                    <label class="select-control">
+                        <span>Year</span>
+                        <select id="stat-year" aria-label="State statistics year"></select>
+                    </label>
+                </div>
+                <figure class="atlas-figure statistics-figure">
+                    <div id="statistics-chart" class="plot statistics-plot" role="img" aria-label="Horizontal bar chart of an underlying digital-life measure for all available states and the District of Columbia"></div>
+                    <figcaption class="figure-note">Underlying state-level measures used to characterize digital work, digital leisure, and digital accessibility. Shares are shown as percentages; digital leisure is measured in average minutes per day.</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section class="atlas-section compact-section major-section" id="about" aria-labelledby="about-title">
+            <div class="atlas-content text-content">
+                <p class="section-label">05 <span>About</span></p>
+                <h2 id="about-title">About the Digital Life Atlas</h2>
+                <p>The Atlas brings together three measured dimensions of digital life and summarizes them with the Digital Life Index. Figure 3 compares one state's normalized profile; Figure 4 shows selected underlying statistics for all states and DC in their original units.</p>
+                <dl class="dimension-list">
+                    <div>
+                        <dt>Digital Work</dt>
+                        <dd>The share of workers usually working from home, shown as a standardized input in the index and as a percentage in Figure 4.</dd>
+                    </div>
+                    <div>
+                        <dt>Digital Leisure</dt>
+                        <dd>The updated source reports average digital leisure minutes by state and year. Its data file does not provide a more specific activity or sample definition.</dd>
+                    </div>
+                    <div>
+                        <dt>Digital Accessibility</dt>
+                        <dd>An equal-weight average of standardized household internet, high-speed internet, and cellular data-plan shares.</dd>
+                    </div>
+                </dl>
+            </div>
+        </section>
+
+        <section class="atlas-section compact-section major-section" id="method" aria-labelledby="method-title">
+            <div class="atlas-content text-content">
+                <p class="section-label">06 <span>Method</span></p>
+                <h2 id="method-title">Method</h2>
+                <p>The updated source covers 2016-2019 and 2021-2023 for all 50 states and DC. Digital Work uses <code>z_remote</code>, standardized from the ACS <code>remote_share</code>; the inspected ACS code defines this as the survey-weighted share of workers age 16 or older who usually work from home. Digital Leisure uses <code>z_leisure</code>, standardized from the supplied <code>digital_leisure_minutes_mean</code>. That raw field has no Stata variable label, and the inspected construction code does not document a more specific activity or sample definition. Digital Accessibility is <code>digital_access</code>, the arithmetic mean of <code>z_internet</code>, <code>z_highspeed</code>, and <code>z_cellular</code>, standardized from household shares. The cellular share is named <code>share_cellular_data_plan</code> in the updated source.</p>
+                <p>The Digital Life Index and its component scores are relative measures normalized between 0 and 1 over the pooled state-year sample. These scores are not percentages. Figure 1-3 use the stored index and three component display fields. The component scores are independently min-max normalized; they are not direct physical quantities. Figure 4 presents selected underlying measures in their original units, including percentages of households or workers and average daily minutes of digital leisure. Its cellular-data measure is stored in the updated source as <code>share_cellular_data_plan</code>.</p>
+                <p>The CSV adds <code>digital_work_score_01</code>, <code>digital_leisure_score_01</code>, and <code>digital_accessibility_score_01</code>. Each is calculated from the updated pooled sample as (source measure - pooled minimum) / (pooled maximum - pooled minimum). The finalized index is not reconstructed for display. See the <a href="assets/data/README_Digital_Life_Atlas.md">methods README</a> for source fields, exact pooled extrema, and variable definitions.</p>
+                <p>ATUS did not produce a comparable full-year estimate for 2020, so it is omitted rather than interpolated.</p>
+            </div>
+        </section>
+
+        <section class="atlas-section compact-section major-section" id="download" aria-labelledby="download-title">
+            <div class="atlas-content text-content">
+                <p class="section-label">07 <span>Download</span></p>
+                <h2 id="download-title">Download the data</h2>
+                <p>The CSV preserves every variable from the updated Stata source and adds three documented normalized display columns. Figure 4 uses the raw measures in their original units.</p>
+                <div class="download-links">
+                    <a class="download-link" href="assets/data/digital_life_state_year.csv" download>
+                        <span>Download CSV</span><span aria-hidden="true">↓</span>
+                    </a>
+                    <a class="download-link" href="assets/data/state-year-digital-life-index.dta" download>
+                        <span>Download Stata (.dta)</span><span aria-hidden="true">↓</span>
+                    </a>
+                    <a class="download-link" href="assets/data/README_Digital_Life_Atlas.md" download>
+                        <span>Methods / README</span><span aria-hidden="true">↓</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="atlas-section compact-section major-section signup-section" id="signup" aria-labelledby="signup-title">
+            <div class="atlas-content signup-content">
+                <div>
+                    <p class="section-label">08 <span>Signup</span></p>
+                    <h2 id="signup-title">Sign up for updates</h2>
+                    <p>Get notified when new Digital Life Atlas data, figures, and research updates are released.</p>
+                </div>
+                <div class="signup-form-wrap">
+                    <form id="buttondown-form" class="signup-form" method="post">
+                        <label for="buttondown-email">Email address</label>
+                        <input id="buttondown-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+                        <input type="hidden" name="embed" value="1">
+                        <button id="buttondown-submit" type="submit" disabled>Subscribe</button>
+                    </form>
+                    <p id="signup-status" class="signup-status" aria-live="polite">Subscription form setup is awaiting the mailing-list account connection.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="atlas-footer">
+        <div class="atlas-content">
+            <p>Digital Life Atlas <span aria-hidden="true">·</span> Jheelum Sarkar</p>
+            <a href="#intro">Back to top ↑</a>
+        </div>
+    </footer>
+
+    <div class="section-controls" aria-label="Section navigation">
+        <button type="button" id="section-up" aria-label="Go to previous section" title="Previous section" disabled>
+            <span aria-hidden="true">▲</span>
+        </button>
+        <button type="button" id="section-down" aria-label="Go to next section" title="Next section">
+            <span aria-hidden="true">▼</span>
+        </button>
+    </div>
+
+    <script src="assets/vendor/plotly-2.35.2.min.js"></script>
+    <script src="assets/js/digital-life.js"></script>
+</body>
+</html>
