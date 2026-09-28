@@ -197,7 +197,11 @@ body.digital-life-page {
 #map-section,
 #state-profile,
 #state-statistics {
-    padding-block: 60px 68px;
+    padding-block: 24px 40px;
+}
+
+#measure-definitions {
+    padding-block-start: 24px;
 }
 
 .section-heading {
@@ -603,7 +607,11 @@ body.digital-life-page {
     #map-section,
     #state-profile,
     #state-statistics {
-        padding-block: 52px 58px;
+        padding-block: 22px 36px;
+    }
+
+    #measure-definitions {
+        padding-block-start: 22px;
     }
 
     .trend-plot {
@@ -677,7 +685,11 @@ body.digital-life-page {
     #map-section,
     #state-profile,
     #state-statistics {
-        padding-block: 44px 50px;
+        padding-block: 20px 32px;
+    }
+
+    #measure-definitions {
+        padding-block-start: 20px;
     }
 
     .section-heading {
