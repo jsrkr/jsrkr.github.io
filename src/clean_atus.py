@@ -6,7 +6,13 @@ import math
 import numpy as np
 import pandas as pd
 
-from .config import ATUS_SMALL_STATE_WARNING, MIN_ATUS_STATE_SAMPLE, STATE_FIPS_TO_REGION
+from .config import (
+    ATUS_SMALL_STATE_WARNING,
+    MIN_ATUS_STATE_SAMPLE,
+    STATE_FIPS_TO_ABBR,
+    STATE_FIPS_TO_NAME,
+    STATE_FIPS_TO_REGION,
+)
 from .data_download import validate_columns
 
 
@@ -271,7 +277,18 @@ def build_atus_respondent_day(base_dir: str | Path, year: int) -> pd.DataFrame:
         base_dir,
         year,
         "atuscps",
-        usecols=["TUCASEID", "TULINENO", "GESTFIPS", "PESEX", "PRTAGE", "PEEDUCA", "PRMARSTA", "PTDTRACE"],
+        usecols=[
+            "TUCASEID",
+            "TULINENO",
+            "GESTFIPS",
+            "GTCBSA",
+            "GTMETSTA",
+            "PESEX",
+            "PRTAGE",
+            "PEEDUCA",
+            "PRMARSTA",
+            "PTDTRACE",
+        ],
     )
 
     activity["trcode"] = activity["trcode"].astype(str).str.zfill(6)
@@ -334,6 +351,13 @@ def build_atus_respondent_day(base_dir: str | Path, year: int) -> pd.DataFrame:
     if cps is not None:
         cps["gestfips"] = pd.to_numeric(cps["gestfips"], errors="coerce").astype("Int64")
         cps["state_fips"] = cps["gestfips"].astype(str).str.zfill(2)
+        if "gtcbsa" in cps.columns:
+            cps["gtcbsa"] = pd.to_numeric(cps["gtcbsa"], errors="coerce").astype("Int64")
+        else:
+            cps["gtcbsa"] = pd.Series(pd.NA, index=cps.index, dtype="Int64")
+        cps["cbsa_code"] = cps["gtcbsa"].where(cps["gtcbsa"].notna() & cps["gtcbsa"].ne(0))
+        cps["cbsa_code"] = cps["cbsa_code"].astype("Int64").astype(str)
+        cps.loc[cps["cbsa_code"].isin(["<NA>", "0"]), "cbsa_code"] = pd.NA
         cps["age"] = pd.to_numeric(cps["prtage"], errors="coerce")
         cps["sex"] = pd.to_numeric(cps["pesex"], errors="coerce").map({1: "Male", 2: "Female"})
         cps["age_group"] = cps["age"].apply(_age_group)
@@ -341,7 +365,20 @@ def build_atus_respondent_day(base_dir: str | Path, year: int) -> pd.DataFrame:
         cps["marital_status"] = pd.to_numeric(cps["prmarsta"], errors="coerce").apply(_marital_group)
         cps["region"] = cps["state_fips"].map(STATE_FIPS_TO_REGION)
         merged = merged.merge(
-            cps[["tucaseid", "tulineno", "state_fips", "region", "age", "age_group", "sex", "education_group", "marital_status"]],
+            cps[
+                [
+                    "tucaseid",
+                    "tulineno",
+                    "state_fips",
+                    "region",
+                    "cbsa_code",
+                    "age",
+                    "age_group",
+                    "sex",
+                    "education_group",
+                    "marital_status",
+                ]
+            ],
             on=["tucaseid", "tulineno"],
             how="left",
         )
@@ -349,6 +386,7 @@ def build_atus_respondent_day(base_dir: str | Path, year: int) -> pd.DataFrame:
     else:
         merged["state_fips"] = pd.NA
         merged["region"] = "National only"
+        merged["cbsa_code"] = pd.NA
         merged["age"] = pd.NA
         merged["age_group"] = pd.NA
         merged["sex"] = pd.NA
@@ -367,6 +405,17 @@ def build_atus_respondent_day(base_dir: str | Path, year: int) -> pd.DataFrame:
             "trtspouse": "time_with_spouse_minutes",
         }
     )
+    for column in [
+        "time_alone_minutes",
+        "time_with_spouse_only_minutes",
+        "time_with_friends_minutes",
+        "time_with_family_minutes",
+        "time_with_children_minutes",
+        "presence_household_children",
+        "time_with_spouse_minutes",
+    ]:
+        if column not in merged.columns:
+            merged[column] = np.nan
     merged["digital_social_proxy_minutes"] = np.nan
     merged["digital_social_proxy_mode"] = "not_directly_observed"
     merged["time_with_nonhousehold_minutes"] = merged["time_with_friends_minutes"]
@@ -449,4 +498,94 @@ def build_atus_aggregates_from_raw(base_dir: str | Path, years: list[int], min_s
         "direct national estimate",
         np.where(out["geography_type"].eq("region"), "direct regional estimate", "direct state estimate if sample is large enough; otherwise pooled or hidden"),
     )
+    return out
+
+
+def build_atus_msa_aggregates_from_raw(
+    base_dir: str | Path,
+    years: list[int],
+    cbsa_name_lookup: dict[str, str] | None = None,
+    recommended_min_sample: int = MIN_ATUS_STATE_SAMPLE,
+) -> pd.DataFrame:
+    respondent_days: list[pd.DataFrame] = []
+    for year in years:
+        respondent_day = build_atus_respondent_day(base_dir, year)
+        if "cbsa_code" in respondent_day.columns and respondent_day["cbsa_code"].notna().any():
+            respondent_days.append(respondent_day)
+
+    if not respondent_days:
+        return pd.DataFrame(
+            columns=[
+                "year",
+                "cbsa_code",
+                "msa_name",
+                "state_fips",
+                "state_abbr",
+                "state_name",
+                "region",
+                "component_state_fips",
+                "component_state_abbrs",
+                "component_state_names",
+                "geography_type",
+                "quality_warning",
+                "estimate_status",
+                "sample_size",
+                "respondent_count_unweighted",
+            ]
+        )
+
+    lookup = cbsa_name_lookup or {}
+    micro = pd.concat(respondent_days, ignore_index=True)
+    msa_source = micro[micro["cbsa_code"].notna()].copy()
+    msa = _aggregate_atus_groups(msa_source, ["year", "cbsa_code"], "msa", min_state_sample=0)
+
+    metadata_rows: list[dict[str, object]] = []
+    for (year, cbsa_code), group in msa_source.groupby(["year", "cbsa_code"], dropna=True):
+        state_weights = (
+            group.loc[group["state_fips"].notna()]
+            .groupby("state_fips", dropna=True)["weight"]
+            .sum()
+            .to_dict()
+        )
+        component_state_fips = sorted(str(key).zfill(2) for key in state_weights)
+        dominant_state_fips = (
+            max(component_state_fips, key=lambda item: (state_weights[item], item))
+            if component_state_fips
+            else ""
+        )
+        metadata_rows.append(
+            {
+                "year": int(year),
+                "cbsa_code": str(cbsa_code),
+                "msa_name": lookup.get(str(cbsa_code), str(cbsa_code)),
+                "state_fips": dominant_state_fips,
+                "state_abbr": STATE_FIPS_TO_ABBR.get(dominant_state_fips, ""),
+                "state_name": STATE_FIPS_TO_NAME.get(dominant_state_fips, ""),
+                "region": STATE_FIPS_TO_REGION.get(dominant_state_fips, ""),
+                "component_state_fips": ",".join(component_state_fips),
+                "component_state_abbrs": ",".join(
+                    STATE_FIPS_TO_ABBR.get(state_fips, state_fips) for state_fips in component_state_fips
+                ),
+                "component_state_names": ",".join(
+                    STATE_FIPS_TO_NAME.get(state_fips, state_fips) for state_fips in component_state_fips
+                ),
+            }
+        )
+
+    metadata = pd.DataFrame(metadata_rows)
+    out = msa.merge(metadata, on=["year", "cbsa_code"], how="left")
+    out["msa_name"] = out["msa_name"].fillna(out["cbsa_code"].astype(str))
+    out["is_below_recommended_sample"] = out["sample_size"] < recommended_min_sample
+    out["quality_warning"] = np.where(
+        out["is_below_recommended_sample"],
+        "Direct ATUS MSA estimates are available, but this MSA-year cell is below the recommended minimum sample and should be treated cautiously.",
+        "",
+    )
+    out["estimate_status"] = np.where(
+        out["is_below_recommended_sample"],
+        "direct_small_sample_msa_estimate",
+        "direct_msa_estimate",
+    )
+    out["source_used"] = "Local ATUS raw files"
+    out["estimate_mode"] = "direct MSA estimate from ATUS-CPS geography when GTCBSA is available"
     return out

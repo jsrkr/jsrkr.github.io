@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import pyreadstat
 
-from .config import ACS_2020_WARNING, AGE_GROUPS, STATE_FIPS_TO_REGION
+from .config import ACS_2020_WARNING, AGE_GROUPS, STATE_FIPS_TO_ABBR, STATE_FIPS_TO_NAME, STATE_FIPS_TO_REGION
 from .data_download import validate_columns
 
 
@@ -535,6 +535,230 @@ def build_weighted_acs_state_year_panel_from_dta(
                 "measurement_note": "Remote work is identified from ACS commute mode indicating work from home; commute and work-hour measures are weighted among relevant employed respondents.",
                 "proxy_mode": "observed_acs",
                 "region": STATE_FIPS_TO_REGION.get(state_fips),
+                "acs_warning": ACS_2020_WARNING if int(year) == 2020 else "",
+            }
+        )
+
+    return pd.DataFrame(rows)
+
+
+def load_acs_msa_label_lookup(dta_path: str | Path, msa_column: str = "met2013") -> dict[str, str]:
+    path = Path(dta_path)
+    if not path.exists():
+        raise FileNotFoundError(f"ACS file not found: {path}")
+
+    _, meta = pyreadstat.read_dta(path, metadataonly=True)
+    label_set = meta.variable_to_label.get(msa_column.lower()) or meta.variable_to_label.get(msa_column.upper())
+    if not label_set:
+        return {}
+
+    raw_labels = meta.value_labels.get(label_set, {})
+    out: dict[str, str] = {}
+    for key, value in raw_labels.items():
+        try:
+            code = str(int(float(key)))
+        except (TypeError, ValueError):
+            continue
+        out[code] = str(value)
+    return out
+
+
+def build_weighted_acs_msa_year_panel_from_dta(
+    dta_path: str | Path,
+    min_year: int = 2010,
+    chunk_rows: int = 250000,
+    msa_column: str = "met2013",
+) -> pd.DataFrame:
+    path = Path(dta_path)
+    if not path.exists():
+        raise FileNotFoundError(f"ACS file not found: {path}")
+
+    _, meta = pyreadstat.read_dta(path, metadataonly=True)
+    total_rows = meta.number_rows
+    available_columns = {column.lower() for column in meta.column_names}
+    requested_usecols = [
+        "year",
+        "statefip",
+        msa_column,
+        "perwt",
+        "age",
+        "sex",
+        "empstat",
+        "labforce",
+        "marst",
+        "educ",
+        "fertyr",
+        "tranwork",
+        "trantime",
+        "hrswork1",
+    ]
+    usecols = [column for column in requested_usecols if column.lower() in available_columns]
+    if msa_column.lower() not in available_columns:
+        raise ValueError(f"ACS/IPUMS extract at {path} does not contain {msa_column}.")
+
+    msa_lookup = load_acs_msa_label_lookup(path, msa_column=msa_column)
+    accum: dict[tuple[str, int], dict[str, float]] = defaultdict(lambda: defaultdict(float))
+    component_state_weights: dict[tuple[str, int], dict[str, float]] = defaultdict(lambda: defaultdict(float))
+    years_seen: set[int] = set()
+
+    for offset in range(0, total_rows, chunk_rows):
+        chunk, _ = pyreadstat.read_dta(
+            path,
+            usecols=usecols,
+            row_offset=offset,
+            row_limit=min(chunk_rows, total_rows - offset),
+        )
+        if chunk.empty:
+            continue
+
+        chunk["year"] = pd.to_numeric(chunk["year"], errors="coerce").astype("Int64")
+        chunk = chunk[chunk["year"].ge(min_year)].copy()
+        if chunk.empty:
+            continue
+
+        chunk["cbsa_code"] = pd.to_numeric(chunk[msa_column], errors="coerce").astype("Int64")
+        chunk = chunk[chunk["cbsa_code"].notna() & chunk["cbsa_code"].ne(0)].copy()
+        if chunk.empty:
+            continue
+
+        years_seen.update(chunk["year"].dropna().astype(int).unique().tolist())
+        chunk["cbsa_code"] = chunk["cbsa_code"].astype(int).astype(str)
+        chunk["state_fips"] = pd.to_numeric(chunk["statefip"], errors="coerce").astype("Int64").astype(str).str.zfill(2)
+        chunk["weight"] = pd.to_numeric(chunk["perwt"], errors="coerce").fillna(0.0)
+        chunk["age"] = pd.to_numeric(chunk["age"], errors="coerce")
+        chunk["is_female"] = pd.to_numeric(chunk["sex"], errors="coerce").eq(2)
+        chunk["is_female_15_44"] = chunk["is_female"] & chunk["age"].between(15, 44, inclusive="both")
+        chunk["is_adult_18_64"] = chunk["age"].between(18, 64, inclusive="both")
+        chunk["is_employed"] = pd.to_numeric(chunk["empstat"], errors="coerce").isin([1])
+        chunk["is_labor_force"] = pd.to_numeric(chunk["labforce"], errors="coerce").isin([2])
+        if "fertyr" in chunk.columns:
+            fertyr = pd.to_numeric(chunk["fertyr"], errors="coerce")
+            chunk["fertility_past_year"] = np.where(fertyr.isin([1, 2]), fertyr.eq(2).astype(float), np.nan)
+        else:
+            chunk["fertility_past_year"] = np.nan
+        chunk["works_from_home"] = pd.to_numeric(chunk["tranwork"], errors="coerce").eq(80)
+        chunk["works_on_site"] = chunk["is_employed"] & ~chunk["works_from_home"]
+        if "trantime" in chunk.columns:
+            chunk["commute_minutes"] = pd.to_numeric(chunk["trantime"], errors="coerce")
+            chunk["is_long_commute"] = chunk["commute_minutes"].ge(45)
+        else:
+            chunk["commute_minutes"] = np.nan
+            chunk["is_long_commute"] = False
+        chunk["usual_hours"] = pd.to_numeric(chunk["hrswork1"], errors="coerce").where(lambda s: s.between(1, 99))
+        chunk["remote_work_hours_proxy_component"] = np.where(chunk["works_from_home"], chunk["usual_hours"], 0.0)
+        if "marst" in chunk.columns:
+            chunk["is_married_or_partnered"] = pd.to_numeric(chunk["marst"], errors="coerce").isin([1, 2])
+        else:
+            chunk["is_married_or_partnered"] = False
+
+        for (cbsa_code, year), group in chunk.groupby(["cbsa_code", "year"], dropna=True):
+            key = (cbsa_code, int(year))
+            weight = group["weight"]
+            employed = group["is_employed"]
+            on_site = group["works_on_site"]
+            women_15_44 = group["is_female_15_44"]
+            adult = group["is_adult_18_64"]
+
+            accum[key]["sample_size"] += float(len(group))
+            accum[key]["weight_sum"] += weight.sum()
+
+            employed_weight = (weight * employed).sum()
+            accum[key]["employed_weight"] += employed_weight
+            accum[key]["remote_work_weight"] += (weight * employed * group["works_from_home"]).sum()
+            accum[key]["onsite_work_weight"] += (weight * employed * on_site).sum()
+
+            hours_valid = group["usual_hours"].notna().astype(float)
+            accum[key]["hours_weight_sum"] += (weight * employed * group["usual_hours"].fillna(0)).sum()
+            accum[key]["hours_weight_denom"] += (weight * employed * hours_valid).sum()
+            accum[key]["remote_hours_weight_sum"] += (weight * employed * group["remote_work_hours_proxy_component"]).sum()
+
+            remote_subset = employed & group["works_from_home"] & group["usual_hours"].notna()
+            accum[key]["wfh_hours_sum"] += (weight * remote_subset * group["usual_hours"].fillna(0)).sum()
+            accum[key]["wfh_hours_denom"] += (weight * remote_subset).sum()
+
+            commuter_subset = employed & on_site & group["commute_minutes"].notna()
+            accum[key]["commute_sum"] += (weight * commuter_subset * group["commute_minutes"].fillna(0)).sum()
+            accum[key]["commute_denom"] += (weight * commuter_subset).sum()
+            accum[key]["long_commute_weight"] += (weight * employed * on_site * group["is_long_commute"]).sum()
+            accum[key]["long_commute_denom"] += (weight * employed * on_site).sum()
+
+            female_subset = women_15_44
+            accum[key]["female_weight"] += (weight * female_subset).sum()
+            accum[key]["female_employed_weight"] += (weight * female_subset * employed).sum()
+            fertility_subset = women_15_44 & group["fertility_past_year"].notna()
+            accum[key]["fertility_population_weight"] += (weight * fertility_subset).sum()
+            accum[key]["births_weight"] += (
+                weight
+                * fertility_subset
+                * pd.to_numeric(group["fertility_past_year"], errors="coerce").fillna(0.0)
+            ).sum()
+            accum[key]["fertility_sample_size"] += float(fertility_subset.sum())
+
+            adult_subset = adult
+            accum[key]["adult_weight"] += (weight * adult_subset).sum()
+            accum[key]["adult_labor_force_weight"] += (weight * adult_subset * group["is_labor_force"]).sum()
+            accum[key]["adult_partnered_weight"] += (weight * adult_subset * group["is_married_or_partnered"]).sum()
+
+            state_weight_totals = group.groupby("state_fips", dropna=True)["weight"].sum()
+            for state_fips, state_weight in state_weight_totals.items():
+                component_state_weights[key][str(state_fips).zfill(2)] += float(state_weight)
+
+    if not years_seen:
+        raise ValueError(
+            f"ACS/IPUMS extract at {path} does not contain identifiable MSA records for years >= {min_year}."
+        )
+
+    rows = []
+    for (cbsa_code, year), values in sorted(accum.items()):
+        state_weights = component_state_weights.get((cbsa_code, year), {})
+        component_state_fips = sorted(state_weights)
+        dominant_state_fips = (
+            max(component_state_fips, key=lambda item: (state_weights[item], item))
+            if component_state_fips
+            else ""
+        )
+        rows.append(
+            {
+                "cbsa_code": cbsa_code,
+                "msa_name": msa_lookup.get(cbsa_code, cbsa_code),
+                "year": year,
+                "remote_work_share_state_year": _safe_ratio(values["remote_work_weight"], values["employed_weight"]),
+                "observed_remote_work_share_acs": _safe_ratio(values["remote_work_weight"], values["employed_weight"]),
+                "on_site_work_share_state_year": _safe_ratio(values["onsite_work_weight"], values["employed_weight"]),
+                "usual_hours_all_workers": _safe_ratio(values["hours_weight_sum"], values["hours_weight_denom"]),
+                "usual_hours_wfh_workers": _safe_ratio(values["wfh_hours_sum"], values["wfh_hours_denom"]),
+                "telework_hours_mean_among_remote": _safe_ratio(values["wfh_hours_sum"], values["wfh_hours_denom"]),
+                "remote_work_hours_proxy": _safe_ratio(values["remote_hours_weight_sum"], values["employed_weight"]),
+                "mean_commute_minutes_state_year": _safe_ratio(values["commute_sum"], values["commute_denom"]),
+                "long_commute_share_state_year": _safe_ratio(values["long_commute_weight"], values["long_commute_denom"]),
+                "female_employment_rate": _safe_ratio(values["female_employed_weight"], values["female_weight"]),
+                "labor_force_participation_rate": _safe_ratio(values["adult_labor_force_weight"], values["adult_weight"]),
+                "married_or_partnered_share_state_year": _safe_ratio(values["adult_partnered_weight"], values["adult_weight"]),
+                "general_fertility_rate": 1000.0 * _safe_ratio(values["births_weight"], values["fertility_population_weight"]),
+                "births": values["births_weight"],
+                "female_population_15_44": values["fertility_population_weight"],
+                "total_population": values["weight_sum"],
+                "fertility_sample_size": int(values["fertility_sample_size"]),
+                "sample_size": int(values["sample_size"]),
+                "source_used": "IPUMS ACS microdata",
+                "source_warning": "MSA-year ACS estimates are directly weighted from the local IPUMS extract where MET2013 identifies an area.",
+                "measurement_note": (
+                    "Remote work is identified from ACS commute mode indicating work from home; commute and work-hour "
+                    "measures are weighted among relevant employed respondents. General fertility rate is approximated "
+                    "as weighted births in the past 12 months per 1,000 women ages 15-44 in the ACS microdata."
+                ),
+                "proxy_mode": "observed_acs",
+                "state_fips": dominant_state_fips,
+                "state_abbr": STATE_FIPS_TO_ABBR.get(dominant_state_fips, ""),
+                "state_name": STATE_FIPS_TO_NAME.get(dominant_state_fips, ""),
+                "region": STATE_FIPS_TO_REGION.get(dominant_state_fips, ""),
+                "component_state_fips": ",".join(component_state_fips),
+                "component_state_abbrs": ",".join(
+                    STATE_FIPS_TO_ABBR.get(state_fips, state_fips) for state_fips in component_state_fips
+                ),
+                "component_state_names": ",".join(
+                    STATE_FIPS_TO_NAME.get(state_fips, state_fips) for state_fips in component_state_fips
+                ),
                 "acs_warning": ACS_2020_WARNING if int(year) == 2020 else "",
             }
         )
