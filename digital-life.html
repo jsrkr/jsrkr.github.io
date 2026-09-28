@@ -48,7 +48,7 @@
                         <li><span class="legend-swatch legend-access"></span>Digital Accessibility Score</li>
                     </ul>
                     <figcaption class="figure-note">
-                        <p>Annual trends in digital life. For the full state-year series, <a href="#download">download the full data</a>. Note: 2020 is omitted because ATUS did not produce a comparable full-year estimate.</p>
+                        <p>Annual trends in digital life. For the full state-year series, <a href="#download">download the full data</a>. Note: 2020 is omitted because the American Time Use Survey (ATUS) did not produce a comparable full-year estimate.</p>
                     </figcaption>
                 </figure>
             </div>
@@ -144,35 +144,61 @@
         </section>
 
         <section class="atlas-section compact-section major-section" id="about" aria-labelledby="about-title">
-            <div class="atlas-content text-content">
+            <div class="atlas-content text-content about-content">
                 <p class="section-label">05 <span>About</span></p>
                 <h2 id="about-title">About the Digital Life Atlas</h2>
                 <p>The Atlas brings together three measured dimensions of digital life and summarizes them with the Digital Life Index. Figure 3 compares one state's normalized profile; Figure 4 shows selected underlying statistics for all states and DC in their original units.</p>
                 <dl class="dimension-list">
                     <div>
                         <dt>Digital Work</dt>
-                        <dd>The share of workers usually working from home, shown as a standardized input in the index and as a percentage in Figure 4.</dd>
+                        <dd>The prevalence of working from home, measured using the American Community Survey (ACS).</dd>
                     </div>
                     <div>
                         <dt>Digital Leisure</dt>
-                        <dd>The updated source reports average digital leisure minutes by state and year. Its data file does not provide a more specific activity or sample definition.</dd>
+                        <dd>Average daily time spent playing games and using computers or the internet for personal leisure, including recreational browsing, social media, online chatting, and similar activities. Measured using the American Time Use Survey.</dd>
                     </div>
                     <div>
                         <dt>Digital Accessibility</dt>
-                        <dd>An equal-weight average of standardized household internet, high-speed internet, and cellular data-plan shares.</dd>
+                        <dd>Household access to the internet, high-speed internet, and cellular data plans, measured using the American Community Survey.</dd>
                     </div>
                 </dl>
             </div>
         </section>
 
         <section class="atlas-section compact-section major-section" id="method" aria-labelledby="method-title">
-            <div class="atlas-content text-content">
+            <div class="atlas-content text-content method-content">
                 <p class="section-label">06 <span>Method</span></p>
                 <h2 id="method-title">Method</h2>
-                <p>The updated source covers 2016-2019 and 2021-2023 for all 50 states and DC. Digital Work uses <code>z_remote</code>, standardized from the ACS <code>remote_share</code>; the inspected ACS code defines this as the survey-weighted share of workers age 16 or older who usually work from home. Digital Leisure uses <code>z_leisure</code>, standardized from the supplied <code>digital_leisure_minutes_mean</code>. That raw field has no Stata variable label, and the inspected construction code does not document a more specific activity or sample definition. Digital Accessibility is <code>digital_access</code>, the arithmetic mean of <code>z_internet</code>, <code>z_highspeed</code>, and <code>z_cellular</code>, standardized from household shares. The cellular share is named <code>share_cellular_data_plan</code> in the updated source.</p>
-                <p>The Digital Life Index and its component scores are relative measures normalized between 0 and 1 over the pooled state-year sample. These scores are not percentages. Figure 1-3 use the stored index and three component display fields. The component scores are independently min-max normalized; they are not direct physical quantities. Figure 4 presents selected underlying measures in their original units, including percentages of households or workers and average daily minutes of digital leisure. Its cellular-data measure is stored in the updated source as <code>share_cellular_data_plan</code>.</p>
-                <p>The CSV adds <code>digital_work_score_01</code>, <code>digital_leisure_score_01</code>, and <code>digital_accessibility_score_01</code>. Each is calculated from the updated pooled sample as (source measure - pooled minimum) / (pooled maximum - pooled minimum). The finalized index is not reconstructed for display. See the <a href="assets/data/README_Digital_Life_Atlas.md">methods README</a> for source fields, exact pooled extrema, and variable definitions.</p>
-                <p>ATUS did not produce a comparable full-year estimate for 2020, so it is omitted rather than interpolated.</p>
+                <div class="method-block">
+                    <h3>Overview</h3>
+                    <p>The Digital Life Atlas combines information from the American Community Survey (ACS) and the American Time Use Survey (ATUS) to measure three dimensions of digital life across U.S. states: Digital Work, Digital Leisure, and Digital Accessibility.</p>
+                </div>
+                <div class="method-block">
+                    <h3>Digital Work</h3>
+                    <p>Digital Work measures the prevalence of working from home using the American Community Survey.</p>
+                </div>
+                <div class="method-block">
+                    <h3>Digital Leisure</h3>
+                    <p>Digital Leisure measures average daily time spent playing games and using a computer or the internet for personal leisure using the American Time Use Survey. Computer-based leisure includes activities such as recreational web browsing, social media use, online chatting, and other personal-interest computer use. It does not capture all forms of internet or screen use because ATUS classifies activities according to their primary purpose.</p>
+                </div>
+                <div class="method-block">
+                    <h3>Digital Accessibility</h3>
+                    <p>Digital Accessibility combines household access to the internet, high-speed internet, and cellular data plans using the American Community Survey.</p>
+                </div>
+                <div class="method-block">
+                    <h3>Index construction</h3>
+                    <p>The three dimensions are standardized and combined using principal component analysis (PCA). The first principal component is used to construct the overall Digital Life Index because it loads positively on all three dimensions.</p>
+                </div>
+                <div class="method-block">
+                    <h3>How to interpret the scores</h3>
+                    <p>The resulting index is rescaled from 0 to 1, with higher values indicating greater digital-life intensity relative to other state-year observations in the sample.</p>
+                    <p>The Digital Work Score, Digital Leisure Score, and Digital Accessibility Score displayed in Figures 1–3 are also normalized from 0 to 1 for ease of comparison over time. These are relative scores, not percentages. Figure 4 presents selected underlying measures—such as work-from-home shares, internet access, and average daily digital-leisure minutes—in their original units.</p>
+                </div>
+                <div class="method-block">
+                    <h3>Coverage</h3>
+                    <p>The Atlas covers 2016–2019 and 2021–2023 for all 50 states and the District of Columbia. 2020 is omitted because the American Time Use Survey did not produce a comparable full-year estimate.</p>
+                </div>
+                <p class="method-readme">For detailed variable definitions, normalization procedures, data construction, and source documentation, see the <a href="assets/data/README_Digital_Life_Atlas.md">Methods README</a>.</p>
             </div>
         </section>
 

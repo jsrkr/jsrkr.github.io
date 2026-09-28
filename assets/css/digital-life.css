@@ -457,6 +457,47 @@ body.digital-life-page {
     line-height: 1.6;
 }
 
+.method-content {
+    max-width: 860px;
+}
+
+.method-content h2 {
+    margin-bottom: 12px;
+}
+
+.method-block {
+    max-width: 800px;
+    margin-top: 17px;
+}
+
+.method-block h3 {
+    margin: 0;
+    color: var(--atlas-brand);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.method-block p {
+    max-width: 780px;
+    margin: 5px 0 0;
+    color: #4d5550;
+    font-size: 1.125rem;
+    line-height: 1.6;
+}
+
+.method-content .method-readme {
+    margin-top: 24px;
+}
+
+.method-readme a {
+    color: var(--atlas-brand);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    overflow-wrap: anywhere;
+}
+
 .download-links {
     display: flex;
     flex-wrap: wrap;
@@ -685,8 +726,19 @@ body.digital-life-page {
         font-size: 1.0625rem;
     }
 
+    .method-block p {
+        font-size: 1.0625rem;
+    }
+
     .dimension-list dd {
         font-size: 1rem;
+    }
+
+    .dimension-list {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        max-width: 780px;
+        margin-top: 26px;
     }
 
     .signup-status {
@@ -810,6 +862,10 @@ body.digital-life-page {
 
     .text-content > p:not(.section-label),
     .signup-content p:not(.section-label) {
+        font-size: 1.0625rem;
+    }
+
+    .method-block p {
         font-size: 1.0625rem;
     }
 
