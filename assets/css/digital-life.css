@@ -135,7 +135,8 @@ body.digital-life-page {
 .intro-subtitle {
     margin: 8px 0 0;
     color: #383838;
-    font-size: 20px;
+    font-size: 26px;
+    font-weight: 400;
     line-height: 1.4;
 }
 
@@ -145,6 +146,38 @@ body.digital-life-page {
     color: #444;
     font-size: 17px;
     line-height: 1.6;
+}
+
+.intro-about {
+    max-width: 960px;
+    margin-top: 20px;
+}
+
+.intro-about h2 {
+    margin: 0;
+    color: #555;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+}
+
+.intro-about p {
+    margin: 5px 0 4px;
+    color: #444;
+    font-size: 16px;
+    line-height: 1.55;
+}
+
+.intro-about a {
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.intro-about a:hover {
+    opacity: 0.78;
 }
 
 .intro-note {
@@ -203,7 +236,7 @@ body.digital-life-page {
 }
 
 .metric-legend {
-    display: flex;
+    display: none;
     flex-wrap: wrap;
     gap: 9px 23px;
     margin: 2px 0 12px;
@@ -558,6 +591,10 @@ body.digital-life-page {
         padding-block: 36px 42px;
     }
 
+    .intro-subtitle {
+        font-size: 23px;
+    }
+
     .atlas-section {
         padding-block: 58px 64px;
     }
@@ -575,6 +612,15 @@ body.digital-life-page {
 
     .map-plot {
         height: 500px;
+    }
+}
+
+@media (max-width: 760px) {
+    .metric-legend {
+        display: flex;
+        gap: 7px 15px;
+        margin-top: 4px;
+        font-size: 13px;
     }
 }
 
@@ -615,16 +661,12 @@ body.digital-life-page {
     }
 
     .intro-subtitle {
-        font-size: 18px;
+        font-size: 21px;
     }
 
     .intro-deck {
         margin-top: 14px;
         font-size: 16.5px;
-    }
-
-    .intro-note {
-        font-size: 15.5px;
     }
 
     .atlas-section {
@@ -658,11 +700,6 @@ body.digital-life-page {
 
     .map-plot {
         height: 400px;
-    }
-
-    .metric-legend {
-        gap: 8px 16px;
-        font-size: 14px;
     }
 
     .control-row {
@@ -778,11 +815,6 @@ body.digital-life-page {
 
     .control-row select {
         max-width: 100%;
-    }
-
-    .metric-legend {
-        column-gap: 12px;
-        font-size: 14px;
     }
 
     .figure-note,

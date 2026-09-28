@@ -56,11 +56,11 @@
         "digital_accessibility_score_01"
     ]);
     const STATISTIC_MEASURES = [
-        { field: "remote_share", label: "Remote Workers (%)", unit: "percent", color: "#bf7138" },
-        { field: "digital_leisure_minutes_mean", label: "Digital Leisure (Min/Day)", unit: "minutes", color: "#42735d" },
-        { field: "share_internet", label: "Households with Internet (%)", unit: "percent", color: "#286c86" },
-        { field: "share_highspeed", label: "Households with High-Speed Internet (%)", unit: "percent", color: "#687f48" },
-        { field: "share_cellular_data_plan", label: "Households with Cellular Data (%)", unit: "percent", color: "#9a6887" }
+        { field: "remote_share", label: "Remote work share", unit: "percent", color: "#bf7138" },
+        { field: "digital_leisure_minutes_mean", label: "Digital leisure time", unit: "minutes", color: "#42735d" },
+        { field: "share_internet", label: "Internet access", unit: "percent", color: "#286c86" },
+        { field: "share_highspeed", label: "High-speed internet", unit: "percent", color: "#687f48" },
+        { field: "share_cellular_data_plan", label: "Cellular data plan", unit: "percent", color: "#9a6887" }
     ];
     const MAP_COLORS = [
         [0, "#edf1f1"],
@@ -148,6 +148,7 @@
 
     function renderTrendChart() {
         const chart = document.getElementById("trend-chart");
+        const showDirectLabels = window.innerWidth > 760;
         const indices = years.map(function (_year, index) {
             return index;
         });
@@ -173,6 +174,51 @@
         const separatorIndex = years.indexOf(2019);
         const shapes = [];
         const annotations = [];
+        if (showDirectLabels) {
+            const endLabels = traces.map(function (trace) {
+                return {
+                    text: trace.name,
+                    color: trace.line.color,
+                    value: trace.y[trace.y.length - 1],
+                    labelY: trace.y[trace.y.length - 1]
+                };
+            }).filter(function (label) {
+                return Number.isFinite(label.value);
+            }).sort(function (a, b) {
+                return a.value - b.value;
+            });
+            const minLabelGap = 0.068;
+            endLabels.forEach(function (label, index) {
+                if (index > 0) {
+                    label.labelY = Math.max(label.value, endLabels[index - 1].labelY + minLabelGap);
+                }
+            });
+            if (endLabels.length) {
+                const overflow = Math.max(0, endLabels[endLabels.length - 1].labelY - 0.96);
+                const underflow = Math.max(0, 0.04 - (endLabels[0].labelY - overflow));
+                endLabels.forEach(function (label) {
+                    label.labelY -= overflow;
+                    label.labelY += underflow;
+                    annotations.push({
+                        x: years.length - 1,
+                        y: label.labelY,
+                        xref: "x",
+                        yref: "y",
+                        xshift: 9,
+                        text: label.text,
+                        showarrow: false,
+                        xanchor: "left",
+                        yanchor: "middle",
+                        align: "left",
+                        font: {
+                            family: "Inter, Arial, sans-serif",
+                            size: window.innerWidth <= 900 ? 11 : 13,
+                            color: label.color
+                        }
+                    });
+                });
+            }
+        }
         if (separatorIndex >= 0 && years.indexOf(2021) === separatorIndex + 1) {
             shapes.push({
                 type: "line",
@@ -206,8 +252,8 @@
             autosize: true,
             height: window.innerWidth <= 640 ? 385 : window.innerWidth <= 900 ? 440 : 472,
             margin: {
-                l: window.innerWidth <= 640 ? 84 : 92,
-                r: 20,
+                l: window.innerWidth <= 760 ? 58 : 72,
+                r: !showDirectLabels ? 20 : window.innerWidth <= 900 ? 188 : window.innerWidth <= 1100 ? 220 : 240,
                 t: 43,
                 b: 46
             },
@@ -219,7 +265,11 @@
                 color: "#4c534f"
             },
             xaxis: {
-                range: [-0.12, years.length - 0.88],
+                range: showDirectLabels
+                    ? [-0.12, window.innerWidth <= 900
+                        ? years.length + 2.8
+                        : window.innerWidth <= 1100 ? years.length + 1.5 : years.length + 1.0]
+                    : [-0.12, years.length - 0.88],
                 tickmode: "array",
                 tickvals: indices,
                 ticktext: years.map(String),
@@ -234,7 +284,6 @@
             },
             yaxis: {
                 range: [0, 1],
-                title: { text: "Normalized score (0–1)", standoff: 12, font: { size: window.innerWidth <= 900 ? 15 : 16 } },
                 tickmode: "array",
                 tickvals: [0, 0.25, 0.5, 0.75, 1],
                 tickformat: ".2f",
@@ -251,7 +300,7 @@
             hovermode: "x unified",
             showlegend: false
         };
-        const plotPromise = Plotly.newPlot(chart, traces, layout, {
+        const plotPromise = Plotly.react(chart, traces, layout, {
             responsive: true,
             displayModeBar: false,
             scrollZoom: false
@@ -608,7 +657,7 @@
             "map-section",
             "state-profile",
             "state-statistics",
-            "about",
+            "measure-definitions",
             "method",
             "download"
         ];
@@ -699,9 +748,8 @@
         window.addEventListener("resize", function () {
             window.clearTimeout(resizeTimer);
             resizeTimer = window.setTimeout(function () {
-                const trendHeight = window.innerWidth <= 640 ? 385 : window.innerWidth <= 900 ? 440 : 472;
                 Promise.all([
-                    Plotly.relayout("trend-chart", { height: trendHeight }),
+                    renderTrendChart(),
                     Plotly.relayout("state-map", { height: mapPlotHeight() }),
                     Plotly.relayout("state-profile-chart", { height: profilePlotHeight() }),
                     Plotly.relayout("statistics-chart", { height: statisticsPlotHeight() })
@@ -739,7 +787,7 @@
 
     function showLoadError(error) {
         ["trend-chart", "state-map", "state-profile-chart", "statistics-chart"].forEach(function (id) {
-            setPlotError(id, "The Atlas data could not be loaded. Check the CSV path and reload the page.");
+            setPlotError(id, "The Digital Life Index data could not be loaded. Check the CSV path and reload the page.");
         });
         const detail = document.getElementById("map-note");
         detail.textContent = error && error.message ? error.message : "The data could not be loaded.";

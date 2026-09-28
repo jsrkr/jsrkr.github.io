@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Explore state-level trends in digital work, leisure, and accessibility across the United States.">
-    <title>Digital Life Atlas</title>
+    <meta name="description" content="Explore the Digital Life Index and state-level trends in digital work, leisure, and internet access across the United States.">
+    <title>Digital Life Index</title>
     <link rel="stylesheet" href="assets/css/digital-life.css">
 </head>
 <body class="digital-life-page">
@@ -12,9 +12,9 @@
 
     <header class="atlas-header">
         <div class="atlas-header-inner">
-            <a class="atlas-brand" href="#intro">Digital Life Atlas</a>
-            <nav class="atlas-nav" aria-label="Digital Life Atlas sections">
-                <a href="#about">About</a>
+            <a class="atlas-brand" href="#intro">Digital Life Index</a>
+            <nav class="atlas-nav" aria-label="Digital Life Index sections">
+                <a href="#measure-definitions">About</a>
                 <a href="#method">Method</a>
                 <a href="#download">Download</a>
             </nav>
@@ -24,10 +24,14 @@
     <main id="main-content">
         <section class="atlas-intro major-section" id="intro" aria-labelledby="intro-title">
             <div class="atlas-content">
-                <h1 id="intro-title">Digital Life Atlas</h1>
-                <p class="intro-subtitle">Digital life across U.S. states</p>
+                <h1 id="intro-title">Digital Life Index</h1>
+                <p class="intro-subtitle">Digital life across U.S. states.</p>
                 <p class="intro-deck">A state-by-year view of remote work, digital leisure, and digital access in the United States.</p>
-                <p class="intro-note">Built from the American Community Survey and American Time Use Survey, the Atlas follows changes across all 50 states and the District of Columbia from 2016 to 2023.</p>
+                <div class="intro-about">
+                    <h2>ABOUT</h2>
+                    <p>The Digital Life Index brings together three key dimensions of digital exposure in everyday life: remote work, digital leisure (such as gaming, web browsing, and social media), and access to internet services. Together, these dimensions capture how digital technologies are embedded in work, leisure, and daily life, with potential implications for wellbeing, social interaction, productivity, and family life.</p>
+                    <a href="#measure-definitions">Learn more about the measures ↓</a>
+                </div>
             </div>
         </section>
 
@@ -38,7 +42,7 @@
                     <p class="figure-subtitle">Cross-state averages of the Digital Life Index and its three component scores.</p>
                 </div>
                 <figure class="atlas-figure">
-                    <div id="trend-chart" class="plot trend-plot" role="img" aria-label="Line chart of cross-state average digital life, work, leisure, and accessibility across observed years"></div>
+                    <div id="trend-chart" class="plot trend-plot" role="img" aria-label="Line chart of the Digital Life Index and Digital Work, Digital Leisure, and Digital Accessibility Scores across observed years. Trend lines are directly labeled at their 2023 endpoints."></div>
                     <ul class="metric-legend" aria-label="Trend line colors">
                         <li><span class="legend-swatch legend-life"></span>Digital Life Index</li>
                         <li><span class="legend-swatch legend-work"></span>Digital Work Score</li>
@@ -105,7 +109,7 @@
             <div class="atlas-content">
                 <div class="section-heading">
                     <h2 id="state-profile-title">Figure 3: Digital profile of selected state</h2>
-                    <p class="figure-subtitle">Four normalized scores for the state selected above and the map year.</p>
+                    <p class="figure-subtitle">The Digital Life Index and three normalized component scores for the selected state and year.</p>
                 </div>
                 <figure class="atlas-figure profile-figure">
                     <h3 class="profile-state-year" id="profile-state-year" aria-live="polite">State &middot; Year</h3>
@@ -118,13 +122,13 @@
         <section class="atlas-section major-section" id="state-statistics" aria-labelledby="state-statistics-title">
             <div class="atlas-content">
                 <div class="section-heading">
-                    <h2 id="state-statistics-title">Figure 4: Underlying digital-life measures across states</h2>
-                    <p class="figure-subtitle">Explore the underlying state statistics in their original units.</p>
+                    <h2 id="state-statistics-title">Figure 4: How digital life differs across states</h2>
+                    <p class="figure-subtitle">Select a measure and year to compare state-level values.</p>
                 </div>
                 <div class="control-row" aria-label="State statistics controls">
                     <label class="select-control">
                         <span>Measure</span>
-                        <select id="stat-measure" aria-label="Underlying measure"></select>
+                        <select id="stat-measure" aria-label="Measure"></select>
                     </label>
                     <label class="select-control">
                         <span>Year</span>
@@ -132,16 +136,16 @@
                     </label>
                 </div>
                 <figure class="atlas-figure statistics-figure">
-                    <div id="statistics-chart" class="plot statistics-plot" role="img" aria-label="Horizontal bar chart of an underlying digital-life measure for all available states and the District of Columbia"></div>
-                    <figcaption class="figure-note">Underlying state-level measures used to characterize digital work, digital leisure, and digital accessibility. Shares are shown as percentages; digital leisure is measured in average minutes per day.</figcaption>
+                    <div id="statistics-chart" class="plot statistics-plot" role="img" aria-label="Horizontal bar chart comparing the selected digital-life measure for all available states and the District of Columbia"></div>
+                    <figcaption class="figure-note">Selected measures are shown in their original units. Shares are reported as percentages, while digital leisure is measured in average minutes per day.</figcaption>
                 </figure>
             </div>
         </section>
 
-        <section class="atlas-section compact-section major-section" id="about" aria-labelledby="about-title">
+        <section class="atlas-section compact-section major-section" id="measure-definitions" aria-labelledby="about-title">
             <div class="atlas-content text-content about-content">
-                <h2 id="about-title">About</h2>
-                <p>The Atlas brings together three measured dimensions of digital life and summarizes them with the Digital Life Index. Figure 3 compares one state's normalized profile; Figure 4 shows selected underlying statistics for all states and DC in their original units.</p>
+                <h2 id="about-title">About the measures</h2>
+                <p>The Digital Life Index brings together three dimensions of digital exposure in everyday life: work, leisure, and access to internet services. The definitions below describe what each dimension captures.</p>
                 <dl class="dimension-list">
                     <div>
                         <dt>Digital Work</dt>
@@ -162,7 +166,7 @@
         <section class="atlas-section compact-section major-section" id="method" aria-labelledby="method-title">
             <div class="atlas-content text-content method-content">
                 <h2 id="method-title">Method</h2>
-                <p class="method-intro">The Digital Life Atlas combines information from the American Community Survey (ACS) and the American Time Use Survey (ATUS) to measure three dimensions of digital life across U.S. states: Digital Work, Digital Leisure, and Digital Accessibility.</p>
+                <p class="method-intro">The Digital Life Index is constructed from three dimensions: Digital Work, Digital Leisure, and Digital Accessibility. These dimensions draw on the American Community Survey (ACS) and the American Time Use Survey (ATUS).</p>
                 <div class="method-block">
                     <h3>Digital Work</h3>
                     <p>Digital Work measures the prevalence of working from home using the American Community Survey.</p>
@@ -181,12 +185,12 @@
                 </div>
                 <div class="method-block">
                     <h3>How to interpret the scores</h3>
-                    <p>The resulting index is rescaled from 0 to 1, with higher values indicating greater digital-life intensity relative to other state-year observations in the sample.</p>
-                    <p>The Digital Work Score, Digital Leisure Score, and Digital Accessibility Score displayed in Figures 1–3 are also normalized from 0 to 1 for ease of comparison over time. These are <strong>relative scores, not percentages</strong>. Figure 4 presents selected underlying measures—such as work-from-home shares, internet access, and average daily digital-leisure minutes—in their original units.</p>
+                    <p>The Digital Life Index is rescaled from 0 to 1, with higher values indicating greater digital-life intensity relative to other state-year observations in the sample.</p>
+                    <p>The Digital Work Score, Digital Leisure Score, and Digital Accessibility Score displayed in Figures 1–3 are normalized 0–1 measures for comparing values across states and years. They are <strong>relative scores, not percentages</strong>. Figure 4 presents selected measures—such as remote work share, internet access, and average daily digital-leisure minutes—in their original units.</p>
                 </div>
                 <div class="method-block">
                     <h3>Coverage</h3>
-                    <p>The Atlas covers 2016–2019 and 2021–2023 for all 50 states and the District of Columbia. <strong>2020 is omitted</strong> because the American Time Use Survey did not produce a comparable full-year estimate.</p>
+                    <p>The data cover 2016–2019 and 2021–2023 for all 50 states and the District of Columbia. <strong>2020 is omitted</strong> because the American Time Use Survey did not produce a comparable full-year estimate.</p>
                 </div>
                 <p class="method-readme">For detailed variable definitions, normalization procedures, data construction, and source documentation, see the <a href="assets/data/README_Digital_Life_Atlas.md">Methods README</a>.</p>
             </div>
@@ -214,7 +218,7 @@
 
     <footer class="atlas-footer">
         <div class="atlas-content">
-            <p>Digital Life Atlas <span aria-hidden="true">·</span> Jheelum Sarkar</p>
+            <p>Digital Life Index <span aria-hidden="true">·</span> Jheelum Sarkar</p>
             <a href="#intro">Back to top ↑</a>
         </div>
     </footer>
