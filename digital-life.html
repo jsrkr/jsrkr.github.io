@@ -3,8 +3,62 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Explore the Digital Life Index and state-level trends in digital work, leisure, and internet access across the United States.">
-    <title>Digital Life Index</title>
+    <meta name="description" content="Explore the Digital Life Index, a state-year dataset measuring remote work, digital leisure, gaming and computer-based leisure, and internet access across U.S. states from 2016 to 2023.">
+    <link rel="canonical" href="https://jsrkr.github.io/digital-life.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Digital Life Index – Remote Work, Digital Leisure &amp; Internet Access Across U.S. States">
+    <meta property="og:description" content="Explore state-level trends in remote work, digital leisure, and internet access across the United States.">
+    <meta property="og:url" content="https://jsrkr.github.io/digital-life.html">
+    <meta property="og:site_name" content="Jheelum Sarkar">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Digital Life Index – Remote Work, Digital Leisure &amp; Internet Access Across U.S. States">
+    <meta name="twitter:description" content="Explore state-level trends in remote work, digital leisure, and internet access across the United States.">
+    <title>Digital Life Index – Remote Work, Digital Leisure &amp; Internet Access Across U.S. States | Jheelum Sarkar</title>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      "name": "Digital Life Index",
+      "description": "A state-year dataset measuring remote work, digital leisure including gaming and computer-based leisure, and household access to internet services across U.S. states and the District of Columbia.",
+      "url": "https://jsrkr.github.io/digital-life.html",
+      "creator": {
+        "@type": "Person",
+        "name": "Jheelum Sarkar"
+      },
+      "temporalCoverage": "2016/2023",
+      "spatialCoverage": {
+        "@type": "Place",
+        "name": "United States"
+      },
+      "keywords": [
+        "Digital Life Index",
+        "remote work",
+        "digital leisure",
+        "gaming",
+        "computer-based leisure",
+        "social media",
+        "web browsing",
+        "internet access",
+        "high-speed internet",
+        "cellular data access",
+        "United States",
+        "state-level data"
+      ],
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "distribution": [
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "text/csv",
+          "contentUrl": "https://jsrkr.github.io/assets/data/digital_life_state_year.csv"
+        },
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/x-stata",
+          "contentUrl": "https://jsrkr.github.io/assets/data/state-year-digital-life-index.dta"
+        }
+      ]
+    }
+    </script>
     <link rel="stylesheet" href="assets/css/digital-life.css">
 </head>
 <body class="digital-life-page">
@@ -28,7 +82,7 @@
                 <p class="intro-subtitle">Digital life across U.S. states.</p>
                 <div class="intro-about">
                     <h2>ABOUT</h2>
-                    <p>The Digital Life Index captures how digital technologies are embedded in everyday life: remote work, digital leisure (such as gaming, web browsing, and social media), and access to internet services. The extent to which our lives are digitalized can influence our wellbeing, social interaction, productivity, and family life.</p>
+                    <p>The Digital Life Index captures how digital technologies are embedded in everyday life: remote work, digital leisure (such as gaming, web browsing, and social media), and access to internet services. The extent to which our lives are digitalized can influence our wellbeing, social interaction, productivity, and family life. The data allow users to compare remote work, gaming and computer-based leisure, social media and web use, and household internet connectivity across U.S. states over time.</p>
                     <a href="#measure-definitions">Learn more about the measures ↓</a>
                 </div>
             </div>
@@ -191,7 +245,7 @@
                     <h3>Coverage</h3>
                     <p>The data cover 2016–2019 and 2021–2023 for all 50 states and the District of Columbia. <strong>2020 is omitted</strong> because the American Time Use Survey did not produce a comparable full-year estimate.</p>
                 </div>
-                <p class="method-readme">For detailed variable definitions, normalization procedures, data construction, and source documentation, see the <a href="assets/data/README_Digital_Life_Atlas.md">Methods README</a>.</p>
+                <p class="method-readme">For detailed variable definitions, normalization procedures, data construction, and source documentation, see the <a href="assets/data/README_Digital_Life_Atlas.md">Digital Life Index methods and documentation</a>.</p>
             </div>
         </section>
 
@@ -201,13 +255,13 @@
                 <p>State-year data and documentation are available for research and replication.</p>
                 <div class="download-links">
                     <a class="download-link" href="assets/data/digital_life_state_year.csv" download>
-                        <span>CSV</span>
+                        <span>Download Digital Life Index data (CSV)</span>
                     </a>
                     <a class="download-link" href="assets/data/state-year-digital-life-index.dta" download>
-                        <span>Stata (.dta)</span>
+                        <span>Download Digital Life Index data (Stata)</span>
                     </a>
                     <a class="download-link" href="assets/data/README_Digital_Life_Atlas.md" download>
-                        <span>Methods / README</span>
+                        <span>Methods and data documentation</span>
                     </a>
                 </div>
             </div>
