@@ -540,6 +540,22 @@ body.digital-life-page {
     font-size: 15px;
 }
 
+.atlas-footer-copy {
+    display: grid;
+    gap: 2px;
+}
+
+.atlas-footer .license-notice {
+    color: var(--atlas-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.atlas-footer .license-notice a {
+    color: inherit;
+    font-size: inherit;
+}
+
 .atlas-footer a {
     color: #444;
     font-size: 15px;
