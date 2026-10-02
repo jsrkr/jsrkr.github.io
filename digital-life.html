@@ -198,7 +198,7 @@
         <section class="atlas-section compact-section major-section" id="measure-definitions" aria-labelledby="about-title">
             <div class="atlas-content text-content about-content">
                 <h2 id="about-title">About the measures</h2>
-                <p>The Digital Life Index brings together three dimensions of digital exposure in everyday life: work, leisure, and access to internet services. The definitions below describe what each dimension captures.</p>
+                <p>The Digital Life Index captures three dimensions of digital exposure in everyday life: Digital Work, Digital Leisure, and Digital Accessibility. Together, these dimensions reflect how people engage with digital technologies through work, leisure, and access to digital infrastructure. The definitions below describe what each dimension measures.</p>
                 <dl class="dimension-list">
                     <div>
                         <dt>Digital Work</dt>
@@ -219,33 +219,26 @@
         <section class="atlas-section compact-section major-section" id="method" aria-labelledby="method-title">
             <div class="atlas-content text-content method-content">
                 <h2 id="method-title">Method</h2>
-                <p class="method-intro">The Digital Life Index is constructed from three dimensions: Digital Work, Digital Leisure, and Digital Accessibility. These dimensions draw on the American Community Survey (ACS) and the American Time Use Survey (ATUS).</p>
                 <div class="method-block">
-                    <h3>Digital Work</h3>
-                    <p>Digital Work measures the prevalence of working from home using the American Community Survey.</p>
-                </div>
-                <div class="method-block">
-                    <h3>Digital Leisure</h3>
-                    <p>Digital Leisure measures average daily time spent playing games and using a computer or the internet for personal leisure using the American Time Use Survey. Computer-based leisure includes activities such as recreational web browsing, social media use, online chatting, and other personal-interest computer use. It does not capture all forms of internet or screen use because ATUS classifies activities according to their primary purpose.</p>
-                </div>
-                <div class="method-block">
-                    <h3>Digital Accessibility</h3>
-                    <p>Digital Accessibility combines household access to the internet, high-speed internet, and cellular data plans using the American Community Survey.</p>
+                    <h3>Data and variables</h3>
+                    <p>The three dimensions are constructed using data from the American Community Survey (ACS) and the American Time Use Survey (ATUS).</p>
+                    <p>The ACS provides information on the share of workers who work remotely and the share of households with internet access, high-speed broadband, and a cellular data plan. The ATUS provides information on digital leisure, including the average time spent on digital leisure activities and the share of individuals who engage in these activities. Figure 4 shows how these measures vary across states and over time.</p>
                 </div>
                 <div class="method-block">
                     <h3>Index construction</h3>
-                    <p>The three dimensions are standardized and combined using <strong>principal component analysis (PCA)</strong>. The first principal component is used to construct the overall <strong>Digital Life Index</strong> because it loads positively on all three dimensions.</p>
+                    <p>To place the three dimensions on a comparable scale, I first standardize each component. The standardized Digital Work, Digital Leisure, and Digital Accessibility scores are then combined using equal weights. Equal weighting reflects the objective of the index: to capture distinct dimensions of digital life without assigning greater importance to any one dimension.</p>
+                    <p>The resulting index is rescaled to range from 0 to 1, where higher values indicate greater overall digital-life intensity. Figures 1–3 present the Digital Life Index and its component scores across states and over time.</p>
                 </div>
                 <div class="method-block">
                     <h3>How to interpret the scores</h3>
-                    <p>The Digital Life Index is rescaled from 0 to 1, with higher values indicating greater digital-life intensity relative to other state-year observations in the sample.</p>
-                    <p>The Digital Work Score, Digital Leisure Score, and Digital Accessibility Score displayed in Figures 1–3 are normalized 0–1 measures for comparing values across states and years. They are <strong>relative scores, not percentages</strong>. Figure 4 presents selected measures—such as remote work share, internet access, and average daily digital-leisure minutes—in their original units.</p>
+                    <p>The Digital Life Index is a score ranging from 0 to 1. Higher scores indicate greater digital-life intensity, based on the combined levels of digital work, digital leisure, and digital accessibility.</p>
+                    <p>For example, if State A has a Digital Life Index score of 0.75 and State B has a score of 0.40, State A has a higher level of digital-life intensity than State B. A score of 0.75 does not mean that 75% of the population is digitally engaged.</p>
                 </div>
                 <div class="method-block">
                     <h3>Coverage</h3>
-                    <p>The data cover 2016–2019 and 2021–2023 for all 50 states and the District of Columbia. <strong>2020 is omitted</strong> because the American Time Use Survey did not produce a comparable full-year estimate.</p>
+                    <p>The data cover 2016–2019 and 2021–2023 for all 50 states and the District of Columbia. 2020 is omitted because the American Time Use Survey did not provide a comparable full-year estimate for that year.</p>
                 </div>
-                <p class="method-readme">For detailed variable definitions, normalization procedures, data construction, and source documentation, see the <a href="assets/data/README_Digital_Life_Atlas.md">Digital Life Index methods and documentation</a>.</p>
+                <p class="method-readme">For detailed variable definitions, normalization procedures, data construction, and source documentation, see the <a href="https://jsrkr.github.io/assets/data/README_Digital_Life_Atlas.md">Digital Life Index methods and documentation</a>.</p>
             </div>
         </section>
 
