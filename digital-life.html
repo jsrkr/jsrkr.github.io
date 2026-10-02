@@ -199,15 +199,15 @@
                 <dl class="dimension-list">
                     <div>
                         <dt>Digital Work</dt>
-                        <dd>The ACS share of workers age 16 or older who usually work from home. The state-year share uses person weights and excludes records without a valid commuting response.</dd>
+                        <dd>Captures the prevalence of remote work.</dd>
                     </div>
                     <div>
                         <dt>Digital Leisure</dt>
-                        <dd>ATUS time in television and movie leisure (TRCODE 120303) plus leisure computer use excluding games (TRCODE 120308). State estimates cover adults ages 18–64 with valid state, positive final weight, and complete diaries. Activity-specific participation measures are descriptive and do not enter the index.</dd>
+                        <dd>Captures the amount of time people spend on digital leisure activities.</dd>
                     </div>
                     <div>
                         <dt>Digital Accessibility</dt>
-                        <dd>The equal-weight mean of standardized ACS household internet, high-speed broadband, and cellular data-plan shares: digital_access = (z_internet + z_highspeed + z_cellular) / 3. That dimension is standardized before entering the index.</dd>
+                        <dd>Captures household access to internet, high-speed broadband, and cellular data services.</dd>
                     </div>
                 </dl>
             </div>
@@ -218,31 +218,22 @@
                 <h2 id="method-title">Method</h2>
                 <div class="method-block">
                     <h3>Data and variables</h3>
-                    <p>Digital Work uses ACS <code>remote_share</code>, the person-weighted share of workers age 16 or older whose <code>tranwork</code> response is 80 (usually working from home); records with <code>tranwork == 0</code> are excluded. Digital Leisure uses ATUS television and movie leisure (TRCODE 120303) plus leisure computer use excluding games (TRCODE 120308). The ATUS estimates cover adults ages 18–64, all employment statuses, and require a valid state, positive final respondent weight, and complete 1,440-minute diary. The ACS access inputs are household-weighted shares with nonmissing item responses.</p>
-                    <p>ATUS digital-leisure minutes and participation are underlying descriptive measures. Only average daily digital-leisure minutes enter the index; participation measures are shown separately in Figure 4.</p>
+                    <p>The three dimensions are constructed using data from the American Community Survey (ACS) and the American Time Use Survey (ATUS).</p>
+                    <p>The ACS provides information on the share of workers who work remotely and the share of households with internet access, high-speed broadband, and a cellular data plan. The ATUS provides information on digital leisure, including the average time spent on digital leisure activities and the share of individuals who engage in these activities. Figure 4 shows how these underlying measures vary across states and over time.</p>
                 </div>
                 <div class="method-block">
                     <h3>Index construction</h3>
-                    <p>I standardize Digital Work, Digital Leisure, and Digital Accessibility over the pooled 357 state-year observations using the sample standard deviation (N−1). The primary composite uses equal weights: <code>digital_life_raw = (digital_work_score_z + digital_leisure_score_z + digital_access_score_z) / 3</code>. I then rescale it over the same pooled sample: <code>digital_life_index = (digital_life_raw - pooled minimum) / (pooled maximum - pooled minimum)</code>. For this release, the raw composite ranges from -1.5993671916 to 2.5494686511 and the index ranges from 0 to 1.</p>
-                    <p>Equal weighting captures the three dimensions without assigning greater importance to any one of them. The Digital Life Index is a score, not a percentage. A score of 0.75 does not mean that 75% of people are digitally engaged. Figures 1–3 use this primary index and pooled min-max display versions of its standardized component scores.</p>
-                </div>
-                <div class="method-block">
-                    <h3>PCA robustness measure</h3>
-                    <p>The downloads also contain a PCA alternative calculated from the same three standardized dimensions. Its current first-component coefficients are 0.6675671 for Digital Work, -0.3093505 for Digital Leisure, and 0.6772418 for Digital Accessibility. <code>pc1</code> stores that component score and <code>digital_life_index_pca</code> stores its pooled 0–1 min-max rescaling. This alternative is not the primary index and is not used in Figures 1–3.</p>
-                </div>
-                <div class="method-block">
-                    <h3>Display transformations and figures</h3>
-                    <p>The Digital Life Index is already on the 0–1 scale. Each displayed component score uses pooled min-max normalization: <code>display_score = (source value - pooled minimum) / (pooled maximum - pooled minimum)</code>. These display fields do not change the source variables, are for visualization and comparison, and are not percentages or additional indices.</p>
-                    <p>Figure 1 shows annual arithmetic means across the 50 states and DC, with each geography weighted equally. Figure 2 uses a color scale based on each metric's full pooled state-year distribution. Figure 3 shows the selected state's index and component display scores; ranks are calculated within the selected year. Figure 4 shows raw measures in their original units, with share fields displayed as percentages and digital leisure as minutes per day.</p>
+                    <p>To place the three dimensions on a comparable scale, I first standardize each component. The standardized Digital Work, Digital Leisure, and Digital Accessibility scores are then combined using equal weights. Equal weighting reflects the objective of the index: to capture distinct dimensions of digital life without assigning greater importance to any one dimension.</p>
+                    <p>The resulting index is rescaled to range from <strong>0 to 1</strong>, where higher values indicate greater overall digital-life intensity. Figures 1–3 present the Digital Life Index and its component scores across states and over time.</p>
                 </div>
                 <div class="method-block">
                     <h3>How to interpret the scores</h3>
-                    <p>The Digital Life Index is a score ranging from 0 to 1. Higher scores indicate greater digital-life intensity, based on the combined levels of digital work, digital leisure, and digital accessibility.</p>
-                    <p>For example, if State A has a Digital Life Index score of 0.75 and State B has a score of 0.40, State A has a higher level of digital-life intensity than State B. A score of 0.75 does not mean that 75% of the population is digitally engaged.</p>
+                    <p>The <strong>Digital Life Index</strong> is a score ranging from 0 to 1. Higher scores indicate greater digital-life intensity, based on the combined levels of digital work, digital leisure, and digital accessibility.</p>
+                    <p>For example, if State A has a Digital Life Index score of <strong>0.75</strong> and State B has a score of <strong>0.40</strong>, State A has a higher level of digital-life intensity than State B. A score of 0.75 does <strong>not</strong> mean that 75% of the population is digitally engaged.</p>
                 </div>
                 <div class="method-block">
                     <h3>Coverage</h3>
-                    <p>The 357 observations cover 2016–2019 and 2021–2023 for all 50 states and the District of Columbia. No 2020 observation is included or interpolated because ATUS did not provide a comparable full-year estimate for that year.</p>
+                    <p>The data cover <strong>2016–2019 and 2021–2023</strong> for all 50 states and the District of Columbia. <strong>2020 is omitted</strong> because the American Time Use Survey did not provide a comparable full-year estimate for that year.</p>
                 </div>
                 <p class="method-readme">For detailed variable definitions, normalization procedures, data construction, and source documentation, see the <a href="https://jsrkr.github.io/assets/data/README_Digital_Life_Atlas.md">Digital Life Index methods and documentation</a>.</p>
             </div>
