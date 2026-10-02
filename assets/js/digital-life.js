@@ -7,41 +7,70 @@
             label: "Digital Life Index",
             field: "digital_life_index",
             color: "#174b73",
-            source: "ACS and ATUS"
+            source: "ACS and ATUS; equal-weight index"
         },
         digital_work: {
             label: "Digital Work Score",
             field: "digital_work_score_01",
             color: "#bf7138",
-            source: "ACS"
+            source: "ACS; normalized from digital_work_score_z"
         },
         digital_leisure: {
             label: "Digital Leisure Score",
             field: "digital_leisure_score_01",
             color: "#42735d",
-            source: "ATUS"
+            source: "ATUS; normalized from digital_leisure_score_z"
         },
-        digital_accessibility: {
+        digital_access: {
             label: "Digital Accessibility Score",
-            field: "digital_accessibility_score_01",
+            field: "digital_access_score_01",
             color: "#78669b",
-            source: "ACS"
+            source: "ACS; normalized from digital_access_score_z"
         }
     };
     const TREND_METRIC_ORDER = [
         "digital_life_index",
         "digital_work",
         "digital_leisure",
-        "digital_accessibility"
+        "digital_access"
     ];
     const NUMBER_FIELDS = new Set([
+        "state_fips",
         "statefip",
         "year",
+        "television_movie_minutes_mean",
+        "television_movie_minutes_mean_se",
+        "television_movie_minutes_mean_l9",
+        "television_movie_minutes_mean_u9",
+        "television_movie_minutes_mean_cv",
         "remote_share",
         "digital_leisure_minutes_mean",
+        "digital_leisure_minutes_mean_se",
+        "digital_leisure_minutes_mean_l95",
+        "digital_leisure_minutes_mean_u95",
+        "digital_leisure_minutes_mean_cv",
+        "share_any_digital_leisure",
+        "share_any_digital_leisure_se",
+        "share_any_digital_leisure_l95",
+        "share_any_digital_leisure_u95",
+        "share_any_digital_leisure_cv",
+        "sh_gt_p50_digital_leisure",
+        "sh_gt_p50_digital_leisure_se",
+        "sh_gt_p50_digital_leisure_l95",
+        "sh_gt_p50_digital_leisure_u95",
+        "sh_gt_p50_digital_leisure_cv",
+        "share_any_television_movie",
+        "share_any_television_movie_se",
+        "share_any_television_movie_l95",
+        "share_any_television_movie_u95",
+        "share_any_television_movie_cv",
+        "television_movie_minutes_users",
         "share_internet",
         "share_highspeed",
         "share_cellular_data_plan",
+        "digital_leisure_score_z",
+        "digital_access_score_z",
+        "digital_work_score_z",
         "z_remote",
         "z_leisure",
         "z_leisure_share",
@@ -50,17 +79,22 @@
         "z_cellular",
         "digital_access",
         "pc1",
+        "digital_life_raw",
         "digital_life_index",
+        "digital_life_index_pca",
         "digital_work_score_01",
         "digital_leisure_score_01",
-        "digital_accessibility_score_01"
+        "digital_access_score_01"
     ]);
     const STATISTIC_MEASURES = [
         { field: "remote_share", label: "Remote work share", unit: "percent", color: "#bf7138" },
         { field: "digital_leisure_minutes_mean", label: "Digital leisure time", unit: "minutes", color: "#42735d" },
+        { field: "share_any_digital_leisure", label: "Any digital leisure", unit: "percent", color: "#78669b" },
+        { field: "sh_gt_p50_digital_leisure", label: "Digital leisure above P50", unit: "percent", color: "#9a6887" },
+        { field: "share_cellular_data_plan", label: "Households with cellular data plan", unit: "percent", color: "#ba8444" },
         { field: "share_internet", label: "Internet access", unit: "percent", color: "#286c86" },
         { field: "share_highspeed", label: "High-speed internet", unit: "percent", color: "#687f48" },
-        { field: "share_cellular_data_plan", label: "Cellular data plan", unit: "percent", color: "#9a6887" }
+        { field: "share_any_television_movie", label: "Any television or movie leisure", unit: "percent", color: "#568c86" }
     ];
     const MAP_COLORS = [
         [0, "#edf1f1"],
@@ -118,6 +152,10 @@
 
     function metricValue(row, metricKey) {
         return Number(row[METRICS[metricKey].field]);
+    }
+
+    function stateFips(row) {
+        return Number(row.state_fips === undefined ? row.statefip : row.state_fips);
     }
 
     function formatValue(value) {
@@ -407,7 +445,7 @@
             metric.label + " · " + year +
             " · Source: " + metric.source +
             ". Darker shades indicate higher values; this measure's scale is fixed across all years. " +
-            "2020 is omitted because ATUS did not produce a comparable full-year estimate.";
+            "2020 is not included in the supplied state-year file.";
         return plotPromise;
     }
 
@@ -763,7 +801,7 @@
         const keys = new Set();
         const stateYearDuplicates = [];
         rows.forEach(function (row) {
-            const key = String(row.statefip) + "-" + String(row.year);
+            const key = String(stateFips(row)) + "-" + String(row.year);
             if (keys.has(key)) {
                 stateYearDuplicates.push(key);
             }
@@ -777,10 +815,13 @@
                 return Number.isFinite(metricValue(row, metricKey));
             });
         });
+        const hasStateIdentifiers = rows.every(function (row) {
+            return Number.isFinite(stateFips(row));
+        });
         const completeYearCoverage = years.every(function (year) {
             return getRowsForYear(year).length === 51;
         });
-        if (stateYearDuplicates.length || observedStates.size !== 51 || !completeYearCoverage || !expectedFields) {
+        if (stateYearDuplicates.length || observedStates.size !== 51 || !completeYearCoverage || !expectedFields || !hasStateIdentifiers) {
             throw new Error("The loaded file did not pass the state-year uniqueness and coverage checks.");
         }
     }
@@ -805,7 +846,7 @@
             }
             rows = parseCSV(await response.text());
             rows.sort(function (a, b) {
-                return a.statefip - b.statefip || a.year - b.year;
+                return stateFips(a) - stateFips(b) || a.year - b.year;
             });
             years = Array.from(new Set(rows.map(function (row) {
                 return row.year;
